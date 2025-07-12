@@ -1,4 +1,4 @@
-# apka_mgr
+# Nazwa aplikacji
 
 A new Flutter project.
 
