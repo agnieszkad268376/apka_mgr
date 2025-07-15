@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Ekran logowania do aplikacji
 /// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
         child: Column(
             children: [
-            SizedBox(height: 180),
+            SizedBox(height: 10),
             Image.asset(
               'images/logo.jpg',
               width: 200,
@@ -25,6 +25,10 @@ class LoginScreen extends StatelessWidget {
             LoginInput(),
             SizedBox(height: 20),
             PasswordInput(),
+            SizedBox(height: 20),
+            ReentryPasswordInput(),
+            SizedBox(height: 20),
+            RoleDropDownMenu(),
             SizedBox(height: 20),
             SizedBox(
               width: 300,
@@ -37,22 +41,7 @@ class LoginScreen extends StatelessWidget {
                 side: const BorderSide(color: Color(0xFFDFB4B0), width: 2.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
               ),
-              child: const Text('Zaloguj się'),
-              ),
-            ),
-            SizedBox(height: 100),
-             SizedBox(
-              width: 300,
-              child: ElevatedButton(
-              onPressed: () {
-                print('Login Button Pressed');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF98B6EC),
-                side: const BorderSide(color: Color(0xFFB9CEFF), width: 2.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
-              ),
-              child: const Text('Zarejestruj się', style: TextStyle(color: Color(0xFFE7EEFF))),
+              child: const Text('Zarejestruj się'),
               ),
             ),
           ],
@@ -122,3 +111,68 @@ class PasswordInput extends StatelessWidget {
     );
   }
 }
+
+/// Widget for the reentry password input field
+/// This widget creates a text field for user to re-enter their password.
+class ReentryPasswordInput extends StatelessWidget {
+  const ReentryPasswordInput({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      child: TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
+            borderRadius: BorderRadius.circular(23.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
+            borderRadius: BorderRadius.circular(23.0),
+          ),
+          labelText: 'Powtóz hasło', 
+          fillColor: const Color(0xFFFAF3ED), 
+          filled: true
+      ),
+    ),
+    );
+  }
+}
+
+
+class RoleDropDownMenu extends StatelessWidget {
+  const RoleDropDownMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
+            borderRadius: BorderRadius.circular(23.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
+            borderRadius: BorderRadius.circular(23.0),
+          ),
+          labelText: 'Rola', 
+          fillColor: const Color(0xFFFAF3ED), 
+          filled: true
+        ),
+        items: const [
+          DropdownMenuItem(value: 'admin', child: Text('Optometrysta')),
+          DropdownMenuItem(value: 'user', child: Text('Pacjent')),
+        ],
+        onChanged: (value) {
+          print('Selected role: $value');
+        },
+      ),
+    );
+    
+  }
+}
+

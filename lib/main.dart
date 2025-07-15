@@ -1,4 +1,5 @@
 import 'package:apka_mgr/log_in/login_screen.dart';
+import 'package:apka_mgr/log_in/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 // Main function that runs the app.
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
 Widget build(BuildContext context) {
   return MaterialApp(
-    home: LoginScreen(),
+    home: SignupScreen(),
   );
 }
 }
