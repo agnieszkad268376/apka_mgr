@@ -1,4 +1,6 @@
+import 'package:apka_mgr/opto/opto_menu_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:apka_mgr/log_in/signup_screen.dart';
 
 /// Ekran logowania do aplikacji
 /// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
@@ -30,7 +32,10 @@ class LoginScreen extends StatelessWidget {
               width: 300,
               child: ElevatedButton(
               onPressed: () {
-                print('Login Button Pressed');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OptoMenuScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDFB4B0),
@@ -44,15 +49,18 @@ class LoginScreen extends StatelessWidget {
              SizedBox(
               width: 300,
               child: ElevatedButton(
-              onPressed: () {
-                print('Login Button Pressed');
-              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF98B6EC),
                 side: const BorderSide(color: Color(0xFFB9CEFF), width: 2.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
               ),
               child: const Text('Zarejestruj się', style: TextStyle(color: Color(0xFFE7EEFF))),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignupScreen()),
+                );
+              },
               ),
             ),
           ],
