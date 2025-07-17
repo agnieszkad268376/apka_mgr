@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Ekran logowania do aplikacji
-/// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
+/// Registration screen 
+/// Users enter their login, password and select a role
+/// then user is registered in the application.
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// Ekran logowania do aplikacji
-/// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
+/// Optometrist menu screen
+/// User can see data about patients and game statistics
+/// Add new patient or delete patient
+/// Go to settings or log out.
 class OptoMenuScreen extends StatelessWidget {
   const OptoMenuScreen({super.key});
 

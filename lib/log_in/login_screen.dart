@@ -1,9 +1,10 @@
 import 'package:apka_mgr/opto/opto_menu_screen.dart';
+import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:apka_mgr/log_in/signup_screen.dart';
 
-/// Ekran logowania do aplikacji
-/// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
+/// Login screen for the application
+/// Users can enter their login and password, then log in or register in to tha aplication.
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -34,7 +35,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => OptoMenuScreen()),
+                  MaterialPageRoute(builder: (context) => PatientMenuScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
