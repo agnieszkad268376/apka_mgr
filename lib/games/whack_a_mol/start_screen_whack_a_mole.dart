@@ -17,6 +17,11 @@ class StartScreenWhackAMole extends StatelessWidget {
     return Scaffold(
       
       backgroundColor: const Color(0xFF71AE8A),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF71AE8A),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: Center(
         child: Container(
         margin: const EdgeInsets.all(10.0),
@@ -35,6 +40,8 @@ class StartScreenWhackAMole extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: screenSize.height * 0.04),
             Text('Uderz w krecika',
@@ -48,13 +55,16 @@ class StartScreenWhackAMole extends StatelessWidget {
                       style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
                     ),
                     SizedBox(height: screenSize.height * 0.02),
-                    Text(
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(screenSize.width*0.02, 0, screenSize.width*0.02, 0),
+                      child: 
+                      Text(
                       'Naciśnij na krecika, kiedy wyskoczy z dziury aby zdobyć punkty. '
                       'Każde trafienie to 1 punkt. Nieprawidłowe trafienia są zliczane. \n'
-                      'Gra trwa 30 sekund, co sekubdę pojawia się nowy krecik. '
-                      ,
+                      'Gra trwa 30 sekund, co sekundę pojawia się nowy krecik. ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                       textAlign: TextAlign.center,
+                    )
                     ),
                     SizedBox(height: screenSize.height * 0.1),
                     Text(
