@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
 
-
+/// Start screen for the Whack-a-Mole game
+/// It show the instructions for the game and a button to start the.
 class StartScreenWhackAMole extends StatelessWidget {
   const StartScreenWhackAMole({super.key});
 
@@ -29,7 +30,7 @@ class StartScreenWhackAMole extends StatelessWidget {
               color: Colors.white.withOpacity(0.6),
               spreadRadius: 5,
               blurRadius: 3,
-              offset: const Offset(0, 3), // changes position of shadow
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -72,7 +73,8 @@ class StartScreenWhackAMole extends StatelessWidget {
   }
 }
 
-
+/// Button to start the Whack-a-Mole game
+/// It navigates to the game screen 
 class WchackAMoleSartButton extends StatelessWidget {
   const WchackAMoleSartButton({super.key});
 

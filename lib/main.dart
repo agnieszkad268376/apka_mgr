@@ -1,5 +1,5 @@
-import 'package:apka_mgr/log_in/login_screen.dart';
-import 'package:apka_mgr/log_in/signup_screen.dart';
+import 'package:apka_mgr/authorization/login_screen.dart';
+import 'package:apka_mgr/authorization/signup_screen.dart';
 import 'package:apka_mgr/opto/opto_menu_screen.dart';
 import 'package:flutter/material.dart';
 

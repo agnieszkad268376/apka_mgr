@@ -32,13 +32,22 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   int gameDuration = 30;
   int timeLeft = 30;
   bool gameRunning = false;
+  bool _hasStarted = false;
 
   // Initialzize game
   @override
   void initState() {
     super.initState();
-    starGame();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+      if (!_hasStarted) {
+        _hasStarted = true;
+        starGame(); // Teraz jest bezpiecznie!
+        }
+    }
 
   /// Starts the game and initializing the mole visibility, score, and timers
   /// Called when the game starts or restarts
@@ -49,6 +58,11 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
     missedHits = 0;
     timeLeft = gameDuration;
     gameRunning = true;
+    final screenSize = MediaQuery.of(context).size;
+    double fontSizeEndGame = screenSize.width * 0.09;
+    double fontSizeScore = screenSize.width * 0.06;
+    double fontSizeButton = screenSize.width * 0.04;
+
 
     // New mole is shown every second
     moleTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -91,28 +105,29 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
                 context: context, 
                 barrierDismissible: false,
                 builder: (_) => AlertDialog(
-                  title: const Text('Koniec gry'),
+                  title: Text('Koniec gry', style: TextStyle(fontSize: fontSizeEndGame),),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Twój wynik: $score'),
-                      Text('Pudła: $missedHits'),
+                      Text('Twój wynik: $score', style: TextStyle(fontSize: fontSizeScore),),
+                      Text('Pudła: $missedHits', style: TextStyle(fontSize: fontSizeScore),),
                     ],
                   ),
+                  backgroundColor:  Color(0xFFE0DAD3),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                         starGame(); // Restart the game
                       },
-                      child: const Text('Zagraj ponownie'),
+                      child: Text('Zagraj ponownie', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),
                     // Button to go back to the patient menu
                     TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PatientMenuScreen()));
                       },
-                      child: const Text('Wróć do menu'),
+                      child: Text('Wróć do menu', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),
                   ],
                 ),
@@ -129,6 +144,8 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   void onTapMole(int index) {
     // If the game is not running or the mole is not visible, do nothing
     if (!gameRunning) return;
+    // If hit the visible mole, increase the score
+    // Else increase the missed hits
     if (moleVisible[index]) {
       setState(() {
         moleVisible[index] = false;
@@ -169,22 +186,25 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   /// UI for the Whack a Mole game
   @override
   Widget build(BuildContext context) {
-    
+    final screenSize = MediaQuery.of(context).size;
+    double fontSizeTitle = screenSize.width * 0.12;
+    double fontSizeTimer = screenSize.width * 0.06;
+
     return Scaffold(
       backgroundColor: const Color(0xFF71AE8A),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            'Whack a mole',
-            style: const TextStyle(fontSize: 24, color: Colors.white),
+          Text(
+            'Uderz w krecika',
+            style: TextStyle(fontSize: fontSizeTitle, color: Colors.white),
           ),
           Text(
-            'Time left: $timeLeft seconds',
-            style: const TextStyle(fontSize: 20, color: Colors.white),
+            'Pozostały czas: $timeLeft seconds',
+            style:  TextStyle(fontSize: fontSizeTimer, color: Colors.white),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: screenSize.height * 0.02),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -192,11 +212,11 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Text(
-              'Score: $score',
-              style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0)),
+              'Wynik: $score',
+              style: TextStyle(fontSize: fontSizeTimer, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ),
-          const SizedBox(height: 20,),
+          SizedBox(height: screenSize.height * 0.02),
           GridView.count(
             crossAxisCount: columns,
             shrinkWrap: true,

@@ -1,7 +1,7 @@
 // import 'package:apka_mgr/opto/opto_menu_screen.dart';
 import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:apka_mgr/log_in/signup_screen.dart';
+import 'package:apka_mgr/authorization/signup_screen.dart';
 
 /// Login screen for the application
 class LoginScreen extends StatelessWidget {
