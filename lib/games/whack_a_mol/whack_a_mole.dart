@@ -29,7 +29,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   late Timer gameTimer;
   late Timer moleTimer;
   // Duration of the game in seconds
-  int gameDuration = 5;
+  int gameDuration = 30;
   int timeLeft = 30;
   bool gameRunning = false;
 
@@ -40,10 +40,9 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
     starGame();
   }
 
-  /// Starts the game by initializing the mole visibility, score, and timers
-  /// Also sets the game running state to true
-  /// This method is called when the game starts or restarts
-  /// It generates a list of mole visibility states, sets the score to 0,
+  /// Starts the game and initializing the mole visibility, score, and timers
+  /// Called when the game starts or restarts
+  /// Game lasted for 30 seconds
   void starGame() {
     moleVisible = List.generate(rows * columns, (index) => false);
     score = 0;
@@ -51,12 +50,16 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
     timeLeft = gameDuration;
     gameRunning = true;
 
+    // New mole is shown every second
     moleTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // If the game is not running or the widget is not mounted, do nothing
       if (!gameRunning || !mounted) return;
         setState(() {
+          // Randolmly select place for mole to show
           final random = Random();
           final index = random.nextInt(rows * columns);
           moleVisible[index] = true;
+            // After 1 second the mole is hidden
             Timer(Duration(seconds: 1), () {
               if (mounted) {
                 setState(() {
@@ -68,19 +71,23 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
         );
     });
 
+    // Countdown timer 
     gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // If the game is not running or the widget is not mounted, do nothing
       if (!gameRunning || !mounted) return;
         setState(() {
           timeLeft--;
+          // If the time is up, the game stops
+          // and shows the dialog with the score and missed hits
           if (timeLeft <= 0){
             gameRunning = false;
             moleTimer.cancel();
             gameTimer.cancel();
             moleVisible = List.generate(rows * columns, (index) => false);
 
+            // Show the dialog with the score 
             Future.delayed(Duration.zero, () {
               showDialog(
-                barrierColor: Color(0xFFAA4444), // Semi-transparent background
                 context: context, 
                 barrierDismissible: false,
                 builder: (_) => AlertDialog(
@@ -100,6 +107,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
                       },
                       child: const Text('Zagraj ponownie'),
                     ),
+                    // Button to go back to the patient menu
                     TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PatientMenuScreen()));
@@ -163,7 +171,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      backgroundColor: const Color(0xFF49995A),
+      backgroundColor: const Color(0xFF71AE8A),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
