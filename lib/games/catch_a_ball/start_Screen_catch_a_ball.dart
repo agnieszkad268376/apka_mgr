@@ -1,26 +1,24 @@
+import 'package:apka_mgr/games/catch_a_ball/catch_a_ball.dart';
 import 'package:flutter/material.dart';
-import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
 
 /// Start screen for the Whack-a-Mole game
 /// It show the instructions for the game and a button to start the.
-class StartScreenWhackAMole extends StatelessWidget {
-  const StartScreenWhackAMole({super.key});
+class StartScreenCatchABall extends StatelessWidget {
+  const StartScreenCatchABall({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     final screenSize = MediaQuery.of(context).size;
-    double fontSize1 = screenSize.width * 0.09;
+    double fontSize1 = screenSize.width * 0.1;
     double fontSize2 = screenSize.width * 0.08;
     double fontSize3 = screenSize.width * 0.05;
-    const List<String> gameTimes = ['30 sekund', '60 sekund', '90 sekund'];
-    const List<String> moleSpeeds = ['Powolny', 'Średni', 'Szybki'];
 
     return Scaffold(
       
-      backgroundColor: const Color(0xFF71AE8A),
+      backgroundColor: const Color(0xFFFFCFCB),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF71AE8A),
+        backgroundColor: const Color(0xFFFFCFCB),
         centerTitle: true,
         elevation: 0,
       ),
@@ -45,41 +43,36 @@ class StartScreenWhackAMole extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Uderz w krecika',
+            SizedBox(height: screenSize.height * 0.04),
+            Text('Złap piłkę',
               style: TextStyle(fontSize: fontSize1, color: Color(0xFF3D3D3D), fontWeight: FontWeight.bold),
             ),
             SizedBox(height: screenSize.height * 0.02),
                 Column(
                   children: [
+                    Text(
+                      'Zasady gry:',
+                      style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
+                    ),
                     SizedBox(height: screenSize.height * 0.02),
                     Padding(
                       padding: EdgeInsets.fromLTRB(screenSize.width*0.02, 0, screenSize.width*0.02, 0),
                       child: 
                       Text(
-                      'Naciśnij na krecika, kiedy wyskoczy z dziury aby zdobyć punkty. '
-                      'Uważaj na pojawiające się bomby \n'
-                      ,
+                      'Na ekranie pojawi się kolejno 10 piłek. Kiedy zobaczysz piłkę kliknij na nią jak najszybciej. '
+                      'Gdy złapiesz piłkę, pojawi się kolejna. '
+                      'W tej grze liczy się czas, w jakim złapiesz piłki.',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                       textAlign: TextAlign.center,
                     )
                     ),
                     SizedBox(height: screenSize.height * 0.05),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Czas gry: ', style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D))),
-                        SizedBox(width: screenSize.width * 0.02),
-                        // Dropdown for game time selection
-                        GameTimeSelection(),
-                      ],
-                    ),
-                    Text('Szybkość krecika'),
                     Text(
                       'Powodzenia!',
                       style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
                     ),
                     SizedBox(height: screenSize.height * 0.04),
-                    WchackAMoleSartButton(),
+                    WchackAMoleStartButton(),
                   ],
                 ),
           ],
@@ -92,8 +85,8 @@ class StartScreenWhackAMole extends StatelessWidget {
 
 /// Button to start the Whack-a-Mole game
 /// It navigates to the game screen and starts the game. 
-class WchackAMoleSartButton extends StatelessWidget {
-  const WchackAMoleSartButton({super.key});
+class WchackAMoleStartButton extends StatelessWidget {
+  const WchackAMoleStartButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +99,7 @@ class WchackAMoleSartButton extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => WhackAMoleScreen()),
+            MaterialPageRoute(builder: (context) => CatchABallScreen()),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -121,32 +114,3 @@ class WchackAMoleSartButton extends StatelessWidget {
   }
 }
 
-class GameTimeSelection extends StatefulWidget {
-  const GameTimeSelection({super.key});
-
-  @override
-  State<GameTimeSelection> createState() => _GameTimeSelectionState();
- 
-}
-
-class _GameTimeSelectionState extends State<GameTimeSelection> {
-  String selectedTime = '60 sekund';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: selectedTime,
-      items: <String>['30 sekund', '60 sekund', '90 sekund'].map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          selectedTime = newValue!;
-        });
-      },
-    );
-  }
-}

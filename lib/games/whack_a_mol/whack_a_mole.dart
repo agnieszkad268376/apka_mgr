@@ -45,7 +45,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
     super.didChangeDependencies();
       if (!_hasStarted) {
         _hasStarted = true;
-        starGame(); // Teraz jest bezpiecznie!
+        starGame();
         }
     }
 
