@@ -67,13 +67,22 @@ class StartScreenWhackAMole extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Czas gry: ', style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D))),
+                        Text('Czas gry: ', style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                         SizedBox(width: screenSize.width * 0.02),
                         // Dropdown for game time selection
                         GameTimeSelection(),
                       ],
                     ),
-                    Text('Szybkość krecika'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Szybkość krecika: ', style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
+                        SizedBox(width: screenSize.width * 0.02),
+                        // Dropdown for mole speed selection
+                        MoleSpeedSelection(),
+                      ],
+                    ),
+                    SizedBox(height: screenSize.height * 0.05),
                     Text(
                       'Powodzenia!',
                       style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
@@ -121,6 +130,7 @@ class WchackAMoleSartButton extends StatelessWidget {
   }
 }
 
+/// DropdownMenu to select game time
 class GameTimeSelection extends StatefulWidget {
   const GameTimeSelection({super.key});
 
@@ -129,6 +139,8 @@ class GameTimeSelection extends StatefulWidget {
  
 }
 
+/// State for the GameTimeSelection widget
+/// It manages the selected game time and updates the UI accordingly.
 class _GameTimeSelectionState extends State<GameTimeSelection> {
   String selectedTime = '60 sekund';
 
@@ -145,6 +157,35 @@ class _GameTimeSelectionState extends State<GameTimeSelection> {
       onChanged: (String? newValue) {
         setState(() {
           selectedTime = newValue!;
+        });
+      },
+    );
+  }
+}
+
+class MoleSpeedSelection extends StatefulWidget {
+  const MoleSpeedSelection({super.key});
+
+  @override
+  State<MoleSpeedSelection> createState() => _MoleSpeedSelectionState();
+}
+
+class _MoleSpeedSelectionState extends State<MoleSpeedSelection> {
+  String selectedSpeed = 'Średni';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: selectedSpeed,
+      items: <String>['Powolny', 'Średni', 'Szybki'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedSpeed = newValue!;
         });
       },
     );
