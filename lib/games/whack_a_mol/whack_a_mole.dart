@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 /// Whack a mole game screen
 class WhackAMoleScreen extends StatefulWidget {
-  const WhackAMoleScreen({super.key});
+  final String gameTime;
+  final String moleSpeed;
+  const WhackAMoleScreen({super.key, required this.gameTime, required this.moleSpeed});
 
   @override
   State<WhackAMoleScreen> createState() => WhackAMoleScreenState();
@@ -22,23 +24,50 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   // Number of moles to show at a time
   final int moleCount = 10;
   List<bool> moleVisible = [];
+  List<bool> bombVisible = [];
   // Default score
   int score = 0;
   int missedHits = 0;
   // Timers for the game
   late Timer gameTimer;
   late Timer moleTimer;
+  late Timer bombTimer;
   // Duration of the game in seconds
-  int gameDuration = 30;
+  int gameDuration = 0;
+  int moleSpeed = 1000; 
   int timeLeft = 30;
   bool gameRunning = false;
   bool _hasStarted = false;
 
   // Initialzize game
-  @override
-  void initState() {
-    super.initState();
+ @override
+void initState() {
+  super.initState();
+
+  // konwersja czasu gry (string -> sekundy)
+  if (widget.gameTime == '30 sekund') {
+    gameDuration = 30;
+  } else if (widget.gameTime == '60 sekund') {
+    gameDuration = 60;
+  } else if (widget.gameTime == '90 sekund') {
+    gameDuration = 90;
+  } else {
+    gameDuration = 30; // fallback
   }
+
+  timeLeft = gameDuration;
+
+  // konwersja szybkości krecika (string -> ms)
+  if (widget.moleSpeed == 'Powolny') {
+    moleSpeed = 1500;
+  } else if (widget.moleSpeed == 'Średni') {
+    moleSpeed = 1000;
+  } else if (widget.moleSpeed == 'Szybki') {
+    moleSpeed = 600;
+  } else {
+    moleSpeed = 1;
+  }
+}
 
   @override
   void didChangeDependencies() {
@@ -54,6 +83,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   /// Game lasted for 30 seconds
   void starGame() {
     moleVisible = List.generate(rows * columns, (index) => false);
+    bombVisible = List.generate(rows * columns, (index) => false);
     score = 0;
     missedHits = 0;
     timeLeft = gameDuration;
@@ -74,7 +104,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
           final index = random.nextInt(rows * columns);
           moleVisible[index] = true;
             // After 1 second the mole is hidden
-            Timer(Duration(seconds: 1), () {
+            Timer(Duration(milliseconds:moleSpeed), () {
               if (mounted) {
                 setState(() {
                   moleVisible[index] = false;
@@ -85,6 +115,32 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
         );
     });
 
+    bombTimer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+      if (!gameRunning || !mounted) return;
+          setState(() {
+            final random = Random();
+            int index;
+
+    
+        do {
+          index = random.nextInt(rows * columns);
+        } while (moleVisible[index] || bombVisible[index]);
+
+      bombVisible[index] = true;
+
+    
+      Timer(const Duration(seconds: 1), () {
+        if (mounted) {
+          setState(() {
+            bombVisible[index] = false;
+            missedHits++;
+          });
+          }
+        });
+      });
+    });
+
+  
     // Countdown timer 
     gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // If the game is not running or the widget is not mounted, do nothing
@@ -142,18 +198,21 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   /// Handles the tap on a mole
   /// [index] - index of the mole in the grid
   void onTapMole(int index) {
-    // If the game is not running or the mole is not visible, do nothing
     if (!gameRunning) return;
-    // If hit the visible mole, increase the score
-    // Else increase the missed hits
+
     if (moleVisible[index]) {
       setState(() {
         moleVisible[index] = false;
         score++;
       });
+    } else if (bombVisible[index]) {
+      setState(() {
+        bombVisible[index] = false;
+        missedHits++;
+      });
     } else {
       setState(() {
-        missedHits++; 
+        missedHits++;
       });
     }
   }
@@ -171,9 +230,12 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
           child: Container(
             margin: const EdgeInsets.all(4.0),
             child: Center(
-              child: moleVisible[i] 
-                ?  Image.asset('images/mole.png', width: screenSize.width *0.2, height: screenSize.height * 0.33)
-                :  Image.asset('images/hole.png', width: screenSize.width *0.2, height: screenSize.height * 0.33)
+              child: bombVisible[i]
+                ? Image.asset('images/bomb.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
+                : moleVisible[i]
+                  ? Image.asset('images/mole.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
+                  : Image.asset('images/hole.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33),
+
             ),
           ),
         ),
