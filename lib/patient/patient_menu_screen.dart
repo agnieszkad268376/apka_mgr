@@ -1,5 +1,7 @@
+import 'package:apka_mgr/authorization/setting_screen.dart';
 import 'package:apka_mgr/games/catch_a_ball/start_Screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
+import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:flutter/material.dart';
 
 /// Patient view menu screen
@@ -33,6 +35,20 @@ class PatientMenuScreen extends StatelessWidget {
               leading: const Icon(Icons.settings_outlined),
               title: const Text('Ustawienia'),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.bar_chart_outlined),
+              title: const Text('Dziennik postępów'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProgressJournal()),
+                );
               },
             ),
             SizedBox(height: screenSize.height * 0.6),
