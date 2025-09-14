@@ -3,16 +3,25 @@ import 'package:flutter/material.dart';
 
 /// Start screen for the Whack-a-Mole game
 /// It show the instructions for the game and a button to start the.
-class StartScreenCatchABall extends StatelessWidget {
+class StartScreenCatchABall extends StatefulWidget {
   const StartScreenCatchABall({super.key});
+
+  @override
+  State<StartScreenCatchABall> createState() => _StartScreenCatchABallState();
+}
+
+class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
+  String selectedNumberOfBalls = '10';
+  String selectedBallSize = 'średnia';
 
   @override
   Widget build(BuildContext context) {
 
     final screenSize = MediaQuery.of(context).size;
-    double fontSize1 = screenSize.width * 0.1;
+    double fontSize1 = screenSize.width * 0.09;
     double fontSize2 = screenSize.width * 0.08;
     double fontSize3 = screenSize.width * 0.05;
+    
 
     return Scaffold(
       
@@ -59,12 +68,45 @@ class StartScreenCatchABall extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(screenSize.width*0.02, 0, screenSize.width*0.02, 0),
                       child: 
                       Text(
-                      'Na ekranie pojawi się kolejno 10 piłek. Kiedy zobaczysz piłkę kliknij na nią jak najszybciej. '
-                      'Gdy złapiesz piłkę, pojawi się kolejna. '
-                      'W tej grze liczy się czas, w jakim złapiesz piłki.',
+                      'Na ekranie będą pojawiać się czerwone piłki. Kiedy go zobaczysz piłkę na nią jak najszybciej. '
+                      'W tej grze liczy się czas.',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                       textAlign: TextAlign.center,
                     )
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Liczba piłek: ',
+                          style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
+                        ),
+                        NumeberOfBalls(
+                          initialValue: selectedNumberOfBalls,
+                          onChanged: (value) {
+                            setState((){
+                              selectedNumberOfBalls = value;           
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Wielkość piłki: ',
+                          style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
+                        ),
+                        BallSize(
+                          initialValue: selectedBallSize,
+                          onChanged: (value) {
+                            setState((){
+                              selectedBallSize = value;           
+                            });
+                          },
+                        ),
+                      ],
                     ),
                     SizedBox(height: screenSize.height * 0.05),
                     Text(
@@ -72,7 +114,10 @@ class StartScreenCatchABall extends StatelessWidget {
                       style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
                     ),
                     SizedBox(height: screenSize.height * 0.04),
-                    WchackAMoleStartButton(),
+                    CatchABallButton(
+                      selectedNumeberOfBalls: selectedNumberOfBalls,
+                      selectedBallSize: selectedBallSize,
+                    ),
                   ],
                 ),
           ],
@@ -85,8 +130,11 @@ class StartScreenCatchABall extends StatelessWidget {
 
 /// Button to start the Whack-a-Mole game
 /// It navigates to the game screen and starts the game. 
-class WchackAMoleStartButton extends StatelessWidget {
-  const WchackAMoleStartButton({super.key});
+class CatchABallButton extends StatelessWidget {
+  final String selectedNumeberOfBalls;
+  final String selectedBallSize;
+
+  const CatchABallButton({super.key, required this.selectedNumeberOfBalls, required this.selectedBallSize});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +147,10 @@ class WchackAMoleStartButton extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CatchABallScreen()),
+            MaterialPageRoute(builder: (context) => CatchABallScreen(
+              numberOfBalls: selectedNumeberOfBalls,
+              ballSize: selectedBallSize,
+            )),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -110,6 +161,60 @@ class WchackAMoleStartButton extends StatelessWidget {
         ),
         child: Text('Zacznij grę', style: TextStyle(fontSize: fontSize, color: Color(0xFFE7EEFF)) ),
       ),
+    );
+  }
+}
+
+class NumeberOfBalls extends StatelessWidget {
+  final String initialValue;
+  final ValueChanged<String> onChanged;
+
+  const NumeberOfBalls({
+    super.key,
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: initialValue,
+      items: <String>['10', '15', '20'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        if (newValue != null) onChanged(newValue);
+      },
+    );
+  }
+}
+
+class BallSize extends StatelessWidget {
+  final String initialValue;
+  final ValueChanged<String> onChanged;
+
+  const BallSize({
+    super.key,
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: initialValue,
+      items: <String>['mała', 'średnia', 'duża'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        if (newValue != null) onChanged(newValue);
+      },
     );
   }
 }

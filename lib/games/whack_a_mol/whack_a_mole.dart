@@ -52,7 +52,7 @@ void initState() {
   } else if (widget.gameTime == '90 sekund') {
     gameDuration = 90;
   } else {
-    gameDuration = 30; // fallback
+    gameDuration = 30; 
   }
 
   timeLeft = gameDuration;
@@ -80,7 +80,6 @@ void initState() {
 
   /// Starts the game and initializing the mole visibility, score, and timers
   /// Called when the game starts or restarts
-  /// Game lasted for 30 seconds
   void starGame() {
     moleVisible = List.generate(rows * columns, (index) => false);
     bombVisible = List.generate(rows * columns, (index) => false);

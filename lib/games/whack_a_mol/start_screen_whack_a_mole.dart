@@ -42,6 +42,7 @@ class _StartScreenWhackAMoleState extends State<StartScreenWhackAMole> {
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
               BoxShadow(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.6),
                 spreadRadius: 5,
                 blurRadius: 3,
