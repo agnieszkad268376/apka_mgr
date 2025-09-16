@@ -46,7 +46,7 @@ void initState() {
 
   // konwersja czasu gry (string -> sekundy)
   if (widget.gameTime == '30 sekund') {
-    gameDuration = 30;
+    gameDuration = 10;
   } else if (widget.gameTime == '60 sekund') {
     gameDuration = 60;
   } else if (widget.gameTime == '90 sekund') {
@@ -65,7 +65,7 @@ void initState() {
   } else if (widget.moleSpeed == 'Szybki') {
     moleSpeed = 600;
   } else {
-    moleSpeed = 1;
+    moleSpeed = 1000;
   }
 }
 
@@ -114,25 +114,22 @@ void initState() {
         );
     });
 
+    // New bomb is shown every second
     bombTimer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       if (!gameRunning || !mounted) return;
           setState(() {
             final random = Random();
-            int index;
-
-    
+            int index;  
+          
         do {
           index = random.nextInt(rows * columns);
         } while (moleVisible[index] || bombVisible[index]);
-
       bombVisible[index] = true;
-
-    
-      Timer(const Duration(seconds: 1), () {
+      // After 1 seconds the bomb is hidden
+      Timer(const Duration(milliseconds: 1500), () {
         if (mounted) {
           setState(() {
             bombVisible[index] = false;
-            missedHits++;
           });
           }
         });
