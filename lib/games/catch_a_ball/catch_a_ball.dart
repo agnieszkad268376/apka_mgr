@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
 
 class CatchABallScreen extends StatefulWidget {
@@ -17,14 +18,13 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   late double _ballY;
   double finalBallSize = 0;
   int score = 0;
+  int preciseHits = 0;
+  int impreciseHits = 0;
   int ballNumber = 1;
   double ballMultiplier = 0;
   int totalBalls = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
+  void resetGameSettings() {
     if (widget.ballSize == 'mała') {
       ballMultiplier = 0.20;
     } else if (widget.ballSize == 'średnia') {
@@ -44,11 +44,24 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     } else {
       totalBalls = 10; 
     }
-    // Game will start after the first frame is rendered
-    // It prevents starting the MediaQuery before the size of a sreen is known
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    resetGameSettings();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _spawnBall();
+      startGame();
     });
+  }
+
+  void startGame() {
+    resetGameSettings();
+    score = 0;
+    preciseHits = 0;
+    impreciseHits = 0;
+    ballNumber = 1;
+    _spawnBall();
   }
 
   void _spawnBall() {
@@ -66,22 +79,39 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     setState(() {
       score += points;
       ballNumber += 1;
+      if (points == 3) {
+        preciseHits += 1;
+      } else {
+        impreciseHits += 1;
+      }
       if (ballNumber > totalBalls) {
-        // End the game after 10 balls
+        // End the game after chosen number of balls
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Koniec gry!'),
-            content: Text('Twój wynik to $score punktów.'),
+            content: Column(
+              children: [
+                Text('Twój wynik to $score punktów.'),
+                Text('Celne trafienia: $preciseHits'),
+                Text('Niedokładne tradienia: $impreciseHits'),
+                ],),         
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Go back to the previous screen
-                },
-                child: const Text('OK'),
-              ),
-            ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        startGame(); // Restart the game
+                      },
+                      child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),
+                    ),
+                    // Button to go back to the patient menu
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                      },
+                      child: Text('Wróć do menu', style: TextStyle(color: Color(0xFF98B6EC)),),
+                    ),
+                  ],
           ),
         );
       } else {

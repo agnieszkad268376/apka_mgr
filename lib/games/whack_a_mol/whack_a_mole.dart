@@ -46,7 +46,7 @@ void initState() {
 
   // konwersja czasu gry (string -> sekundy)
   if (widget.gameTime == '30 sekund') {
-    gameDuration = 10;
+    gameDuration = 30;
   } else if (widget.gameTime == '60 sekund') {
     gameDuration = 60;
   } else if (widget.gameTime == '90 sekund') {
@@ -177,7 +177,7 @@ void initState() {
                     // Button to go back to the patient menu
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PatientMenuScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                       },
                       child: Text('Wróć do menu', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),

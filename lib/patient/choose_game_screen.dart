@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 /// Patient view menu screen
 /// Paietnt can choose witch game he wants to play
 /// Patient can go to settings, check statistics or log out.
-class PatientMenuScreen extends StatelessWidget {
-  const PatientMenuScreen({super.key});
+class ChooseGameScreen extends StatelessWidget {
+  const ChooseGameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

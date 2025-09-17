@@ -105,7 +105,7 @@ class LoginButton extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PatientMenuScreen()),
+          MaterialPageRoute(builder: (context) => ChooseGameScreen()),
         );
       },
       style: ElevatedButton.styleFrom(
