@@ -91,6 +91,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
           builder: (context) => AlertDialog(
             title: const Text('Koniec gry!'),
             content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Twój wynik to $score punktów.'),
                 Text('Celne trafienia: $preciseHits'),
