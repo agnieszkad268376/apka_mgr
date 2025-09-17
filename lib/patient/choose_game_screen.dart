@@ -23,39 +23,7 @@ class ChooseGameScreen extends StatelessWidget {
         backgroundColor: Color(0xFF98B6EC),
         centerTitle: true,
         title: const Text('Menu Pacjenta'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF98B6EC)),
-              child: Text('Opcje????', style: TextStyle(color: Colors.white, fontSize: 24)),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings_outlined),
-              title: const Text('Ustawienia'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.bar_chart_outlined),
-              title: const Text('Dziennik postępów'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProgressJournal()),
-                );
-              },
-            ),
-            SizedBox(height: screenSize.height * 0.6),
-            FloatingActionButton(onPressed: (){}, child: const Icon(Icons.logout)),
-          ],
-        ),
+        elevation: 0,
       ),
       body: Center(
         child: Column(

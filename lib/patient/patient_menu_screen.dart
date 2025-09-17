@@ -1,6 +1,9 @@
 import 'package:apka_mgr/authorization/setting_screen.dart';
+import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/patient/excersice_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
+import 'package:apka_mgr/patient/statistics_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -140,9 +143,9 @@ with SingleTickerProviderStateMixin {
                 fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( // obramówka
-                    color: Color(0xFFCEC3BA),  // kolor obramówki
-                    width: 2,             // grubość obramówki
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA),  
+                    width: 2,             
                   ),
                 ),
               ),
@@ -161,14 +164,17 @@ with SingleTickerProviderStateMixin {
                 fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( // obramówka
-                    color: Color(0xFFCEC3BA),  // kolor obramówki
-                    width: 2,             // grubość obramówki
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA),  
+                    width: 2,             
                   ),
                 ),
               ),
               onPressed: () {
-                // Navigate to game selection screen
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ExcersiceScreen()),
+                    );
               },
               child: const Text('Ćwiczenia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
             ),
@@ -179,14 +185,17 @@ with SingleTickerProviderStateMixin {
                 fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( // obramówka
-                    color: Color(0xFFCEC3BA),  // kolor obramówki
-                    width: 2,             // grubość obramówki
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA), 
+                    width: 2,             
                   ),
                 ),
               ),
               onPressed: () {
-                // Navigate to game selection screen
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AchivmentsScreen()),
+                    );
               },
               child: const Text('Osiągnięcia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
             ),
@@ -197,14 +206,17 @@ with SingleTickerProviderStateMixin {
                 fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( // obramówka
-                    color: Color(0xFFCEC3BA),  // kolor obramówki
-                    width: 2,             // grubość obramówki
-                  ),
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA),  
+                    width: 2,           
+                  ),  
                 ),
               ),
               onPressed: () {
-                
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const StatisticsScreen()),
+                    );
               },
               child: const Text('Statystyki', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
             ),
