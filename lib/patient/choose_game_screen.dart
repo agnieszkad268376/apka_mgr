@@ -1,8 +1,6 @@
-import 'package:apka_mgr/authorization/setting_screen.dart';
+import 'package:apka_mgr/games/build_a_word/start_screen_build_a_word.dart';
 import 'package:apka_mgr/games/catch_a_ball/start_Screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
-import 'package:apka_mgr/patient/patient_menu_screen.dart';
-import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:flutter/material.dart';
 
 /// Patient view menu screen
@@ -49,7 +47,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Image.asset('images/whack_a_mole.png'),
+                  icon: Icon(Icons.circle, size: screenSize.width*0.3,),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -66,11 +64,11 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Image.asset('images/whack_a_mole.png'),
+                  icon: Icon(Icons.abc, size: screenSize.width*0.3,),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const PatientMenuScreen()),
+                      MaterialPageRoute(builder: (context) => const StartScreenBuildAWord()),
                     );
                   },
                 ),
