@@ -1,6 +1,7 @@
 import 'package:apka_mgr/authorization/setting_screen.dart';
 import 'package:apka_mgr/games/catch_a_ball/start_Screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
+import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:flutter/material.dart';
 
@@ -101,7 +102,7 @@ class ChooseGameScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StartScreenWhackAMole()),
+                      MaterialPageRoute(builder: (context) => const PatientMenuScreen()),
                     );
                   },
                 ),

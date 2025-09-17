@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:apka_mgr/patient/patient_menu_screen.dart';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 class CatchABallScreen extends StatefulWidget {
