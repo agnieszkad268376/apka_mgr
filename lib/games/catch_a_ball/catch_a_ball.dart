@@ -23,6 +23,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   int ballNumber = 1;
   double ballMultiplier = 0;
   int totalBalls = 0;
+  bool _hasStarted = false;
 
   void resetGameSettings() {
     if (widget.ballSize == 'mała') {
@@ -53,7 +54,16 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startGame();
     });
-  }
+  } 
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+      if (!_hasStarted) {
+        _hasStarted = true;
+        startGame();
+        }
+    }
 
   void startGame() {
     resetGameSettings();

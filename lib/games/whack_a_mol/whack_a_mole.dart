@@ -74,13 +74,13 @@ void initState() {
     super.didChangeDependencies();
       if (!_hasStarted) {
         _hasStarted = true;
-        starGame();
+        startGame();
         }
     }
 
   /// Starts the game and initializing the mole visibility, score, and timers
   /// Called when the game starts or restarts
-  void starGame() {
+  void startGame() {
     moleVisible = List.generate(rows * columns, (index) => false);
     bombVisible = List.generate(rows * columns, (index) => false);
     score = 0;
@@ -170,7 +170,7 @@ void initState() {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        starGame(); // Restart the game
+                        startGame(); // Restart the game
                       },
                       child: Text('Zagraj ponownie', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),
