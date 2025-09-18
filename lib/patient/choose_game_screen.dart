@@ -1,5 +1,5 @@
 import 'package:apka_mgr/games/build_a_word/start_screen_build_a_word.dart';
-import 'package:apka_mgr/games/catch_a_ball/start_Screen_catch_a_ball.dart';
+import 'package:apka_mgr/games/catch_a_ball/start_screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
 import 'package:flutter/material.dart';
 

@@ -46,7 +46,7 @@ with SingleTickerProviderStateMixin {
     children: [
       Shimmer.fromColors(
         baseColor: const Color(0xFFFF9F97), // kolor bazowy
-        highlightColor: const Color(0xFFFFCFCB), // kolor „fali”
+        highlightColor: const Color.fromARGB(255, 247, 108, 96), // kolor „fali”
         child: Container(
           width: screenSize.width * 0.4,
           height: screenSize.width * 0.4,

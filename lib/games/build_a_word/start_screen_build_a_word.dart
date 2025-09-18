@@ -1,7 +1,5 @@
 import 'package:apka_mgr/games/build_a_word/build_a_word.dart';
 import 'package:flutter/material.dart';
-import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
-
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
 class StartScreenBuildAWord extends StatefulWidget {
@@ -15,6 +13,8 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
   String selectedWordLenght = '5-7';
   String selectedNumberOfWords = '5';
 
+
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -23,9 +23,9 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
     double fontSize3 = screenSize.width * 0.05;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFC1DDFA),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFC1DDFA),
+        backgroundColor: const Color(0xFFF5F5F5),
         centerTitle: true,
         elevation: 0,
       ),
@@ -111,7 +111,10 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                 style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D)),
               ),
               SizedBox(height: screenSize.height * 0.05),
-              BuildAWordStartButton(),
+              BuildAWordStartButton(
+                selectedWordLenght: selectedWordLenght,
+                selectedNumberOfWords: selectedNumberOfWords,
+              ),
             ],
           ),
         ),
@@ -120,10 +123,15 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
   }
 }
 
-/// Button to start the Whack-a-Mole game
+/// Button to start the build a word game
 class BuildAWordStartButton extends StatelessWidget {
+  final String selectedWordLenght;
+  final String selectedNumberOfWords;
+
   const BuildAWordStartButton({
     super.key,
+    required this.selectedWordLenght,
+    required this.selectedNumberOfWords,
   });
 
   @override
@@ -138,7 +146,10 @@ class BuildAWordStartButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BuildAWordSreen(),
+              builder: (context) => BuildAWordScreen(
+                WordLength: selectedWordLenght,
+                NumberOfWords: selectedNumberOfWords,
+              ),
             ),
           );
         },
