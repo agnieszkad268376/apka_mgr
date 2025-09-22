@@ -1,5 +1,4 @@
 // import 'package:apka_mgr/opto/opto_menu_screen.dart';
-import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:apka_mgr/authorization/signup_screen.dart';

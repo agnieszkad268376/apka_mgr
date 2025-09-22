@@ -147,8 +147,8 @@ class BuildAWordStartButton extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => BuildAWordScreen(
-                WordLength: selectedWordLenght,
-                NumberOfWords: selectedNumberOfWords,
+                wordLength: selectedWordLenght,
+                numberOfWords: selectedNumberOfWords,
               ),
             ),
           );

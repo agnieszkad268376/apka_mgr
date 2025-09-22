@@ -44,7 +44,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
 void initState() {
   super.initState();
 
-  // konwersja czasu gry (string -> sekundy)
+  // change game time (string -> seconds)
   if (widget.gameTime == '30 sekund') {
     gameDuration = 30;
   } else if (widget.gameTime == '60 sekund') {
@@ -57,7 +57,7 @@ void initState() {
 
   timeLeft = gameDuration;
 
-  // konwersja szybkości krecika (string -> ms)
+  // change mole speed (string -> milliseconds)
   if (widget.moleSpeed == 'Powolny') {
     moleSpeed = 1500;
   } else if (widget.moleSpeed == 'Średni') {

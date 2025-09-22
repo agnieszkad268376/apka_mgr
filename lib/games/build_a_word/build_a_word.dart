@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class BuildAWordScreen extends StatefulWidget {
-  final String WordLength;
-  final String NumberOfWords;
-  const BuildAWordScreen({super.key, required this.WordLength, required this.NumberOfWords});
+  final String wordLength;
+  final String numberOfWords;
+  const BuildAWordScreen({super.key, required this.wordLength, required this.numberOfWords});
 
   @override
   State<BuildAWordScreen> createState() => _BuildAWordScreenState();
@@ -69,16 +69,15 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
 
     String randomWord (){
       List<String> wordList;
-      if (widget.WordLength == '3-4') {
+      if (widget.wordLength == '3-4') {
         wordList = easyWords;
-      } else if (widget.WordLength == '5-7') {
+      } else if (widget.wordLength == '5-7') {
         wordList = midleWords;
       } else {
         wordList = hardWords;
       }
       wordList.shuffle(random);
       return wordList.first;
-      print(widget.WordLength);
     }
 
     List<Widget> buildGridItems(){
@@ -114,8 +113,11 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       body: Column(
         children: [
           SizedBox(height: topPadding,
-          child: Text(randomWord(), style: TextStyle(color: Color(0xFF000000))),), 
-
+          child: Center( 
+            child: 
+            Text(randomWord(), style: TextStyle(color: Color.fromARGB(255, 51, 51, 51), fontSize: screenSize.width * 0.1),),
+          ),
+          ),
           SizedBox(
             height: gridHeight,
             width: screenSize.width,
