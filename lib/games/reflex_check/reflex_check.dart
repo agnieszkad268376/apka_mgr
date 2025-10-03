@@ -31,28 +31,15 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   void _scheduleNextColorChange() {
     if (!gameRunning || roundsLeft == 0) return;
 
-    int delay = random.nextInt(5) + 3;
-    colorChangeTimer = Timer(Duration(seconds: delay), () {
-      setState(() {
-        if (buttonColor == Colors.red) {
-          buttonColor = Colors.green;
-        } else {
-          buttonColor = Colors.red;
-          roundsLeft--;
-
-          if (roundsLeft == 0) {
-            gameRunning = false;
-            _showGameOverDialog();
-            return;
-          }
-        }
-      });
-
-      if (gameRunning) {
-        _scheduleNextColorChange();
-      }
+  // czerwony świeci 2–5 sekundy
+  int delay = random.nextInt(4) + 2; 
+  colorChangeTimer = Timer(Duration(seconds: delay), () {
+    setState(() {
+      buttonColor = Colors.green;
     });
+  });
   }
+
 
   void _showGameOverDialog() {
     showDialog(
@@ -83,8 +70,8 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
-    double fontSize2 = screenSize.width * 0.08;
-    double fontSize3 = screenSize.width * 0.05;
+    double fontSize2 = screenSize.width * 0.12;
+    double fontSize3 = screenSize.width * 0.08;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFCF4EC),
@@ -98,13 +85,13 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Sprawdź refleks',
+              'Kliknij kolor',
               style: TextStyle(
-                fontSize: fontSize1,
+                fontSize: fontSize2,
                 color: const Color(0xFF3D3D3D),
                 fontWeight: FontWeight.bold,
               ),
-            ),
+          ),
             SizedBox(height: screenSize.height * 0.02),
             Text(
               gameRunning
@@ -138,23 +125,24 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
               onTap: () {
                 if (gameRunning && buttonColor == Colors.green) {
                   setState(() {
-                    score++;
-                    buttonColor = Colors.red;
-                    roundsLeft--;
-
-                    if (roundsLeft == 0) {
-                      gameRunning = false;
-                      _showGameOverDialog();
-                      return;
-                    }
-
-                    _scheduleNextColorChange();
+                  score++;
+                  buttonColor = Colors.red;
+                  roundsLeft--;
                   });
+
+                  colorChangeTimer?.cancel();
+
+                if (roundsLeft == 0) {
+                  gameRunning = false;
+                  _showGameOverDialog();
+                  return;
+                }
+                _scheduleNextColorChange();
                 }
               },
               child: Container(
-                width: screenSize.width * 0.4,
-                height: screenSize.width * 0.4,
+                width: screenSize.width * 0.8,
+                height: screenSize.width * 0.8,
                 decoration: BoxDecoration(
                   color: buttonColor,
                   shape: BoxShape.circle,

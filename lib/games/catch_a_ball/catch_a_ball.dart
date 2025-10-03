@@ -23,6 +23,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   double ballMultiplier = 0;
   int totalBalls = 0;
   bool _hasStarted = false;
+  List<Widget> flash = [];
 
   void resetGameSettings() {
     if (widget.ballSize == 'mała') {
