@@ -1,19 +1,18 @@
-import 'package:apka_mgr/games/build_a_word/build_a_word.dart';
+import 'package:apka_mgr/games/reflex_check/reflex_check.dart';
 import 'package:flutter/material.dart';
+
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
-class StartScreenBuildAWord extends StatefulWidget {
-  const StartScreenBuildAWord({super.key});
+class StartScreenReflexCheck extends StatefulWidget {
+  const StartScreenReflexCheck({super.key});
 
   @override
-  State<StartScreenBuildAWord> createState() => _StartScreenBuildAWord();
+  State<StartScreenReflexCheck> createState() => _StartScreenReflexCheckState();
 }
 
-class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
-  String selectedWordLenght = '5-7';
-  String selectedNumberOfWords = '5';
-
-
+class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
+  String selectedTime = '60 sekund';
+  String selectedSpeed = 'Średni';
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,9 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
     double fontSize3 = screenSize.width * 0.05;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFC1DDFA),
+      backgroundColor: const Color(0xFFFCF4EC),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFC1DDFA),
+        backgroundColor: const Color(0xFFFCF4EC),
         centerTitle: true,
         elevation: 0,
       ),
@@ -55,7 +54,7 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Zbuduj słowo',
+                'Sprawdź refleks',
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: const Color(0xFF3D3D3D),
@@ -66,8 +65,7 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Na górze ekranu pojawi się słowo. '
-                  'Pod nim będzie klawiatura z losowo ułożonymi literami alfabetu. Klikaj pokolei na kolejne litery słowa.\n',
+                  'Na ekranie pojawi się czerwony przycisk. W losowym momencie zmieni on kolor na zielony - jak najszybciej go naciśnij!\n',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),
@@ -76,14 +74,14 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ilość wyrazów: ',
+                  Text('Czas gry: ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
-                  NumbersOfWordsSelection(
-                    initialValue: selectedNumberOfWords,
+                  GameTimeSelection(
+                    initialValue: selectedTime,
                     onChanged: (value) {
                       setState(() {
-                        selectedNumberOfWords = value;
+                        selectedTime = value;
                       });
                     },
                   ),
@@ -92,14 +90,14 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ilość liter w słowie: ',
+                  Text('Szybkość krecika: ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
-                  WordsLenghtSelection(
-                    initialValue: selectedWordLenght,
+                  MoleSpeedSelection(
+                    initialValue: selectedSpeed,
                     onChanged: (value) {
                       setState(() {
-                        selectedWordLenght = value;
+                        selectedSpeed = value;
                       });
                     },
                   ),
@@ -111,9 +109,9 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                 style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D)),
               ),
               SizedBox(height: screenSize.height * 0.05),
-              BuildAWordStartButton(
-                selectedWordLenght: selectedWordLenght,
-                selectedNumberOfWords: selectedNumberOfWords,
+              ReflexCheckStartButton(
+                selectedTime: selectedTime,
+                selectedSpeed: selectedSpeed,
               ),
             ],
           ),
@@ -123,15 +121,15 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
   }
 }
 
-/// Button to start the build a word game
-class BuildAWordStartButton extends StatelessWidget {
-  final String selectedWordLenght;
-  final String selectedNumberOfWords;
+/// Button to start the Whack-a-Mole game
+class ReflexCheckStartButton extends StatelessWidget {
+  final String selectedTime;
+  final String selectedSpeed;
 
-  const BuildAWordStartButton({
+  const ReflexCheckStartButton({
     super.key,
-    required this.selectedWordLenght,
-    required this.selectedNumberOfWords,
+    required this.selectedTime,
+    required this.selectedSpeed,
   });
 
   @override
@@ -146,9 +144,7 @@ class BuildAWordStartButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BuildAWordScreen(
-                wordLength: selectedWordLenght,
-                numberOfWords: selectedNumberOfWords,
+              builder: (context) => ReflexCheckScreen(
               ),
             ),
           );
@@ -169,11 +165,11 @@ class BuildAWordStartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
-class NumbersOfWordsSelection extends StatelessWidget {
+class GameTimeSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const NumbersOfWordsSelection({
+  const GameTimeSelection({
     super.key,
     required this.initialValue,
     required this.onChanged,
@@ -183,7 +179,7 @@ class NumbersOfWordsSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['3', '5', '7'].map((String value) {
+      items: <String>['30 sekund', '60 sekund', '90 sekund'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
@@ -197,11 +193,11 @@ class NumbersOfWordsSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
-class WordsLenghtSelection extends StatelessWidget {
+class MoleSpeedSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const WordsLenghtSelection({
+  const MoleSpeedSelection({
     super.key,
     required this.initialValue,
     required this.onChanged,
@@ -211,7 +207,7 @@ class WordsLenghtSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['3-4', '5-7', '8-9'].map((String value) {
+      items: <String>['Powolny', 'Średni', 'Szybki'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
