@@ -15,18 +15,23 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
   final int rows = 8;
   final int columns = 4;
   final random = Random();
+  int score = 0;
+  int currentWordIndex = 0;
+  int currentLetterIndex = 0;
+
+  late String currentWord;
+
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
     // Size of the grid and padding
-
     final double topPadding = screenSize.height * 0.3;
     final double bottomPadding = screenSize.height * 0.05;
     final double gridHeight = screenSize.height * 0.65; // zostaje 75% na siatkę
 
-    // Odstępy
+    // padding between tiles
     const double mainAxisSpacing = 8.0;
     const double crossAxisSpacing = 8.0;
 
@@ -35,7 +40,6 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     final double tileWidth =
         (screenSize.width - (columns - 1) * crossAxisSpacing) / columns;
     final double childAspectRatio = tileWidth / tileHeight;
-
 
     List<String> letters = [
       'A', 'Ą', 'B', 'C', 'Ć', 'D', 'E', 'Ę', 'F', 'G', 'H',
@@ -48,7 +52,8 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       'RYBA', 'STÓŁ', 'SEN', 'MYSZ', 'OKNO', 'KĄT', 'GRA',
       'SÓL', 'ŁZA', 'WODA', 'ŻAL', 'TOR', 'RÓG', 'ŁOŚ',
       'KŁOS', 'MÓZG', 'PŁOT', 'ĆMA', 'ĆWIK', 'DĄB', 'BÓG',
-      'MUR', 'KREW', 'ŁÓDŹ', 'PĄK', 'SOK', 'MGŁA', 'PAS'];
+      'MUR', 'KREW', 'ŁÓDŹ', 'PĄK', 'SOK', 'MGŁA', 'PAS'
+    ];
 
     List<String> midleWords = [
       'KWIAT', 'DRZEWO', 'ZEGAR', 'MOTYL', 'KSIĄŻKA', 'LAMPA', 'POCIĄG',
@@ -58,6 +63,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       'LATO', 'JESIEŃ', 'ZIMA', 'MOSTEK', 'TELEFON', 'OKRĘT', 'STATEK',
       'LIŚCIE', 'MIESIĄC', 'TYDZIEŃ', 'DZIEŃ', 'BRZEG', 'PLAŻA', 'FALKA'
     ];
+
     List<String> hardWords = [
       'SAMOCHÓD', 'MARZYCIEL', 'TELEWIZOR', 'KOMPUTER', 'PRZYRODA'
       'MOTOCYKL', 'PIESZYCH', 'PODRÓŻNIK', 'RODZINNY', 'ZALEŻNOŚĆ',
@@ -80,6 +86,51 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       return wordList.first;
     }
 
+    @override
+    void initState() {
+      super.initState();
+      currentWord = randomWord();
+    }
+    
+    void nextWord(){
+      setState(() {
+        if (currentWordIndex <= (int.parse(widget.numberOfWords))) {
+          currentWordIndex++;
+          currentLetterIndex = 0;
+        } else {
+          showDialog(context: context,
+           builder: (_) => AlertDialog(
+            title: const Text('Koniec gry!'),
+            content: Text('Twój wynik to: $score punktów'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text('OK'))
+            ],
+           ));
+        }
+      });
+    }
+
+    void onLetterTap(String letter){
+      if (currentLetterIndex < currentWord.length && letter == currentWord[currentLetterIndex]) {
+        setState(() {
+          currentLetterIndex++;
+          score += 10; // Increase score for correct letter
+        });
+        if (currentLetterIndex == currentWord.length) {
+          nextWord(); // Move to the next word if the current one is completed
+        }
+      } else {
+        setState(() {
+          score -= 5; // Decrease score for incorrect letter
+        });
+      }
+    }
+
     List<Widget> buildGridItems(){
       List <Widget> items = [];
       List<String> randomLetters = List.from(letters)..shuffle(random);
@@ -92,7 +143,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
         items.add(
           GestureDetector(
             onTap: () {
-              // Handle tap on letter tile
+              onLetterTap(randomLetters[i]);
             },
             child: 
           Container(
@@ -115,7 +166,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
           SizedBox(height: topPadding,
           child: Center( 
             child: 
-            Text(randomWord(), style: TextStyle(color: Color.fromARGB(255, 51, 51, 51), fontSize: screenSize.width * 0.1),),
+            Text(currentWord, style: TextStyle(color: Color.fromARGB(255, 51, 51, 51), fontSize: screenSize.width * 0.1),),
           ),
           ),
           SizedBox(
