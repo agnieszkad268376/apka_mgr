@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class CatchABallScreen extends StatefulWidget {
   final String numberOfBalls;
@@ -11,10 +12,12 @@ class CatchABallScreen extends StatefulWidget {
   State<CatchABallScreen> createState() => CatchABallScreenState();
 }
 
+// Poprawić że jak się klika po za popup window to nie gneruje nowej piłki
+
 class CatchABallScreenState extends State<CatchABallScreen> {
   final Random _random = Random();
-  late double _ballX;
-  late double _ballY;
+  late double _ballX = 0;
+  late double _ballY = 0;
   double finalBallSize = 0;
   int score = 0;
   int preciseHits = 0;
@@ -23,7 +26,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   double ballMultiplier = 0;
   int totalBalls = 0;
   bool _hasStarted = false;
-  List<Widget> flash = [];
+  List<Widget> flashes = [];
 
   void resetGameSettings() {
     if (widget.ballSize == 'mała') {
@@ -53,6 +56,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     resetGameSettings();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startGame();
+      _scheduleFlash();
     });
   } 
 
@@ -64,6 +68,38 @@ class CatchABallScreenState extends State<CatchABallScreen> {
         startGame();
         }
     }
+
+  void _scheduleFlash() {
+    final delay = Duration(milliseconds: 500 + _random.nextInt(2500)); // co 0.5–3 sekundy
+    Timer(delay, () {
+      if (!mounted) return;
+      _addFlash();       
+      _scheduleFlash(); 
+    });
+  }
+
+  void _addFlash() {
+    final screenSize = MediaQuery.of(context).size;
+    final xFlash = _random.nextDouble() * (screenSize.width - 100);
+    final yFlash = _random.nextDouble() * (screenSize.height - 100); 
+
+    final flashWidget = Positioned(
+      left: xFlash,
+      top: yFlash,
+      child: const FlashWidget(),
+    );
+
+    setState(() {
+      flashes.add(flashWidget);
+    });
+
+    Timer(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
+      setState(() {
+        flashes.remove(flashWidget);
+      });
+    });
+  }
 
   void startGame() {
     resetGameSettings();
@@ -129,7 +165,6 @@ class CatchABallScreenState extends State<CatchABallScreen> {
         _spawnBall();
       }
     });
-    _spawnBall();
   }
 
   @override
@@ -141,6 +176,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
       ),
       body: Stack(
         children: [
+          ...flashes,
           //Ball placement
           Positioned(
             left: _ballX,
@@ -199,3 +235,49 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     );
   }
 }
+
+class FlashWidget extends StatefulWidget {
+  const FlashWidget({super.key});
+
+  @override
+  State<FlashWidget> createState() => _FlashWidgetState();
+}
+
+class _FlashWidgetState extends State<FlashWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..forward();
+
+    _opacity = Tween<double>(begin: 1, end: 0).animate(_controller);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xFF98B6EC),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+

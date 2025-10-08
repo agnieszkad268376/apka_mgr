@@ -31,7 +31,7 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   void _scheduleNextColorChange() {
     if (!gameRunning || roundsLeft == 0) return;
 
-  // czerwony świeci 2–5 sekundy
+
   int delay = random.nextInt(4) + 2; 
   colorChangeTimer = Timer(Duration(seconds: delay), () {
     setState(() {
