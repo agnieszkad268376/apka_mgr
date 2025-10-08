@@ -28,6 +28,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   bool _hasStarted = false;
   List<Widget> flashes = [];
 
+  /// Resets game settings based on user choices
+  /// Sets ball size and total number of balls
   void resetGameSettings() {
     if (widget.ballSize == 'mała') {
       ballMultiplier = 0.20;
@@ -50,6 +52,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     }
   }
 
+  /// Initializes the game and schedules the first flash
   @override
   void initState() {
     super.initState();
@@ -60,6 +63,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     });
   } 
 
+  /// Chcek if dependencies changed
+  /// start the game if it hasn't started yet
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -69,8 +74,10 @@ class CatchABallScreenState extends State<CatchABallScreen> {
         }
     }
 
+  /// Schedules the flashes to appear on random intervals
+  /// Works recursively all game 
   void _scheduleFlash() {
-    final delay = Duration(milliseconds: 500 + _random.nextInt(2500)); // co 0.5–3 sekundy
+    final delay = Duration(milliseconds: 500 + _random.nextInt(2500)); 
     Timer(delay, () {
       if (!mounted) return;
       _addFlash();       
@@ -78,6 +85,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     });
   }
 
+  /// Adds a flash at a random position and removes it
   void _addFlash() {
     final screenSize = MediaQuery.of(context).size;
     final xFlash = _random.nextDouble() * (screenSize.width - 100);
@@ -101,16 +109,19 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     });
   }
 
+  /// Starts or restarts the game 
+  /// Reset settings and initialize genereting ball
   void startGame() {
     resetGameSettings();
     score = 0;
     preciseHits = 0;
     impreciseHits = 0;
     ballNumber = 1;
-    _spawnBall();
+    _generateBall();
   }
 
-  void _spawnBall() {
+  /// Generates a new ball at a random position
+  void _generateBall() {
     final size = MediaQuery.of(context).size;
     finalBallSize = size.width * ballMultiplier;
     setState(() {
@@ -119,7 +130,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     });
   }
 
-  /// Increases the score when the ball is tapped and spawns a new ball
+  /// Increases the score when the ball is tapped and generate a new ball
   /// [points] - points to add to the score
   void _onBallTap(int points) {
     setState(() {
@@ -136,6 +147,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Koniec gry!'),
+            // Display game score and hits 
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -144,25 +156,26 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                 Text('Niedokładne tradienia: $impreciseHits'),
                 ],),         
             actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        startGame(); // Restart the game
-                      },
-                      child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),
-                    ),
-                    // Button to go back to the patient menu
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
-                      },
-                      child: Text('Wróć do menu', style: TextStyle(color: Color(0xFF98B6EC)),),
-                    ),
-                  ],
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  startGame();
+                },
+                child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                },
+                child: Text('Wróć do menu', style: TextStyle(color: Color(0xFF98B6EC)),),
+              ),
+            ],
           ),
         );
       } else {
-        _spawnBall();
+        _generateBall();
       }
     });
   }
@@ -196,7 +209,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     height: finalBallSize,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Color.fromARGB(80, 226, 142, 134), // półprzezroczyste
+                      color: Color.fromARGB(80, 226, 142, 134), 
                     ),
                   ),
                   ),
@@ -236,6 +249,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   }
 }
 
+/// A widget class for the flash effect
+/// Creates a circular shape that later fades out
 class FlashWidget extends StatefulWidget {
   const FlashWidget({super.key});
 
@@ -243,6 +258,7 @@ class FlashWidget extends StatefulWidget {
   State<FlashWidget> createState() => _FlashWidgetState();
 }
 
+/// State  for FlashWidget that manages the fade-out animation
 class _FlashWidgetState extends State<FlashWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
