@@ -62,7 +62,7 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: screenSize.height * 0.01),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
@@ -183,7 +183,7 @@ class NumbersOfWordsSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['3', '5', '7'].map((String value) {
+      items: <String>['2', '5', '7'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
