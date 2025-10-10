@@ -1,4 +1,5 @@
 import 'package:apka_mgr/games/reflex_check/reflex_check.dart';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 /// Start screen for the Whack-a-Mole game
@@ -27,6 +28,15 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
         backgroundColor: const Color(0xFFFCF4EC),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Container(

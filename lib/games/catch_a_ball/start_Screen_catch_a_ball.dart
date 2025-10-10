@@ -1,4 +1,5 @@
 import 'package:apka_mgr/games/catch_a_ball/catch_a_ball.dart';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 /// Start screen for the Whack-a-Mole game
@@ -30,6 +31,15 @@ class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
         backgroundColor: const Color(0xFFFFCFCB),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Container(

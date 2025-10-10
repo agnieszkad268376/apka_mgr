@@ -2,6 +2,7 @@ import 'package:apka_mgr/games/build_a_word/start_screen_build_a_word.dart';
 import 'package:apka_mgr/games/catch_a_ball/start_screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/reflex_check/stert_screen_reflex_check.dart';
 import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
+import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
 
 /// Patient view menu screen
@@ -18,11 +19,20 @@ class ChooseGameScreen extends StatelessWidget {
       backgroundColor: Color(0xFFFCF4EC),
       appBar: AppBar(
         toolbarHeight: screenSize.height * 0.1,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF98B6EC),
         centerTitle: true,
         title: const Text('Menu Pacjenta'),
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PatientMenuScreen()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(

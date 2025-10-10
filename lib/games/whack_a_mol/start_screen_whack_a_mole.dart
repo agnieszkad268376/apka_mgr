@@ -1,3 +1,4 @@
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
 
@@ -27,6 +28,15 @@ class _StartScreenWhackAMoleState extends State<StartScreenWhackAMole> {
         backgroundColor: const Color(0xFF71AE8A),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Container(

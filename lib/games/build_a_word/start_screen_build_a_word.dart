@@ -1,4 +1,5 @@
 import 'package:apka_mgr/games/build_a_word/build_a_word.dart';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
@@ -28,6 +29,15 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
         backgroundColor: const Color(0xFFC1DDFA),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Container(
@@ -183,7 +193,7 @@ class NumbersOfWordsSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['2', '5', '7'].map((String value) {
+      items: <String>['3', '5', '7'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
