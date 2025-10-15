@@ -20,6 +20,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
   int currentLetterIndex = 0;
   late String currentWord = '';
   List<String> actualGrid = [];
+  List<Color> letterColor = [];
 
   //List with letters from polish alphabet
   List<String> letters = [
@@ -75,10 +76,20 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     super.initState();
     currentWord = randomWord();
     generateActualGrid();
+    generateLetterColors();
   }
 
   void generateActualGrid(){
     actualGrid = List.from(letters)..shuffle(random);
+  }
+
+  void generateLetterColors(){
+    Color green = const Color(0xB30DFF00);
+    Color red = const Color(0xB3FF0000);
+    List<Color> colors = [green, red];
+    for (int i =0 ; i < 32; i++){
+      letterColor.add((colors..shuffle()).first);
+    }
   }
 
   void nextWord(){
@@ -88,6 +99,8 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
         currentLetterIndex = 0;
         currentWord = randomWord();
         generateActualGrid();
+        letterColor.clear();
+        generateLetterColors();
       } else {
         showDialog(
           context: context,
@@ -154,7 +167,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       TextStyle(
                         fontSize: screenSize.width * 0.08, 
                         fontWeight: FontWeight.bold, 
-                        color: (colors..shuffle()).first
+                        color: letterColor[i]
                       ),
                     )
               ),
