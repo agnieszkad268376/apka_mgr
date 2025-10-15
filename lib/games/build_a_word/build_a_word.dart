@@ -41,7 +41,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
   // Lists with words with 5 to 7 letters
   List<String> midleWords = [
     'KWIAT', 'DRZEWO', 'ZEGAR', 'MOTYL', 'KSIĄŻKA', 'LAMPA', 'POCIĄG',
-    'ŁAWKA', 'MARCHEW', 'SZKOŁA', 'MORZE', 'GÓRKA', 'PTAKI', 'KOBIETA'
+    'ŁAWKA', 'MARCHEW', 'SZKOŁA', 'MORZE', 'GÓRKA', 'PTAKI', 'KOBIETA',
     'JABŁKO', 'PIESZY', 'KOTLET', 'RÓŻOWY', 'SŁOŃCE', 'WIATR', 'WZROK',
     'CHMURA', 'ZAMEK', 'OGRÓD', 'PODRÓŻ', 'WIOSNA', 'LOTKA', 'TARKA',
     'LATO', 'JESIEŃ', 'ZIMA', 'MOSTEK', 'TELEFON', 'OKRĘT', 'STATEK',
@@ -138,13 +138,29 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     }
   }
 
+  Widget currenWordDisplay() {
+    List<Widget> letterWidgets = [];
+    for (int i = 0; i < currentWord.length; i++) {
+      letterWidgets.add(
+        Text(
+          currentWord[i],
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: i < currentLetterIndex ? Colors.green : Colors.black,
+          ),
+        ),
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: letterWidgets,
+    );
+  }
+
   List<Widget> buildGridItems(){
     final screenSize = MediaQuery.of(context).size;
     List <Widget> items = [];
-
-    Color green = const Color(0xB30DFF00);
-    Color red = const Color(0xB3FF0000);
-    List<Color> colors = [green, red];
 
     for(int i = 0; i < rows * columns; i++){
       items.add(
@@ -200,10 +216,10 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [
-          SizedBox(//height: topPadding,
+          SizedBox(height: topPadding,
           child: Center( 
             child: 
-            Text(currentWord, style: TextStyle(color: Color.fromARGB(255, 51, 51, 51), fontSize: screenSize.width * 0.1),),
+            currenWordDisplay(),
           ),
           ),
           SizedBox(
@@ -219,11 +235,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
               children: buildGridItems(),
             ),
           ),
-          //SizedBox(height: bottomPadding), 
-          Text('Wynik: $score', style: TextStyle(color: Color.fromARGB(255, 47, 47, 47), fontSize: screenSize.width * 0.06),),
-          Text('Słowo ${currentWordIndex}/${widget.numberOfWords}', style: TextStyle(color: Color.fromARGB(255, 47, 47, 47), fontSize: screenSize.width * 0.06),),
-          Text('$currentLetterIndex/${currentWord.length} liter', style: TextStyle(color: Color.fromARGB(255, 47, 47, 47), fontSize: screenSize.width * 0.06),),
-          Text('$currentWord'),
+          SizedBox(height: bottomPadding),
         ],
       ),
     );
