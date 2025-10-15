@@ -35,7 +35,7 @@ class SignupScreen extends StatelessWidget {
               width: 300,
               child: ElevatedButton(
               onPressed: () {
-                print('Login Button Pressed');
+                // TO DO - register user
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDFB4B0),
@@ -169,7 +169,7 @@ class RoleDropDownMenu extends StatelessWidget {
           DropdownMenuItem(value: 'user', child: Text('Pacjent')),
         ],
         onChanged: (value) {
-          print('Selected role: $value');
+          //print('Selected role: $value');
         },
       ),
     );

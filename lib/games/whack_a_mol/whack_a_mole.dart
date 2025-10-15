@@ -150,9 +150,10 @@ void initState() {
             moleTimer.cancel();
             gameTimer.cancel();
             moleVisible = List.generate(rows * columns, (index) => false);
-
+            
             // Show the dialog with the score 
             Future.delayed(Duration.zero, () {
+              if (!mounted) return;
               showDialog(
                 context: context, 
                 barrierDismissible: false,
