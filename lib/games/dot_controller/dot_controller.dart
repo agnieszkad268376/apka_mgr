@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 class DotConrollerScreen extends StatefulWidget {
@@ -171,13 +172,18 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                   setState(() {
-                    gameDuration = int.tryParse(widget.selectedTime) ?? 10;
-                    choosenDots.clear();
                   });
                 },
                 child: const Text('OK'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // TO DO
+                  // restart game
+                },
+                child: const Text('Zagraj ponownie'),
               ),
             ],
           ),
