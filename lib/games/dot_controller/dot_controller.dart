@@ -24,6 +24,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   late List<Offset> positions;
   late List<Offset> speeds;
   late List<int> controlledDots; 
+  List<int> choosenDots = [];
 
   int gameDuration = 10;
   late Timer gameTimer;
@@ -32,6 +33,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   Timer? _timer;
   bool initialized = false;
   bool isFlying = false;
+  bool endGame = false;
 
   @override
   void initState() {
@@ -83,9 +85,10 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   void _startFlying(Size size, double topBoundary, double bottomBoundary) {
     if (isFlying) return;
     isFlying = true;
+    endGame = false;
+    choosenDots.clear();
 
     final double finalDotSize = size.width * dotSize;
-
     final double xMin = 0;
     final double xMax = size.width - finalDotSize; 
     final double yMin = topBoundary;
@@ -117,29 +120,14 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       setState(() {
         gameDuration--;
         if (gameDuration <= 0) {
-          isFlying = false;
           _stopFlying();
+          isFlying = false;
           gameTimer.cancel();
           
-          Future.delayed(Duration.zero, () {
-            if (mounted) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Time\'s up!'),
-                  content: const Text('The flying time is over.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
-            }
+          setState(() {
+            endGame = true;
           });
+          
         } 
       });
     });
@@ -148,6 +136,53 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   void _stopFlying() {
     _timer?.cancel();
     isFlying = false;
+  }
+
+  void onDotTapped(int index) {
+    if (!endGame) return;
+
+    setState(() {
+      if (choosenDots.contains(index)) {
+        choosenDots.remove(index);
+      } else {
+        choosenDots.add(index);
+      } 
+    });
+
+    if (choosenDots.length == controlledDots.length) {
+      gameResult();
+    }
+  }
+
+  void gameResult(){
+    endGame = false;
+
+    final correctDots = Set.from(choosenDots).difference(Set.from(controlledDots)).isEmpty &&
+      Set.from(controlledDots).difference(Set.from(choosenDots)).isEmpty;
+      
+      Future.delayed(const Duration(milliseconds: 500), () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(correctDots ? 'Gratulacje!' : 'Spróbuj ponownie!'),
+            content: Text(correctDots
+                ? 'Poprawnie wybrałeś wszystkie kontrolowane kropki.'
+                : 'Niepoprawny wybór. Spróbuj ponownie.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    gameDuration = int.tryParse(widget.selectedTime) ?? 10;
+                    choosenDots.clear();
+                  });
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
   }
 
   @override
@@ -162,7 +197,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     final padding = MediaQuery.of(context).padding;
 
     final double topPadding = padding.top + 10;
-    final double bottomPadding = padding.bottom + 100;
+    final double bottomPadding = padding.bottom + 120;
 
     final double finalDotSize = screenSize.width * dotSize;
     final double fontSize = screenSize.width * 0.04;
@@ -180,26 +215,43 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                 Positioned(
                   left: positions[i].dx,
                   top: positions[i].dy,
-                  child: Container(
+                  child: 
+                  GestureDetector(
+                    onTap: () => onDotTapped(i),
+                    child:Container(
                     width: finalDotSize,
                     height: finalDotSize,
                     decoration: BoxDecoration(
                       color: isFlying
                           ? Colors.green 
-                          : (controlledDots.contains(i)
-                              ? Colors.red 
-                              : Colors.grey), 
+                          : endGame && choosenDots.contains(i)
+                            ? Colors.blueAccent
+                            : (endGame
+                              ? Colors.grey
+                              : (controlledDots.contains(i)
+                                  ? Colors.green 
+                                  : Colors.red)),
                       shape: BoxShape.circle,
                     ),
                   ),
-                ),
+                )
+              ),
               Positioned(
-                bottom: 50,
+                bottom: screenSize.height * 0.03,
                 left: 0,
                 right: 0,
-                child: Row(
+                child: 
+                Column(
+                  children: [
+                    Text(
+                      'Pozostały czas: $gameDuration sekund',
+                      style: TextStyle(fontSize: fontSize, color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    
                     SizedBox(
                       width: screenSize.width * 0.25,
                       child:
@@ -227,6 +279,9 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                     
                   ],
                 ),
+                  ]),
+
+                
               ),
             ],
           ),
