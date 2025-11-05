@@ -1,21 +1,20 @@
-import 'package:apka_mgr/games/airplane_controller/airplane_controller.dart';
-import 'package:apka_mgr/games/build_a_word/build_a_word.dart';
+import 'package:apka_mgr/games/dot_controller/dot_controller.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
+
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
-class StartScreenAirplaneController extends StatefulWidget {
-  const StartScreenAirplaneController({super.key});
+class StartScreenDotController extends StatefulWidget {
+  const StartScreenDotController({super.key});
 
   @override
-  State<StartScreenAirplaneController> createState() => _StartScreenBuildAWord();
+  State<StartScreenDotController> createState() => _StartScreenDotControllerState();
 }
 
-class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
-  String selectedWordLenght = '5-7';
-  String selectedNumberOfWords = '5';
-
-
+class _StartScreenDotControllerState extends State<StartScreenDotController> {
+  String selectedTime = '60 sekund';
+  String selectedNumberOfControlledDots = '2';
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +24,9 @@ class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
     double fontSize3 = screenSize.width * 0.05;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFC1DDFA),
+      backgroundColor: const Color(0xFF5D5D5D),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFC1DDFA),
+        backgroundColor: const Color(0xFF5D5D5D),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
@@ -66,18 +65,21 @@ class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Kontrola samolotów',
+                'Śledź kropkę',
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: const Color(0xFF3D3D3D),
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.01),
+              SizedBox(height: screenSize.height * 0.02),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Samoloty będą latać trzeba jeden śledzić',
+                  'Na ekranie zobaczysz 10 kropek, kilka z nich będzie czerwonych, zapamiętaj które.  '
+                  'Po naciśnięciu start wszytskie kropi będą zielone i zaczną się poruszać.'
+                  'Do końca gry musisz śledzić kropki które były czerwone na początku i na końcu wskazać które to były. '
+                  'Gra trwa minute.',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),
@@ -86,14 +88,14 @@ class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ustawienia 1: ',
+                  Text('Czas gry: ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
-                  NumbersOfWordsSelection(
-                    initialValue: selectedNumberOfWords,
+                  GameTimeSelection(
+                    initialValue: selectedTime,
                     onChanged: (value) {
                       setState(() {
-                        selectedNumberOfWords = value;
+                        selectedTime = value;
                       });
                     },
                   ),
@@ -102,28 +104,25 @@ class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ustawienia 2: ',
-                      style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
+                  Text('Kontrolowane kropki: ',
+                    style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
-                  WordsLenghtSelection(
-                    initialValue: selectedWordLenght,
+                  NumberOfControlledDots(
+                    initialValue: selectedNumberOfControlledDots,
                     onChanged: (value) {
-                      setState(() {
-                        selectedWordLenght = value;
-                      });
-                    },
-                  ),
+                    setState(() {
+                      selectedNumberOfControlledDots = value;
+                    });
+                  },
+                 ),
                 ],
               ),
+
+              
               SizedBox(height: screenSize.height * 0.05),
-              Text(
-                'Powodzenia!',
-                style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D)),
-              ),
-              SizedBox(height: screenSize.height * 0.05),
-              BuildAWordStartButton(
-                selectedWordLenght: selectedWordLenght,
-                selectedNumberOfWords: selectedNumberOfWords,
+              DotControllerScreenButton(
+                selectedTime: selectedTime,
+                selectedNumberOfControlledDots: selectedNumberOfControlledDots,
               ),
             ],
           ),
@@ -133,15 +132,15 @@ class _StartScreenBuildAWord extends State<StartScreenAirplaneController> {
   }
 }
 
-/// Button to start the build a word game
-class BuildAWordStartButton extends StatelessWidget {
-  final String selectedWordLenght;
-  final String selectedNumberOfWords;
+/// Button to start the Whack-a-Mole game
+class DotControllerScreenButton extends StatelessWidget {
+  final String selectedTime;
+  final String selectedNumberOfControlledDots;
 
-  const BuildAWordStartButton({
+  const DotControllerScreenButton({
     super.key,
-    required this.selectedWordLenght,
-    required this.selectedNumberOfWords,
+    required this.selectedTime,
+    required this.selectedNumberOfControlledDots,
   });
 
   @override
@@ -156,9 +155,9 @@ class BuildAWordStartButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AirplaneControllerScreen(
-                wordLength: selectedWordLenght,
-                numberOfWords: selectedNumberOfWords,
+              builder: (context) => DotConrollerScreen(
+                selectedTime: selectedTime,
+                selectedNumberOfControlledDots: selectedNumberOfControlledDots,
               ),
             ),
           );
@@ -179,11 +178,11 @@ class BuildAWordStartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
-class NumbersOfWordsSelection extends StatelessWidget {
+class GameTimeSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const NumbersOfWordsSelection({
+  const GameTimeSelection({
     super.key,
     required this.initialValue,
     required this.onChanged,
@@ -193,7 +192,7 @@ class NumbersOfWordsSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['3', '5', '7'].map((String value) {
+      items: <String>['30 sekund', '60 sekund', '90 sekund'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
@@ -207,11 +206,11 @@ class NumbersOfWordsSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
-class WordsLenghtSelection extends StatelessWidget {
+class NumberOfControlledDots extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const WordsLenghtSelection({
+  const NumberOfControlledDots({
     super.key,
     required this.initialValue,
     required this.onChanged,
@@ -221,7 +220,7 @@ class WordsLenghtSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['3-4', '5-7', '8-9'].map((String value) {
+      items: <String>['1', '2', '3', '4', '5'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

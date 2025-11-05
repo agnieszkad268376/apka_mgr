@@ -1,4 +1,4 @@
-import 'package:apka_mgr/games/airplane_controller/start_screen_airplane_controller.dart';
+import 'package:apka_mgr/games/dot_controller/start_screen_dot_controller.dart';
 import 'package:apka_mgr/games/build_a_word/start_screen_build_a_word.dart';
 import 'package:apka_mgr/games/catch_a_ball/start_screen_catch_a_ball.dart';
 import 'package:apka_mgr/games/reflex_check/stert_screen_reflex_check.dart';
@@ -110,7 +110,7 @@ class ChooseGameScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StartScreenAirplaneController()),
+                      MaterialPageRoute(builder: (context) => const StartScreenDotController()),
                     );
                   },
                 ),
