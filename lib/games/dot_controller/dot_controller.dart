@@ -166,17 +166,21 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   void gameResult(){
     endGame = false;
 
-    final correctDots = Set.from(choosenDots).difference(Set.from(controlledDots)).isEmpty &&
-      Set.from(controlledDots).difference(Set.from(choosenDots)).isEmpty;
+    final choosenSet = Set.from(choosenDots);
+    final controlledSet = Set.from(controlledDots);
+
+    final correctDots = choosenSet.intersection(controlledSet).length;
+    final finalControlledDots = controlledSet.length;
+
+    final isSuccess = correctDots == finalControlledDots && choosenSet.length == finalControlledDots;
       
       Future.delayed(const Duration(milliseconds: 500), () {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text(correctDots ? 'Gratulacje!' : 'Spróbuj ponownie!'),
-            content: Text(correctDots
-                ? 'Poprawnie wybrałeś wszystkie kontrolowane kropki.'
-                : 'Niepoprawny wybór. Spróbuj ponownie.'),
+            title: Text(isSuccess ? 'Gratulacje!' : 'Twój wynik!'),
+            content: Text(
+                 'Poprawnie wskazałeś $correctDots z $finalControlledDots kontrolowanych kropek.\n'),
             actions: [
               TextButton(
                 onPressed: () {
