@@ -57,6 +57,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   void initState() {
     super.initState();
     resetGameSettings();
+    // Start the game after the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startGame();
       _scheduleFlash();
@@ -77,13 +78,18 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   /// Schedules the flashes to appear on random intervals
   /// Works recursively all game 
   void _scheduleFlash() {
-    final delay = Duration(milliseconds: 500 + _random.nextInt(2500)); 
-    Timer(delay, () {
-      if (!mounted) return;
-      _addFlash();       
-      _scheduleFlash(); 
-    });
-  }
+  final delay = Duration(milliseconds: 300 + _random.nextInt(1200)); // co 0.3–1.5 sekundy
+  Timer(delay, () {
+    if (!mounted) return;
+
+    final flashCount = 1 + _random.nextInt(4);
+
+    for (int i = 0; i < flashCount; i++) {
+      _addFlash();
+    }
+    _scheduleFlash();
+  });
+}
 
   /// Adds a flash at a random position and removes it
   void _addFlash() {
@@ -97,6 +103,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
       child: const FlashWidget(),
     );
 
+    // Add flash to the list
+    // Remove flash after 500 milliseconds
     setState(() {
       flashes.add(flashWidget);
     });
@@ -145,6 +153,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
         // End the game after chosen number of balls
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (context) => AlertDialog(
             title: const Text('Koniec gry!'),
             // Display game score and hits 
@@ -180,6 +189,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     });
   }
 
+  /// Builds the game UI
+  /// Displays the score and the ball to be tapped
   @override
   Widget build(BuildContext context) {
     return Scaffold(

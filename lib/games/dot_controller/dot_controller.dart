@@ -166,12 +166,17 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   void gameResult(){
     endGame = false;
 
+    // sets with dots indexes for comparison
+    // dots choosen by player
     final choosenSet = Set.from(choosenDots);
+    // randomly chosen controlled dots
     final controlledSet = Set.from(controlledDots);
 
+    // choose indexes that are in both sets 
     final correctDots = choosenSet.intersection(controlledSet).length;
     final finalControlledDots = controlledSet.length;
 
+    // check if player selected all controlled dots correctly
     final isSuccess = correctDots == finalControlledDots && choosenSet.length == finalControlledDots;
       
       Future.delayed(const Duration(milliseconds: 500), () {
