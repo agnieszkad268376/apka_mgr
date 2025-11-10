@@ -27,7 +27,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   late List<int> controlledDots; 
   List<int> choosenDots = [];
 
-  int gameDuration = 10;
+  int gameDuration = 30;
   late Timer gameTimer;
   
 
@@ -42,6 +42,14 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     positions = [];
     speeds = [];
     controlledDots = [];
+
+    if (widget.selectedTime == '15 sekund') {
+      gameDuration = 15;
+    } else if (widget.selectedTime == '30 sekund') {
+      gameDuration = 30;
+    } else if (widget.selectedTime == '60 sekund') {
+      gameDuration = 60;
+    }
   }
 
   void _initDots(Size size, double topBoundary, double bottomBoundary) {

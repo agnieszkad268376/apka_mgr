@@ -1,7 +1,6 @@
 import 'package:apka_mgr/games/dot_controller/dot_controller.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
 
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
@@ -20,8 +19,7 @@ class _StartScreenDotControllerState extends State<StartScreenDotController> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
-    double fontSize2 = screenSize.width * 0.08;
-    double fontSize3 = screenSize.width * 0.05;
+    double fontSize3 = screenSize.width * 0.04;
 
     return Scaffold(
       backgroundColor: const Color(0xFF5D5D5D),
@@ -76,10 +74,10 @@ class _StartScreenDotControllerState extends State<StartScreenDotController> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Na ekranie zobaczysz 10 kropek, kilka z nich będzie czerwonych, zapamiętaj które.  '
+                  'Na ekranie zobaczysz 10 kropek, kilka z nich będzie czerwonych, zapamiętaj je.  '
                   'Po naciśnięciu start wszytskie kropi będą zielone i zaczną się poruszać.'
-                  'Do końca gry musisz śledzić kropki które były czerwone na początku i na końcu wskazać które to były. '
-                  'Gra trwa minute.',
+                  'Do końca gry musisz śledzić kropki które były czerwone na początku. Kiedy minie czas gry kropki się zatrzymają'
+                  'i będziesz musiał wskazać które kropki które śledziłeś.',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),
@@ -101,6 +99,7 @@ class _StartScreenDotControllerState extends State<StartScreenDotController> {
                   ),
                 ],
               ),
+              SizedBox(height: screenSize.height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -192,7 +191,7 @@ class GameTimeSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['30 sekund', '60 sekund', '90 sekund'].map((String value) {
+      items: <String>['15 sekund', '30 sekund', '60 sekund'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
