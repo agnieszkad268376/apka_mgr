@@ -182,6 +182,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       Future.delayed(const Duration(milliseconds: 500), () {
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (context) => AlertDialog(
             title: Text(isSuccess ? 'Gratulacje!' : 'Twój wynik!'),
             content: Text(
