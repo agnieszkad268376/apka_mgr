@@ -9,7 +9,7 @@ class StartScreenDotController extends StatefulWidget {
 
   @override
   State<StartScreenDotController> createState() => _StartScreenDotControllerState();
-}
+} 
 
 class _StartScreenDotControllerState extends State<StartScreenDotController> {
   String selectedTime = '60 sekund';

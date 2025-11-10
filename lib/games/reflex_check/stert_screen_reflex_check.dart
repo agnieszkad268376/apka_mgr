@@ -12,8 +12,8 @@ class StartScreenReflexCheck extends StatefulWidget {
 }
 
 class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
-  String selectedTime = '60 sekund';
-  String selectedSpeed = 'Średni';
+  String numberOfRounds = '5';
+  
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,8 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Na ekranie pojawi się czerwony przycisk. W losowym momencie zmieni on kolor na zielony - jak najszybciej go naciśnij!\n',
+                  'Na ekranie pojawi się czerwony przycisk. W losowym momencie zmieni on kolor na zielony - jak najszybciej go naciśnij!\n'
+                  'Na końcu zobaczysz swój średni czas reakcji.',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),
@@ -84,30 +85,14 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Czas gry: ',
+                  Text('Libcza rund: ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
-                  GameTimeSelection(
-                    initialValue: selectedTime,
+                  NumberOfRounds(
+                    initialValue: numberOfRounds,
                     onChanged: (value) {
                       setState(() {
-                        selectedTime = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Szybkość krecika: ',
-                      style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
-                  SizedBox(width: screenSize.width * 0.02),
-                  MoleSpeedSelection(
-                    initialValue: selectedSpeed,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSpeed = value;
+                        numberOfRounds = value;
                       });
                     },
                   ),
@@ -120,8 +105,7 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
               ),
               SizedBox(height: screenSize.height * 0.05),
               ReflexCheckStartButton(
-                selectedTime: selectedTime,
-                selectedSpeed: selectedSpeed,
+                numberOfRounds: numberOfRounds,
               ),
             ],
           ),
@@ -133,13 +117,11 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
 
 /// Button to start the Whack-a-Mole game
 class ReflexCheckStartButton extends StatelessWidget {
-  final String selectedTime;
-  final String selectedSpeed;
+  final String numberOfRounds;
 
   const ReflexCheckStartButton({
     super.key,
-    required this.selectedTime,
-    required this.selectedSpeed,
+    required this.numberOfRounds,
   });
 
   @override
@@ -155,6 +137,7 @@ class ReflexCheckStartButton extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ReflexCheckScreen(
+                numberOfRounds: numberOfRounds,
               ),
             ),
           );
@@ -175,11 +158,11 @@ class ReflexCheckStartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
-class GameTimeSelection extends StatelessWidget {
+class NumberOfRounds extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const GameTimeSelection({
+  const NumberOfRounds({
     super.key,
     required this.initialValue,
     required this.onChanged,
@@ -189,35 +172,7 @@ class GameTimeSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['30 sekund', '60 sekund', '90 sekund'].map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        if (newValue != null) onChanged(newValue);
-      },
-    );
-  }
-}
-
-/// DropdownMenu to select mole speed
-class MoleSpeedSelection extends StatelessWidget {
-  final String initialValue;
-  final ValueChanged<String> onChanged;
-
-  const MoleSpeedSelection({
-    super.key,
-    required this.initialValue,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: initialValue,
-      items: <String>['Powolny', 'Średni', 'Szybki'].map((String value) {
+      items: <String>['3', '5', '7'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 class ReflexCheckScreen extends StatefulWidget {
-  const ReflexCheckScreen({super.key});
+  final String numberOfRounds;
+
+  const ReflexCheckScreen({
+    super.key,
+    required this.numberOfRounds});
 
   @override
   State<ReflexCheckScreen> createState() => _ReflexCheckScreenState();
@@ -16,13 +21,23 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   bool gameRunning = false;
   Timer? colorChangeTimer;
   final Random random = Random();
+  DateTime? greenStartTime;
+  int? reactionTime;
+  List<int> reactionTimes = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void startGame() {
     setState(() {
       score = 0;
-      roundsLeft = 5;
       gameRunning = true;
       buttonColor = Colors.red;
+      reactionTimes.clear();
+      reactionTime = null;
+      roundsLeft = int.parse(widget.numberOfRounds);
     });
 
     _scheduleNextColorChange();
@@ -34,27 +49,40 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
 
   int delay = random.nextInt(4) + 2; 
   colorChangeTimer = Timer(Duration(seconds: delay), () {
+    if (!mounted) return;
     setState(() {
       buttonColor = Colors.green;
+      greenStartTime = DateTime.now();
+      reactionTime = null;
     });
   });
   }
 
 
   void _showGameOverDialog() {
+
+    double averageReactionTime = reactionTimes.isNotEmpty
+        ? reactionTimes.reduce((a, b) => a + b) / reactionTimes.length
+        : 0;  
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Koniec gry!'),
-        content: Text('Twój wynik to: $score'),
+        content: Text('Twój średni czas reakcji: ${averageReactionTime.toStringAsFixed(2)} ms'),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+               Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+            },
+            child: const Text('Wróć do menu'),
+          ),
+          TextButton(
+            onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('OK'),
+            child: const Text('Zagraj ponownie'),
           ),
         ],
       ),
@@ -71,7 +99,7 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
-    double fontSize2 = screenSize.width * 0.12;
+    double fontSize2 = screenSize.width * 0.10;
     double fontSize3 = screenSize.width * 0.08;
 
     return Scaffold(
@@ -103,6 +131,7 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                 color: const Color(0xFF3D3D3D),
               ),
             ),
+
             SizedBox(height: screenSize.height * 0.05),
             ElevatedButton(
               onPressed: gameRunning ? null : startGame,
@@ -125,10 +154,16 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
             GestureDetector(
               onTap: () {
                 if (gameRunning && buttonColor == Colors.green) {
+                  final lastReactionTime = DateTime.now()
+                    .difference(greenStartTime!)
+                    .inMilliseconds;
+
                   setState(() {
-                  score++;
-                  buttonColor = Colors.red;
-                  roundsLeft--;
+                    reactionTime = lastReactionTime;
+                    reactionTimes.add(lastReactionTime);
+                    score++;
+                    buttonColor = Colors.red;
+                    roundsLeft--;
                   });
 
                   colorChangeTimer?.cancel();
@@ -142,8 +177,8 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                 }
               },
               child: Container(
-                width: screenSize.width * 0.8,
-                height: screenSize.width * 0.8,
+                width: screenSize.width * 0.7,
+                height: screenSize.width * 0.7,
                 decoration: BoxDecoration(
                   color: buttonColor,
                   shape: BoxShape.circle,
