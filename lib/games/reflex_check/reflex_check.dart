@@ -44,6 +44,7 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   void _showGameOverDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Koniec gry!'),
         content: Text('Twój wynik to: $score'),

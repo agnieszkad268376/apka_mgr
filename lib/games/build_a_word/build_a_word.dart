@@ -104,6 +104,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
       } else {
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (_) => AlertDialog(
             title: const Text('Koniec gry!'),
             content: Text('Twój wynik to: $score punktów'),
