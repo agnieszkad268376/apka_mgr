@@ -83,7 +83,7 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.05),
+              SizedBox(height: screenSize.height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -116,12 +116,7 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                   ),
                 ],
               ),
-              SizedBox(height: screenSize.height * 0.05),
-              Text(
-                'Powodzenia!',
-                style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D)),
-              ),
-              SizedBox(height: screenSize.height * 0.05),
+              SizedBox(height: screenSize.height * 0.02),
               BuildAWordStartButton(
                 selectedWordLenght: selectedWordLenght,
                 selectedNumberOfWords: selectedNumberOfWords,
