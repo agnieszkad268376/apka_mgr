@@ -35,7 +35,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'RYBA', 'STÓŁ', 'SEN', 'MYSZ', 'OKNO', 'KĄT', 'GRA',
     'SÓL', 'ŁZA', 'WODA', 'ŻAL', 'TOR', 'RÓG', 'ŁOŚ',
     'KŁOS', 'MÓZG', 'PŁOT', 'ĆMA', 'ĆWIK', 'DĄB', 'BÓG',
-    'MUR', 'KREW', 'ŁÓDŹ', 'PĄK', 'SOK', 'MGŁA', 'PAS'
+    'MUR', 'KREW', 'ŁÓDŹ', 'PĄK', 'SOK', 'MGŁA', 'PAS',
   ];
 
   // Lists with words with 5 to 7 letters
@@ -45,16 +45,16 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'JABŁKO', 'PIESZY', 'KOTLET', 'RÓŻOWY', 'SŁOŃCE', 'WIATR', 'WZROK',
     'CHMURA', 'ZAMEK', 'OGRÓD', 'PODRÓŻ', 'WIOSNA', 'LOTKA', 'TARKA',
     'LATO', 'JESIEŃ', 'ZIMA', 'MOSTEK', 'TELEFON', 'OKRĘT', 'STATEK',
-    'LIŚCIE', 'MIESIĄC', 'TYDZIEŃ', 'DZIEŃ', 'BRZEG', 'PLAŻA', 'FALKA'
+    'LIŚCIE', 'MIESIĄC', 'TYDZIEŃ', 'DZIEŃ', 'BRZEG', 'PLAŻA', 'FALKA',
   ];
 
   // Lists with words with 8 to 9 letters
   List<String> hardWords = [
-    'SAMOCHÓD', 'MARZYCIEL', 'TELEWIZOR', 'KOMPUTER', 'PRZYRODA'
+    'SAMOCHÓD', 'MARZYCIEL', 'TELEWIZOR', 'KOMPUTER', 'PRZYRODA',
     'MOTOCYKL', 'PIESZYCH', 'PODRÓŻNIK', 'RODZINNY', 'ZALEŻNOŚĆ',
     'ZWIERZĘTA', 'ŚWIECZNIK', 'SERDECZNY', 'WĘDROWIEC', 'SPOKOJNY',
     'KIEROWCA', 'CODZIENNY', 'PRZYRODA', 'SERDECZNY', 'OPOWIEŚĆ',
-    'MUZYKALNY', 'SPOTKANIE', 'OPOWIEŚĆ', 'WIECZORNY', 'SIATKARZ'
+    'MUZYKALNY', 'SPOTKANIE', 'OPOWIEŚĆ', 'WIECZORNY', 'SIATKARZ',
     'ZALEŻNOŚĆ', 'RADOŚNIE', 'NIEBIESKI', 'CZERWONY', 'OPIEKUNKA',
   ];
 
@@ -139,14 +139,14 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     }
   }
 
-  Widget currenWordDisplay() {
+  Widget currenWordDisplay(screenSize) {
     List<Widget> letterWidgets = [];
     for (int i = 0; i < currentWord.length; i++) {
       letterWidgets.add(
         Text(
           currentWord[i],
           style: TextStyle(
-            fontSize: 40,
+            fontSize: screenSize.width * 0.1,
             fontWeight: FontWeight.bold,
             color: i < currentLetterIndex ? Colors.green : Colors.black,
           ),
@@ -220,7 +220,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
           SizedBox(height: topPadding,
           child: Center( 
             child: 
-            currenWordDisplay(),
+            currenWordDisplay(screenSize),
           ),
           ),
           SizedBox(
