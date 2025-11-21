@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
 class BuildAWordScreen extends StatefulWidget {
@@ -12,8 +13,10 @@ class BuildAWordScreen extends StatefulWidget {
 }
 
 class _BuildAWordScreenState extends State<BuildAWordScreen> {
+  // Grid size
   final int rows = 8;
   final int columns = 4;
+
   final random = Random();
   int score = 0;
   int currentWordIndex = 1;
@@ -58,6 +61,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'ZALEŻNOŚĆ', 'RADOŚNIE', 'NIEBIESKI', 'CZERWONY', 'OPIEKUNKA',
   ];
 
+  // Function to get random word from list based on user's selection
   String randomWord (){
     List<String> wordList;
     if (widget.wordLength == '3-4') {
@@ -79,10 +83,12 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     generateLetterColors();
   }
 
+  // Function to generate grid with letters
   void generateActualGrid(){
     actualGrid = List.from(letters)..shuffle(random);
   }
 
+  // Function to generate colors for each letter
   void generateLetterColors(){
     Color green = const Color(0xB30DFF00);
     Color red = const Color(0xB3FF0000);
@@ -92,8 +98,14 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     }
   }
 
+  // Function to go to the next word
+  // when all word are done - show dialog with final score
   void nextWord(){
     setState(() {
+      // Check if all words are done
+      // if not - generate new word
+      // generete new grid and letter colors with each new word
+      // if yes - show dialog with final score
       if (currentWordIndex < int.parse(widget.numberOfWords)) {
         currentWordIndex++;
         currentLetterIndex = 0;
@@ -111,10 +123,17 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                  setState(() {
+                  });
                 }, 
-                child: const Text('OK')
+                child: const Text('Wróć do menu')
+              ),
+              TextButton(
+                onPressed: () {
+                  
+                }, 
+                child: const Text('Zagraj ponownie')
               )
             ],
           )
