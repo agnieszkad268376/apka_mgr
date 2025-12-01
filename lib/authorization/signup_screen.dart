@@ -1,10 +1,14 @@
+import 'package:apka_mgr/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 /// Registration screen 
 /// Users enter their login, password and select a role
 /// then user is registered in the application.
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  SignupScreen({super.key});
+
+  final AuthService _authService = AuthService(); 
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +38,14 @@ class SignupScreen extends StatelessWidget {
             SizedBox(
               width: 300,
               child: ElevatedButton(
-              onPressed: () {
-                // TO DO - register user
+              onPressed: () async{
+                dynamic result = await _authService.signInAnon();
+                if (result == null){
+                  print('error signing in');
+                } else {
+                  print('signed in');
+                  print(result);
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDFB4B0),

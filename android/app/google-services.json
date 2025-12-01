@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "661088524202",
+    "project_id": "wizzydatabase",
+    "storage_bucket": "wizzydatabase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661088524202:android:28503fd99e6bc89dfa7dd3",
+        "android_client_info": {
+          "package_name": "com.example.apka_mgr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl-9qjQFswRcLcjX7uJ-9yBlW6s2E5dlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661088524202:android:c9c9a2049730e846fa7dd3",
+        "android_client_info": {
+          "package_name": "com.mag.wizzyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl-9qjQFswRcLcjX7uJ-9yBlW6s2E5dlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
