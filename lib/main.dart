@@ -1,9 +1,9 @@
-import 'package:apka_mgr/authorization/login_screen.dart';
-import 'package:apka_mgr/authorization/signup_screen.dart';
-import 'package:apka_mgr/opto/opto_menu_screen.dart';
+import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:apka_mgr/models/appUser.dart';
 
 // Main function that runs the app.
 void main() async{
@@ -21,9 +21,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Wrapper(),
-  );
-}
+    return StreamProvider<AppUser?>.value(
+      // listen to authentication state changes
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Wrapper(),
+      )
+    );
+  }
 }

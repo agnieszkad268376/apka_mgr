@@ -38,14 +38,9 @@ class SignupScreen extends StatelessWidget {
             SizedBox(
               width: 300,
               child: ElevatedButton(
-              onPressed: () async{
-                dynamic result = await _authService.signInAnon();
-                if (result == null){
-                  print('error signing in');
-                } else {
-                  print('signed in');
-                  print(result);
-                }
+              onPressed: () {
+                //TO DO 
+                //REGISTER USER
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDFB4B0),

@@ -11,6 +11,14 @@ class AuthService {
     return user != null ? AppUser(uid: user.uid) : null;
   }
 
+  // Auth change user stream
+  // When user signs out the login screen is shown
+  // When user signs in the home screen is shown 
+  Stream<AppUser?> get user {
+    return _auth.authStateChanges()
+      .map((auth.User? user) => _userFromFirebaseUser(user));
+  }
+
   // Sign in anonymously to app  
   Future<AppUser?> signInAnon() async {
     // if sing in is successful, return user object
@@ -24,6 +32,16 @@ class AuthService {
       return null;
     }
   }
+
+  // Sign out
+  Future<void> signOut() async {
+    try{
+      return await _auth.signOut();
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+  } 
 
   // TO DO register anonymously
 }

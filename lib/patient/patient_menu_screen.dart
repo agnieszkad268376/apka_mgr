@@ -1,9 +1,11 @@
+import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/authorization/setting_screen.dart';
 import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/patient/excersice_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:apka_mgr/patient/statistics_screen.dart';
+import 'package:apka_mgr/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,6 +20,9 @@ class PatientMenuScreen extends StatefulWidget {
 
 class _PatientMenuScreenState extends State<PatientMenuScreen>
 with SingleTickerProviderStateMixin {
+
+  final AuthService _authService = AuthService();
+
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -119,7 +124,10 @@ with SingleTickerProviderStateMixin {
               },
             ),
             SizedBox(height: screenSize.height * 0.3),
-            ElevatedButton(onPressed: (){}, child: const Icon(Icons.logout)),
+            ElevatedButton(onPressed: () async{
+              await _authService.signOut();
+            },
+             child: const Icon(Icons.logout)),
           ],
         ),
       ),

@@ -1,11 +1,13 @@
 // import 'package:apka_mgr/opto/opto_menu_screen.dart';
 import 'package:apka_mgr/patient/patient_menu_screen.dart';
+import 'package:apka_mgr/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:apka_mgr/authorization/signup_screen.dart';
 
 /// Login screen for the application
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: spacing),
                   SizedBox(width: width, child: const PasswordInput()),
                   SizedBox(height: spacing),
-                  SizedBox(width: width, child: const LoginButton()),
+                  SizedBox(width: width, child: LoginButton()),
                   SizedBox(height: spacing * 0.8),
                   SizedBox(width: width, child: const SigninButton()),
                 ],
@@ -97,12 +99,21 @@ class PasswordInput extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({super.key});
+  LoginButton({super.key});
+
+  final AuthService _authService = AuthService(); 
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async{
+        dynamic result = await _authService.signInAnon();
+                if (result == null){
+                  print('error signing in');
+                } else {
+                  print('signed in');
+                  print(result);
+                }
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => PatientMenuScreen()),
