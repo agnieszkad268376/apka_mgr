@@ -5,8 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:apka_mgr/authorization/signup_screen.dart';
 
 /// Login screen for the application
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final AuthService _authService = AuthService();
+
+  @override
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
 
 
   @override
@@ -34,11 +52,49 @@ class LoginScreen extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  SizedBox(width: width, child: const LoginInput()),
+                  SizedBox(width: width, child: LoginInput(controller: _loginController)),
                   SizedBox(height: spacing),
-                  SizedBox(width: width, child: const PasswordInput()),
+                  SizedBox(width: width, child: PasswordInput(controller: _passwordController,)),
                   SizedBox(height: spacing),
-                  SizedBox(width: width, child: LoginButton()),
+                  SizedBox(
+                    width: width, 
+                    child: 
+                      ElevatedButton(
+                        onPressed: () async{
+                          if (_loginController.text.isEmpty || _passwordController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Wpisz swój email i hasło')),
+                            );
+                            return;
+                          }
+                          dynamic result = await _authService.signInWithEmailAndPassword(
+                            _loginController.text,
+                            _passwordController.text
+                          );
+                          if (result == null){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Podaj prawidłowy e-mail i hasło')),
+                          );
+                          } else {
+                            //TO DO navigate to patient menu screen
+                            print('signed in');
+                            print(result);
+                            print(_loginController.text);
+                            print(_passwordController.text);
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PatientMenuScreen()),
+                            );                      
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFDFB4B0),
+                        side: const BorderSide(color: Color(0xFFDFB4B0), width: 2.0),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                      child: const Text('Zaloguj się'),
+                  ),),
                   SizedBox(height: spacing * 0.8),
                   SizedBox(width: width, child: const SigninButton()),
                 ],
@@ -52,11 +108,14 @@ class LoginScreen extends StatelessWidget {
 }
 
 class LoginInput extends StatelessWidget {
-  const LoginInput({super.key});
+  final TextEditingController controller;
+  
+  const LoginInput({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
@@ -75,11 +134,14 @@ class LoginInput extends StatelessWidget {
 }
 
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({super.key});
+  final TextEditingController controller;
+
+  const PasswordInput({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: true,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
@@ -94,38 +156,6 @@ class PasswordInput extends StatelessWidget {
         fillColor: const Color(0xFFFAF3ED),
         filled: true,
       ),
-    );
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  LoginButton({super.key});
-
-  final AuthService _authService = AuthService(); 
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async{
-        dynamic result = await _authService.signInAnon();
-                if (result == null){
-                  print('error signing in');
-                } else {
-                  print('signed in');
-                  print(result);
-                }
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PatientMenuScreen()),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFDFB4B0),
-        side: const BorderSide(color: Color(0xFFDFB4B0), width: 2.0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
-        padding: const EdgeInsets.symmetric(vertical: 14),
-      ),
-      child: const Text('Zaloguj się'),
     );
   }
 }

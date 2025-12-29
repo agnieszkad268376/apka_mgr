@@ -1,3 +1,4 @@
+import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +6,35 @@ import 'package:flutter/material.dart';
 /// Registration screen 
 /// Users enter their login, password and select a role
 /// then user is registered in the application.
-class SignupScreen extends StatelessWidget {
-  SignupScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _reentryPasswordController = TextEditingController(); 
+  String selectedRole = 'user'; 
 
   final AuthService _authService = AuthService(); 
+  // Instantiate a GlobalKey for the form
+  final _formKey = GlobalKey<FormState>();
+
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+    _reentryPasswordController.dispose();
+    super.dispose();
+  }
+
+  void roleChange(String? value) {
+    setState(() {
+      selectedRole = value ?? 'user';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +44,9 @@ class SignupScreen extends StatelessWidget {
     
       body: Center(
         child: SingleChildScrollView(
-        child: Column(
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
             SizedBox(height: 10),
             Image.asset(
@@ -27,20 +55,70 @@ class SignupScreen extends StatelessWidget {
               height: 200,
             ),
             SizedBox(height: 20),
-            LoginInput(),
+            LoginInput(controller: _loginController,),
             SizedBox(height: 20),
-            PasswordInput(),
+            PasswordInput(controller: _passwordController,),
             SizedBox(height: 20),
-            ReentryPasswordInput(),
+            ReentryPasswordInput(controller: _reentryPasswordController,),
             SizedBox(height: 20),
-            RoleDropDownMenu(),
+            RoleDropDownMenu(selectedRole: selectedRole, onChanged: roleChange,),
             SizedBox(height: 20),
             SizedBox(
               width: 300,
               child: ElevatedButton(
-              onPressed: () {
-                //TO DO 
-                //REGISTER USER
+              onPressed: () async {
+                if (_loginController.text.isEmpty || _passwordController.text.isEmpty || _reentryPasswordController.text.isEmpty) {
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Proszę wypełnić wszystkie pola')),
+                  );
+                  return;
+                }
+                if (_loginController.text.contains(' ')) {
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Login nie może zawierać spacji')),
+                  );
+                  return;
+                }
+                if (!_loginController.text.contains('@') || !_loginController.text.contains('.') ) {
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Wpisz poprawny adres email')),
+                  );
+                  return;
+                }
+                if (_passwordController.text != _reentryPasswordController.text) {
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Hasła nie są identyczne')),
+                  );
+                  return;
+                }
+                if (_passwordController.text.length < 6) {
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Hasło musi mieć co najmniej 6 znaków')),
+                  );
+                  return;
+                }
+                dynamic result = await _authService.registerWithEmailAndPassword(
+                  _loginController.text,
+                  _passwordController.text
+                );
+                if (result == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Błąd podczas rejestracji użytkownika')),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Rejestracja zakończona sukcesem')),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDFB4B0),
@@ -54,7 +132,7 @@ class SignupScreen extends StatelessWidget {
         ),
         )
       ),
-    
+      )
     );
   }
 }
@@ -63,13 +141,22 @@ class SignupScreen extends StatelessWidget {
 /// This widget creates a text field for user login input.
 /// It includes styling for the text field, such as border color and radius.
 class LoginInput extends StatelessWidget {
-  const LoginInput({super.key});
-
+  final TextEditingController controller;
+  
+  const LoginInput({super.key, required this.controller});
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Proszę wprowadzić login';
+          }
+          return null;
+        },
+        controller: controller,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
@@ -79,9 +166,9 @@ class LoginInput extends StatelessWidget {
             borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5.0),
             borderRadius: BorderRadius.circular(23.0),
           ),
-          labelText: 'Login', 
+          labelText: 'E-mail', 
           fillColor: const Color(0xFFFAF3ED), 
-          filled: true
+          filled: true,
       ),
     ),
     );
@@ -92,13 +179,16 @@ class LoginInput extends StatelessWidget {
 /// This widget creates a text field for user password input. 
 /// It includes styling for the text field, such as border color and radius.
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({super.key});
+  final TextEditingController controller;
+
+  const PasswordInput({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
       child: TextField(
+        controller: controller,
         obscureText: true,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
@@ -121,13 +211,16 @@ class PasswordInput extends StatelessWidget {
 /// Widget for the reentry password input field
 /// This widget creates a text field for user to re-enter their password.
 class ReentryPasswordInput extends StatelessWidget {
-  const ReentryPasswordInput({super.key});
+  final TextEditingController controller;
+
+  const ReentryPasswordInput({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
       child: TextField(
+        controller: controller,
         obscureText: true,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
@@ -149,7 +242,10 @@ class ReentryPasswordInput extends StatelessWidget {
 
 
 class RoleDropDownMenu extends StatelessWidget {
-  const RoleDropDownMenu({super.key});
+  final String? selectedRole;
+  final ValueChanged<String?>? onChanged;
+
+  const RoleDropDownMenu({super.key, this.selectedRole, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -173,9 +269,7 @@ class RoleDropDownMenu extends StatelessWidget {
           DropdownMenuItem(value: 'admin', child: Text('Optometrysta')),
           DropdownMenuItem(value: 'user', child: Text('Pacjent')),
         ],
-        onChanged: (value) {
-          //print('Selected role: $value');
-        },
+        onChanged: onChanged,
       ),
     );
     
