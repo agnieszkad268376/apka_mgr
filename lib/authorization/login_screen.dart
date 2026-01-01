@@ -1,4 +1,5 @@
 // import 'package:apka_mgr/opto/opto_menu_screen.dart';
+import 'package:apka_mgr/loading.dart';
 import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final AuthService _authService = AuthService();
+  bool loading = false;
 
   @override
   void dispose() {
@@ -32,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // Get the screen size of using device to make the responsive layout
     final screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: const Color(0xFF98B6EC),
       body: Center(
         child: SingleChildScrollView(
@@ -65,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Wpisz swój email i hasło')),
                             );
-                            return;
                           }
                           dynamic result = await _authService.signInWithEmailAndPassword(
                             _loginController.text,
@@ -75,8 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Podaj prawidłowy e-mail i hasło')),
                           );
+                          loading = false;
                           } else {
                             //TO DO navigate to patient menu screen
+                            setState(() {
+                              loading = true;
+                            });
                             print('signed in');
                             print(result);
                             print(_loginController.text);

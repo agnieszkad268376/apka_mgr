@@ -1,3 +1,4 @@
+import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:apka_mgr/models/appUser.dart';
 
@@ -56,10 +57,22 @@ class AuthService {
   }
 
   // Reister with email and password
+  // Also creates a new document in Firestore 'users' collection
   Future<AppUser?> registerWithEmailAndPassword(String email, String password) async {
     try{
       auth.UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       auth.User? firebaseUser = result.user;
+
+      // create a new document for the user with the uid in Firestore 'users' collection
+      await DatabaseService(uid: firebaseUser!.uid).updateUserData(
+        firebaseUser.uid,
+        email,
+        'patient',
+        // user age and additional info that can be update later
+        '',
+        ''
+      );
+
       return _userFromFirebaseUser(firebaseUser);
     } catch(e){
       print(e.toString());

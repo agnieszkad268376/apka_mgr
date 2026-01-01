@@ -126,6 +126,10 @@ with SingleTickerProviderStateMixin {
             SizedBox(height: screenSize.height * 0.3),
             ElevatedButton(onPressed: () async{
               await _authService.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
             },
              child: const Icon(Icons.logout)),
           ],
