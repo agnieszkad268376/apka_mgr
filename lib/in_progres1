@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+
+/// Ekran logowania do aplikacji
+/// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
+class OptoMenuScreen extends StatelessWidget {
+  const OptoMenuScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    Scaffold(
+      backgroundColor: Color(0xFF98B6EC),
+    
+      body: Center(
+        child: Text('W trakcie przygotowania...'),
+      ),
+    
+    );
+  }
+}
+
+
+import 'package:apka_mgr/models/user_model.dart';
+import 'package:apka_mgr/services/users_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:apka_mgr/services/auth.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+/// Ekran logowania do aplikacji
+/// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
+class SettingScreen extends StatelessWidget {
+  const SettingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    StreamProvider<List<UserModel>?>.value(
+      initialData: null,
+      value: DatabaseService(uid:'').users,
+      child: Scaffold(
+        backgroundColor: Color(0xFF98B6EC),
+      
+        body: Center(
+          child: UserList(),
+          
+          
+        ),
+      
+      ),
+    );
+  }
+}
+
+
+

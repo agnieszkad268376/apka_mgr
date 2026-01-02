@@ -1,3 +1,4 @@
+import 'package:apka_mgr/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -11,21 +12,43 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
 
   // create a new document with uid as the document ID
-  // update user data
-  // this method is used when creating a new user document or updating existing one
-  Future updateUserData(String uid, String email, String role, String age, String info) async {
+  // this method is used when creating a new user document
+  Future updateUserData(String uid, String email, String name, String role, String age, String info) async {
     return await userCollection.doc(uid).set({
       'email': email,
+      'name': name,
       'role': role,
       'age': age,
       'info': info,
     });
   }
 
-  // Example method to get user data
-  //Future<DocumentSnapshot> getUserData(String uid) async {
-    //return await _firestore.collection('users').doc(uid).get();
-  //}
+  // crreate list from QuerySnapshot
+  List<UserModel> _userListFromSnapshot(QuerySnapshot snapshot) {
+    // map each document 
+    // return empty string if field does not exist
+    return snapshot.docs.map((doc){
+      return UserModel(
+        uid: doc.id,
+        email: doc.get('email') ?? '',
+        name: doc.get('name') ?? '',
+        role: doc.get('role') ?? '',
+        age: doc.get('age') ?? '',
+        additionalInfo: doc.get('info') ?? '',
+      );
+    }).toList();
+  }
+
+  // return stream of users
+  Stream<List<UserModel>> get users {
+    return userCollection.snapshots()
+    .map(_userListFromSnapshot);
+  }
+
+  // get user data
+  Future<DocumentSnapshot> getUserData(String uid) async {
+    return await _firestore.collection('users').doc(uid).get();
+  }
 
   // Example method to set user data
   //Future<void> setUserData(String uid, Map<String, dynamic> data) async {

@@ -67,6 +67,8 @@ class AuthService {
       await DatabaseService(uid: firebaseUser!.uid).updateUserData(
         firebaseUser.uid,
         email,
+        // user name - can be updated later
+        '',
         'patient',
         // user age and additional info that can be update later
         '',
@@ -77,6 +79,17 @@ class AuthService {
     } catch(e){
       print(e.toString());
       return null;
+    }
+  }
+
+  // Reset password
+  Future<bool> resetPassword(String newPassword) async {
+    try{
+      await _auth.currentUser!.updatePassword(newPassword);
+      return true;
+    } catch(e){
+      print(e.toString());
+      return false;
     }
   }
 }
