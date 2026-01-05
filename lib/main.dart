@@ -3,7 +3,7 @@ import 'package:apka_mgr/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:apka_mgr/models/appUser.dart';
+import 'package:apka_mgr/models/app_user.dart';
 
 // Main function that runs the app.
 void main() async{

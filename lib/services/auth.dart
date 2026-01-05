@@ -1,6 +1,6 @@
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:apka_mgr/models/appUser.dart';
+import 'package:apka_mgr/models/app_user.dart';
 
 class AuthService {
 
@@ -29,7 +29,6 @@ class AuthService {
       return _userFromFirebaseUser(firebaseUser);
     } catch(e){
       // print error message
-      print(e.toString());
       return null;
     }
   }
@@ -39,8 +38,7 @@ class AuthService {
     try{
       return await _auth.signOut();
     } catch(e){
-      print(e.toString());
-      return null;
+      return;
     }
   } 
 
@@ -51,7 +49,6 @@ class AuthService {
       auth.User? firebaseUser = result.user;
       return _userFromFirebaseUser(firebaseUser);
     } catch(e){
-      print(e.toString());
       return null;
     }
   }
@@ -77,7 +74,6 @@ class AuthService {
 
       return _userFromFirebaseUser(firebaseUser);
     } catch(e){
-      print(e.toString());
       return null;
     }
   }
@@ -88,7 +84,6 @@ class AuthService {
       await _auth.currentUser!.updatePassword(newPassword);
       return true;
     } catch(e){
-      print(e.toString());
       return false;
     }
   }

@@ -170,6 +170,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   }
+                  if (!mounted) return;
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                   setState(() {
                   });
@@ -191,6 +192,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   }
+                  if (!mounted) return;
                   Navigator.push(context, MaterialPageRoute(builder: (context) => BuildAWordScreen(
                     wordLength: widget.wordLength,
                     numberOfWords: widget.numberOfWords,

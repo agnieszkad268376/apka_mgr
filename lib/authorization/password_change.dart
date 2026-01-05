@@ -18,6 +18,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
   // Instantiate a GlobalKey for the form
   final _formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     _passwordController.dispose();
     _reentryPasswordController.dispose();
@@ -79,14 +80,16 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
                   _passwordController.text
                 );
 
-                if (result == false) {
+                if (result == false && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Błąd podczas zmiany hasła')),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (context.mounted){
+                    ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Zmiana hasła zakończona sukcesem')),
                   );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

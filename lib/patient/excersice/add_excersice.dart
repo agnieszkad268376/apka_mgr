@@ -2,6 +2,8 @@ import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Screen for adding an exercise entry.
+/// Allows the user to input and save exercise details.
 class AddExcerciseScreen extends StatefulWidget {
   const AddExcerciseScreen({super.key});
 
@@ -9,12 +11,16 @@ class AddExcerciseScreen extends StatefulWidget {
   State<AddExcerciseScreen> createState() => AddExcerciseScreenState();
 }
 
+/// State for the AddExcerciseScreen widget
 class AddExcerciseScreenState extends State<AddExcerciseScreen> {
 
+  // controler for handling exercise input
   final TextEditingController _excerciseController =TextEditingController();
   String uid = FirebaseAuth.instance.currentUser!.uid;
   DateTime today = DateTime.now();
 
+  /// Dispose controllers to free resources
+  @override
   void dispose() {
     _excerciseController.dispose();
     super.dispose();
@@ -61,14 +67,16 @@ class AddExcerciseScreenState extends State<AddExcerciseScreen> {
                   _excerciseController.text, 
                   today 
                 );
-                if (result == null) {
+                if (result == null && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Błąd podczas zapisywania ćwiczenia')),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (context.mounted){
+                    ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Ćwiczenie zapisane pomyślnie')),
                   );
+                  }
                 }
               },
               child: Text('Zapisz ćwiczenie',

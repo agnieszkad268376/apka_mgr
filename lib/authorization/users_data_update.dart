@@ -1,13 +1,10 @@
-import 'package:apka_mgr/authorization/login_screen.dart';
-import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-/// Registration screen 
-/// Users enter their login, password and select a role
-/// then user is registered in the application.
+/// User data update screen
+/// User can update their name, birth date, and additional information.
 class UsersDataUpdateScreen extends StatefulWidget {
   const UsersDataUpdateScreen({super.key});
 
@@ -15,17 +12,19 @@ class UsersDataUpdateScreen extends StatefulWidget {
   State<UsersDataUpdateScreen> createState() => _UsersDataUpdateScreenState();
 }
 
+/// State class for UsersDataUpdateScreen
 class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
+  // Controllers for text input fields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _additionalInfoController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
 
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  final AuthService _authService = AuthService(); 
   // Instantiate a GlobalKey for the form
   final _formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     _nameController.dispose();
     _additionalInfoController.dispose();
@@ -61,9 +60,6 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
             var userData = snapshot.data!.data() as Map<String, dynamic>;
             String currentEamail = userData['email'];
             String currentRole = userData['role'];
-            String currentName = userData['name'];
-            String currentAge = userData['age'];
-            String currentInfo = userData['info'];
 
             return SingleChildScrollView(
           child: SingleChildScrollView(
@@ -87,15 +83,6 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                 width: 300,
                 child: ElevatedButton(
                 onPressed: () async {
-                  
-                  dynamic result = await DatabaseService(uid: '').updateUserData(
-                    FirebaseAuth.instance.currentUser!.uid,
-                    currentEamail,
-                    _nameController.text,
-                    currentRole,
-                    _birthDateController.text,
-                    _additionalInfoController.text,
-                  );
           
                   if (_nameController.text.contains(' ')) {
                     
@@ -110,6 +97,27 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                       SnackBar(content: Text('Wpisz poprawny adres email')),
                     );
                     return;
+                  }
+
+                  dynamic result = await DatabaseService(uid: '').updateUserData(
+                    FirebaseAuth.instance.currentUser!.uid,
+                    currentEamail,
+                    _nameController.text,
+                    currentRole,
+                    _birthDateController.text,
+                    _additionalInfoController.text,
+                  );
+
+                  if (result == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji danych użytkownika')),
+                    );
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Dane użytkownika zaktualizowane pomyślnie')),
+                      );
+                    }
                   }
                   
                 },

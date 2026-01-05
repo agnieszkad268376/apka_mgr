@@ -197,15 +197,15 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     preciseHits,
                     impreciseHits,
                   );
-                  if (result == null) {
-                    if (!mounted) return;
+                  if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   } 
-                  if (!mounted) return;
+                  if (context.mounted) {
                   Navigator.of(context).pop();
                   startGame();
+                  }
                 },
                 child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),
               ),
@@ -218,16 +218,16 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     preciseHits,
                     impreciseHits,
                   );
-                  if (result == null) {
-                    if (!mounted) return;
+                  if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   } 
-                  if (!mounted) return;
-                  Navigator.push(
+                  if (context.mounted){
+                    Navigator.push(
                     context, 
                     MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                  }
                 },
                 child: Text('Wróć do menu', style: TextStyle(color: Color(0xFF98B6EC)),),
               ),

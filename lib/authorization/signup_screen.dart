@@ -1,11 +1,10 @@
 import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 /// Registration screen 
 /// Users enter their login, password and select a role
-/// then user is registered in the application.
+/// then user is registered in the application and added to the database.
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -13,16 +12,23 @@ class SignupScreen extends StatefulWidget {
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
+/// State class for SignupScreen
 class _SignupScreenState extends State<SignupScreen> {
+  // Controllers for text input fields
+  // allows to recive and manipuleta data entered by the user
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reentryPasswordController = TextEditingController(); 
   String selectedRole = 'user'; 
 
+  // Instance of AuthService to handle authentication
   final AuthService _authService = AuthService(); 
   // Instantiate a GlobalKey for the form
   final _formKey = GlobalKey<FormState>();
 
+  /// Dispose controllers when the widget is removed from the widget tree
+  /// prevents memory leaks
+  @override
   void dispose() {
     _loginController.dispose();
     _passwordController.dispose();
@@ -30,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  /// Update the selected role when user selects a different option
   void roleChange(String? value) {
     setState(() {
       selectedRole = value ?? 'user';
@@ -106,18 +113,21 @@ class _SignupScreenState extends State<SignupScreen> {
                   _loginController.text,
                   _passwordController.text
                 );
-                if (result == null) {
+                if (result == null && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Błąd podczas rejestracji użytkownika')),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Rejestracja zakończona sukcesem')),
-                  );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Rejestracja zakończona sukcesem')),
+                    );
+                    }
+                  if (context.mounted) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
+                  );}
                 }
               },
               style: ElevatedButton.styleFrom(

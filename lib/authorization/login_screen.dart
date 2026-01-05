@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _loginController.text,
                             _passwordController.text
                           );
-                          if (result == null){
+                          if (result == null && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Podaj prawidłowy e-mail i hasło')),
                           );
@@ -82,14 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               loading = true;
                             });
-                            print('signed in');
-                            print(result);
-                            print(_loginController.text);
-                            print(_passwordController.text);
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => PatientMenuScreen()),
-                            );                      
+                            if (context.mounted){
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PatientMenuScreen()),
+                            );     
+                            }
+                                             
                           }
                         },
                         style: ElevatedButton.styleFrom(

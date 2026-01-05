@@ -222,6 +222,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     score = correctDots*2-missedDots;  
 
       Future.delayed(const Duration(milliseconds: 500), () {
+        if (!mounted) return;
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -240,16 +241,16 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                     widget.selectedNumberOfControlledDots,
                     missedDots.toString(),
                   );
-                  if (result == null) {
-                    if (mounted) {
+                  if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
                     );
-                    }
                   }
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
-                  setState(() {
-                  });
+                  if (context.mounted){
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                  }
                 },
                 child: const Text('Wróć do menu'),
               ),
@@ -263,17 +264,17 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                     widget.selectedNumberOfControlledDots,
                     missedDots.toString(),
                   );
-                  if (result == null) {
-                    if (mounted) {
+                  if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
                     );
-                    }
                   }
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DotConrollerScreen(
+                  if (context.mounted){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DotConrollerScreen(
                     selectedTime: widget.selectedTime,
                     selectedNumberOfControlledDots: widget.selectedNumberOfControlledDots,
                   )));
+                  }
                 },
                 child: const Text('Zagraj ponownie'),
               ),

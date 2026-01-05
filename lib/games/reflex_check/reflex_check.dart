@@ -100,13 +100,15 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                 int.parse(widget.numberOfRounds), 
                 score);
 
-              if (result == null) {
-                if (!mounted) return;
+              if (result == null && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                 );
               }
-               Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+              if (context.mounted){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+              }
+               
             },
             child: const Text('Wróć do menu'),
           ),
@@ -119,13 +121,16 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                 int.parse(widget.numberOfRounds),
                 score,
               );
-              if (result == null) {
-                if (!mounted) return;
+              if (result == null && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                 );
               }
-              Navigator.of(context).pop();
+              if (context.mounted){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ReflexCheckScreen(
+                    numberOfRounds: widget.numberOfRounds,)));
+              }
             },
             child: const Text('Zagraj ponownie'),
           ),

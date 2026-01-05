@@ -1,5 +1,5 @@
 import 'package:apka_mgr/authorization/login_screen.dart';
-import 'package:apka_mgr/models/appUser.dart';
+import 'package:apka_mgr/models/app_user.dart';
 import 'package:apka_mgr/patient/patient_menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final user = Provider.of<AppUser?>(context);
-    print(user);
 
     // TO DO
     //RETURN HOME OR AUTH BASED ON STATUS

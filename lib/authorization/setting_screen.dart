@@ -1,14 +1,9 @@
 import 'package:apka_mgr/authorization/password_change.dart';
 import 'package:apka_mgr/authorization/users_data_update.dart';
-import 'package:apka_mgr/models/user_model.dart';
-import 'package:apka_mgr/services/users/users_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/services/database.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Ekran logowania do aplikacji
 /// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 

@@ -15,12 +15,12 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     final excercisesSnapshot = Provider.of<List<ExcerciseModel>?>(context);
 
-    if (excercisesSnapshot != null){
-      // print each document data to console
-      for (var excercise in excercisesSnapshot) {
-        print('Excercise ID: ${excercise.uid}, Data: ${excercise.date}, Description: ${excercise.description}');
-      }
-    }
+    //if (excercisesSnapshot != null){
+      //// print each document data to console
+      //for (var excercise in excercisesSnapshot) {
+        //print('Excercise ID: ${excercise.uid}, Data: ${excercise.date}, Description: ${excercise.description}');
+      //}
+    //}
 
     return ListView.builder(
       itemCount: excercisesSnapshot?.length ?? 0,
