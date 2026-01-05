@@ -1,15 +1,26 @@
+import 'package:apka_mgr/models/excercise_model.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:apka_mgr/services/excercise_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ExcerssiceStoryScreen extends StatefulWidget {
+class ExcerssiceStoryScreen extends StatelessWidget {
   const ExcerssiceStoryScreen({super.key});
 
   @override
-  State<ExcerssiceStoryScreen> createState() => _ExcerssiceStoryScreenState();
-}
-
-class _ExcerssiceStoryScreenState extends State<ExcerssiceStoryScreen> {
-  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return 
+    StreamProvider<List<ExcerciseModel>?>.value(
+      initialData: null,
+      value: DatabaseService(uid: uid).getExcercises(),
+      child: Scaffold(
+        backgroundColor: Color(0xFF98B6EC),
+      
+        body: Center(
+          child: ExcerciseList(),
+        ),
+      ),);
   }
 }

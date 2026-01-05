@@ -1,3 +1,4 @@
+import 'package:apka_mgr/models/excercise_model.dart';
 import 'package:apka_mgr/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -64,5 +65,20 @@ class DatabaseService {
       'details': excersiceDetails,
       'date': date,
     });
+  }
+
+  List<ExcerciseModel> _excerciseListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ExcerciseModel(
+        uid: doc.id,
+        description: doc.get('details') ?? '',
+        date: (doc.get('date') as Timestamp).toDate(),
+      );
+    }).toList();
+  }
+
+  Stream<List<ExcerciseModel>> getExcercises() {
+    return _firestore.collection('users').doc(uid).collection('exercises').snapshots()
+      .map(_excerciseListFromSnapshot);
   }
 }
