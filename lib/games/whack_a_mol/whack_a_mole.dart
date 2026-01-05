@@ -45,6 +45,7 @@ void initState() {
   super.initState();
 
   // change game time (string -> seconds)
+  // duration is based on users selection
   if (widget.gameTime == '30 sekund') {
     gameDuration = 30;
   } else if (widget.gameTime == '60 sekund') {
@@ -58,6 +59,7 @@ void initState() {
   timeLeft = gameDuration;
 
   // change mole speed (string -> milliseconds)
+  // speed is based on users selection
   if (widget.moleSpeed == 'Powolny') {
     moleSpeed = 1500;
   } else if (widget.moleSpeed == 'Średni') {
@@ -69,6 +71,8 @@ void initState() {
   }
 }
 
+  // prevent multiple starts
+  // game starts only once when the widget is built
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -92,7 +96,7 @@ void initState() {
     double fontSizeScore = screenSize.width * 0.06;
     double fontSizeButton = screenSize.width * 0.04;
 
-
+    // Timer for showing moles
     // New mole is shown every second
     moleTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // If the game is not running or the widget is not mounted, do nothing
@@ -114,13 +118,13 @@ void initState() {
         );
     });
 
+    // Timer for showing bombs
     // New bomb is shown every second
     bombTimer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       if (!gameRunning || !mounted) return;
           setState(() {
             final random = Random();
             int index;  
-          
         do {
           index = random.nextInt(rows * columns);
         } while (moleVisible[index] || bombVisible[index]);
@@ -138,6 +142,7 @@ void initState() {
 
   
     // Countdown timer 
+    // Decreases the time left every second depends on the game duration
     gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // If the game is not running or the widget is not mounted, do nothing
       if (!gameRunning || !mounted) return;
@@ -151,7 +156,7 @@ void initState() {
             gameTimer.cancel();
             moleVisible = List.generate(rows * columns, (index) => false);
             
-            // Show the dialog with the score 
+            // When the game ends, show the dialog with the score
             Future.delayed(Duration.zero, () {
               if (!mounted) return;
               showDialog(
@@ -171,7 +176,8 @@ void initState() {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        startGame(); // Restart the game
+                        // Restart the game
+                        startGame(); 
                       },
                       child: Text('Zagraj ponownie', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),
@@ -197,16 +203,19 @@ void initState() {
   void onTapMole(int index) {
     if (!gameRunning) return;
 
+    // whne mole is visible, increase score
     if (moleVisible[index]) {
       setState(() {
         moleVisible[index] = false;
         score++;
       });
+    // when bomb is visible, hide bomb and increase missed hits
     } else if (bombVisible[index]) {
       setState(() {
         bombVisible[index] = false;
         missedHits++;
       });
+    // when users taps anywhere else -> increase missed hits
     } else {
       setState(() {
         missedHits++;
@@ -215,6 +224,8 @@ void initState() {
   }
 
 
+  // List of grid items
+  // (moles, bombs, holes)
   List<Widget> buildGridItems(){
     // Get the screen size to adjust the mole placement
     final screenSize = MediaQuery.of(context).size;
@@ -227,6 +238,7 @@ void initState() {
           child: Container(
             margin: const EdgeInsets.all(4.0),
             child: Center(
+              // Show item based on its visibility
               child: bombVisible[i]
                 ? Image.asset('images/bomb.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
                 : moleVisible[i]
@@ -245,6 +257,7 @@ void initState() {
   /// UI for the Whack a Mole game
   @override
   Widget build(BuildContext context) {
+    // Get the screen size to adjust font sizes
     final screenSize = MediaQuery.of(context).size;
     double fontSizeTitle = screenSize.width * 0.12;
     double fontSizeTimer = screenSize.width * 0.06;
@@ -254,6 +267,7 @@ void initState() {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
+        // game display - title, timer, score and grid
         children: [
           Text(
             'Uderz w krecika',
