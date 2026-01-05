@@ -192,6 +192,13 @@ void initState() {
                           level,
                           missedHits.toString(),
                         );
+                        if (result == null) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                          );
+                        }
+                        if (!mounted) return;
                         Navigator.of(context).pop();
                         // Restart the game
                         startGame(); 
@@ -201,6 +208,7 @@ void initState() {
                     // Button to go back to the patient menu
                     TextButton(
                       onPressed: () async {
+                        if (!mounted) return;
                         dynamic result = await DatabaseService(uid: uid).addWhackAMoleScore(
                           uid,
                           score,
@@ -208,6 +216,13 @@ void initState() {
                           level,
                           missedHits.toString(),
                         );
+                        if (result == null) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                          );
+                        }
+                        if (!mounted) return;
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                       },
                       child: Text('Wróć do menu', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
