@@ -11,13 +11,17 @@ class StartScreenCatchABall extends StatefulWidget {
   State<StartScreenCatchABall> createState() => _StartScreenCatchABallState();
 }
 
+/// State for the StartScreenCatchABall
+/// builds IU for the screen and allows to select game options
 class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
+  /// Number of balls in game (10 by default)
   String selectedNumberOfBalls = '10';
+  /// Size of the ball (medium by default)
   String selectedBallSize = 'średnia';
 
   @override
   Widget build(BuildContext context) {
-
+    // screen size and font sizes
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
     double fontSize2 = screenSize.width * 0.08;
@@ -25,7 +29,6 @@ class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
     
 
     return Scaffold(
-      
       backgroundColor: const Color(0xFFFFCFCB),
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFCFCB),
@@ -121,7 +124,7 @@ class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
                     SizedBox(height: screenSize.height * 0.05),
                     Text(
                       'Powodzenia!',
-                      style: TextStyle(fontSize: fontSize2, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D), fontStyle: FontStyle.italic),
                     ),
                     SizedBox(height: screenSize.height * 0.04),
                     CatchABallButton(
@@ -138,21 +141,25 @@ class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
   }
 }
 
-/// Button to start the Whack-a-Mole game
+/// Button to start the Catch-a-Ball game
 /// It navigates to the game screen and starts the game. 
 class CatchABallButton extends StatelessWidget {
+  /// Selected how meny balls will apear in game
   final String selectedNumeberOfBalls;
+  /// Defined ball's size
   final String selectedBallSize;
 
+  /// Constructor for CatchABallButton
   const CatchABallButton({super.key, required this.selectedNumeberOfBalls, required this.selectedBallSize});
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final fontSize = screenSize.width * 0.05;
+    final fontSize = screenSize.width * 0.04;
     
     return SizedBox(
       width: screenSize.width * 0.5,
+      height: screenSize.height * 0.07,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
@@ -175,10 +182,15 @@ class CatchABallButton extends StatelessWidget {
   }
 }
 
+/// Dropdown to select number of balls in the Catch-a-Ball game
+/// Allowed values are 10, 15, 20
 class NumeberOfBalls extends StatelessWidget {
+  /// Initial value of the dropdown
   final String initialValue;
+  /// Callback when the value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for NumeberOfBalls
   const NumeberOfBalls({
     super.key,
     required this.initialValue,
@@ -202,10 +214,15 @@ class NumeberOfBalls extends StatelessWidget {
   }
 }
 
+/// Dropdown to select size of the ball in the Catch-a-Ball game
+/// Allowed values are small, medium, large
 class BallSize extends StatelessWidget {
+  /// Initial value of the dropdown
   final String initialValue;
+  /// Callback when the value changes
   final ValueChanged<String> onChanged;
 
+  ///` Constructor for BallSize
   const BallSize({
     super.key,
     required this.initialValue,

@@ -1,5 +1,5 @@
 import 'package:apka_mgr/models/user_model.dart';
-import 'package:apka_mgr/services/user_list_tile.dart';
+import 'package:apka_mgr/services/users/user_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';

@@ -89,4 +89,14 @@ class DatabaseService {
     });
   }
 
+  // CATCH A BALL GAME DATA
+  // Add catch a ball score to Firestore
+  Future addCatchABallScore(String uid, DateTime date, int score, int preciseHits, int impreciseHits) async {
+    return await _firestore.collection('users').doc(uid).collection('catch_a_ball_scores').add({
+      'date': date,
+      'score': score,
+      'preciseHits': preciseHits,
+      'impreciseHits': impreciseHits,
+    });
+  }
 }

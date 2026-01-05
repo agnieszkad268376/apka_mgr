@@ -1,12 +1,24 @@
 import 'dart:math';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+/// Main screen for the Catch-a-Ball game
+/// UI display for game 
+/// Generate balls and manage interaction
 class CatchABallScreen extends StatefulWidget {
+  /// Choosen number of balls
   final String numberOfBalls;
+  /// Choosen size of the ball
   final String ballSize;
-  const CatchABallScreen({super.key, required this.numberOfBalls, required this.ballSize});
+
+  /// Constructor for CatchABallScreen
+  const CatchABallScreen({
+    super.key, 
+    required this.numberOfBalls, 
+    required this.ballSize});
 
   @override
   State<CatchABallScreen> createState() => CatchABallScreenState();
@@ -14,19 +26,30 @@ class CatchABallScreen extends StatefulWidget {
 
 // Poprawić że jak się klika po za popup window to nie gneruje nowej piłki
 
+/// State for CatchABallScreen
+/// Manages updating game and changes in UI
 class CatchABallScreenState extends State<CatchABallScreen> {
+  // Random genereator for balls placement
   final Random _random = Random();
+  // Ball's position
   late double _ballX = 0;
   late double _ballY = 0;
+  // Displayed ball size
   double finalBallSize = 0;
+  // Sceore and hits counters
   int score = 0;
   int preciseHits = 0;
   int impreciseHits = 0;
+  // Actual ball number
   int ballNumber = 1;
+  // Defined ball size (based on user choise)
   double ballMultiplier = 0;
   int totalBalls = 0;
   bool _hasStarted = false;
+  // List of flushes displayed on the screen
   List<Widget> flashes = [];
+
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   /// Resets game settings based on user choices
   /// Sets ball size and total number of balls
@@ -75,8 +98,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
         }
     }
 
-  /// Schedules the flashes to appear on random intervals
-  /// Works recursively all game 
+  /// Schedules the flashes to appear on random intervals throughout the game
   void _scheduleFlash() {
   final delay = Duration(milliseconds: 300 + _random.nextInt(1200)); // co 0.3–1.5 sekundy
   Timer(delay, () {
@@ -128,7 +150,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     _generateBall();
   }
 
-  /// Generates a new ball at a random position
+  /// Generates a new ball at random position
   void _generateBall() {
     final size = MediaQuery.of(context).size;
     finalBallSize = size.width * ballMultiplier;
@@ -166,14 +188,43 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                 ],),         
             actions: [
               TextButton(
-                onPressed: () {
+                // Save score to database and restart game
+                onPressed: () async{
+                  dynamic result = await DatabaseService(uid: uid).addCatchABallScore(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    preciseHits,
+                    impreciseHits,
+                  );
+                  if (result == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                    );
+                  } 
+                  if (!mounted) return;
                   Navigator.of(context).pop();
                   startGame();
                 },
                 child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid: uid).addCatchABallScore(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    preciseHits,
+                    impreciseHits,
+                  );
+                  if (result == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                    );
+                  } 
+                  if (!mounted) return;
                   Navigator.push(
                     context, 
                     MaterialPageRoute(builder: (context) => ChooseGameScreen()));
@@ -272,9 +323,12 @@ class FlashWidget extends StatefulWidget {
 /// State  for FlashWidget that manages the fade-out animation
 class _FlashWidgetState extends State<FlashWidget>
     with SingleTickerProviderStateMixin {
+  /// Controller for managing the animation
   late AnimationController _controller;
+  /// Animation for the opacity transition
   late Animation<double> _opacity;
 
+  /// Initializes animation and duration
   @override
   void initState() {
     super.initState();
@@ -286,6 +340,7 @@ class _FlashWidgetState extends State<FlashWidget>
     _opacity = Tween<double>(begin: 1, end: 0).animate(_controller);
   }
 
+  /// Builds the flash with fade-out effect
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
@@ -301,6 +356,7 @@ class _FlashWidgetState extends State<FlashWidget>
     );
   }
 
+  /// Disposes the animation controller
   @override
   void dispose() {
     _controller.dispose();

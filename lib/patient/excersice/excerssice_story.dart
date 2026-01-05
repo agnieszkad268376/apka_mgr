@@ -1,6 +1,6 @@
 import 'package:apka_mgr/models/excercise_model.dart';
 import 'package:apka_mgr/services/database.dart';
-import 'package:apka_mgr/services/excercise_list.dart';
+import 'package:apka_mgr/services/excercise/excercise_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,7 @@
 import 'package:apka_mgr/authorization/password_change.dart';
 import 'package:apka_mgr/authorization/users_data_update.dart';
 import 'package:apka_mgr/models/user_model.dart';
-import 'package:apka_mgr/services/users_list.dart';
+import 'package:apka_mgr/services/users/users_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
