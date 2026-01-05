@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Screen for the Reflex Check game.
 class ReflexCheckScreen extends StatefulWidget {
+  /// Number of rounds to play that user selected
   final String numberOfRounds;
 
+  /// Constructor for ReflexCheckScreen
+  /// [numberOfRounds] - number of rounds, slected by user
   const ReflexCheckScreen({
     super.key,
     required this.numberOfRounds});
@@ -14,22 +20,32 @@ class ReflexCheckScreen extends StatefulWidget {
   State<ReflexCheckScreen> createState() => _ReflexCheckScreenState();
 }
 
+/// State for the ReflexCheckScreen widget    
 class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
+  // User ID
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   Color buttonColor = Colors.red;
+  // Start score and rouds left
   int score = 0;
   int roundsLeft = 5;
+  // Game running flag
   bool gameRunning = false;
   Timer? colorChangeTimer;
+  // Random generator
+  // to generate time delays
   final Random random = Random();
   DateTime? greenStartTime;
   int? reactionTime;
   List<int> reactionTimes = [];
 
+  /// Initialize state
   @override
   void initState() {
     super.initState();
   }
 
+  /// Start the game
+  /// restart game settings
   void startGame() {
     setState(() {
       score = 0;
@@ -43,9 +59,9 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
     _scheduleNextColorChange();
   }
 
+  /// Schedule the next color change
   void _scheduleNextColorChange() {
     if (!gameRunning || roundsLeft == 0) return;
-
 
   int delay = random.nextInt(4) + 2; 
   colorChangeTimer = Timer(Duration(seconds: delay), () {
@@ -58,28 +74,57 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
   });
   }
 
-
+  /// Show dialog when the game is over
   void _showGameOverDialog() {
-
+    // Calculate average reaction time
     double averageReactionTime = reactionTimes.isNotEmpty
         ? reactionTimes.reduce((a, b) => a + b) / reactionTimes.length
         : 0;  
 
+    double roundedAvgReactionTime = (averageReactionTime * 100).round() / 100;
+    
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Koniec gry!'),
-        content: Text('Twój średni czas reakcji: ${averageReactionTime.toStringAsFixed(2)} ms'),
+        content: Text('Twój średni czas reakcji: ${roundedAvgReactionTime.toStringAsFixed(2)} ms \n'
+            'Za grę otrzymujesz: $score punktów!'),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              dynamic result = await DatabaseService(uid: uid).addReflexCheckData(
+                uid, 
+                DateTime.now(), 
+                roundedAvgReactionTime, 
+                int.parse(widget.numberOfRounds), 
+                score);
+
+              if (result == null) {
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                );
+              }
                Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
             },
             child: const Text('Wróć do menu'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              dynamic result = await DatabaseService(uid: uid).addReflexCheckData(
+                uid,
+                DateTime.now(),
+                roundedAvgReactionTime,
+                int.parse(widget.numberOfRounds),
+                score,
+              );
+              if (result == null) {
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                );
+              }
               Navigator.of(context).pop();
             },
             child: const Text('Zagraj ponownie'),
@@ -89,6 +134,7 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
     );
   }
 
+  /// Dispose resources
   @override
   void dispose() {
     colorChangeTimer?.cancel();
@@ -114,9 +160,9 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Kliknij kolor',
+              'Sprawdź swój refleks!',
               style: TextStyle(
-                fontSize: fontSize2,
+                fontSize: fontSize3,
                 color: const Color(0xFF3D3D3D),
                 fontWeight: FontWeight.bold,
               ),

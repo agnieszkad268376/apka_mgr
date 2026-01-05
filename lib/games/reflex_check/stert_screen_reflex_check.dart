@@ -2,7 +2,7 @@ import 'package:apka_mgr/games/reflex_check/reflex_check.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
-/// Start screen for the Whack-a-Mole game
+/// Start screen for the Reflex Check game.
 /// It shows the instructions for the game and a button to start.
 class StartScreenReflexCheck extends StatefulWidget {
   const StartScreenReflexCheck({super.key});
@@ -11,12 +11,15 @@ class StartScreenReflexCheck extends StatefulWidget {
   State<StartScreenReflexCheck> createState() => _StartScreenReflexCheckState();
 }
 
+/// State for the StartScreenReflexCheck widget
 class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
+  /// Nuber of round (5 by default)
   String numberOfRounds = '5';
   
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive design
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
     double fontSize2 = screenSize.width * 0.08;
@@ -115,10 +118,13 @@ class _StartScreenReflexCheckState extends State<StartScreenReflexCheck> {
   }
 }
 
-/// Button to start the Whack-a-Mole game
+/// Button to start the Reflex Check game
 class ReflexCheckStartButton extends StatelessWidget {
+  /// Number of rounds selected
   final String numberOfRounds;
 
+  /// Constructor for ReflexCheckStartButton
+  /// [numberOfRounds] - number of rounds, slected by user
   const ReflexCheckStartButton({
     super.key,
     required this.numberOfRounds,
@@ -158,10 +164,17 @@ class ReflexCheckStartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
+/// Allows to choose number of rounds in the game
+/// User can select 3 or 5 or 7 rounds
 class NumberOfRounds extends StatelessWidget {
+  /// Initial value for the dropdown menu
   final String initialValue;
+  /// Callback when value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for NumberOfRounds
+  /// [initialValue] - initial selected value 
+  /// [onChanged] - callback when value changes
   const NumberOfRounds({
     super.key,
     required this.initialValue,

@@ -110,4 +110,16 @@ class DatabaseService {
       'level': level,
     });
   }
+
+
+  // REFLEX CHECK GAME DATA
+  // Add reflex check data to Firestore
+  Future addReflexCheckData(String uid, DateTime date, double averageReactionTime, int roundsPlayed, int score) async {
+    return await _firestore.collection('users').doc(uid).collection('reflex_check_scores').add({
+      'date': date,
+      'averageReactionTime': averageReactionTime,
+      'roundsPlayed': roundsPlayed,
+      'score': score,
+    });
+  }
 }
