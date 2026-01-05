@@ -4,6 +4,7 @@ import 'package:apka_mgr/games/whack_a_mol/whack_a_mole.dart';
 
 /// Start screen for the Whack-a-Mole game
 /// It shows the instructions for the game and a button to start.
+/// User can choose game time and mole speed.
 class StartScreenWhackAMole extends StatefulWidget {
   const StartScreenWhackAMole({super.key});
 
@@ -12,11 +13,13 @@ class StartScreenWhackAMole extends StatefulWidget {
 }
 
 class _StartScreenWhackAMoleState extends State<StartScreenWhackAMole> {
+  // defoult time and speed
   String selectedTime = '60 sekund';
   String selectedSpeed = 'Średni';
 
   @override
   Widget build(BuildContext context) {
+    // screen  and fonts size 
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
     double fontSize2 = screenSize.width * 0.08;
@@ -178,6 +181,7 @@ class WchackAMoleSartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
+/// there are three selections: 30, 60, 90 seconds
 class GameTimeSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
@@ -206,6 +210,7 @@ class GameTimeSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
+/// there are three selections: Slow, Medium, Fast
 class MoleSpeedSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
