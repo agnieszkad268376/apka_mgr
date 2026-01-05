@@ -2,7 +2,7 @@ import 'package:apka_mgr/games/dot_controller/dot_controller.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
 
-/// Start screen for the Whack-a-Mole game
+/// Start screen for the Dot Controller game.
 /// It shows the instructions for the game and a button to start.
 class StartScreenDotController extends StatefulWidget {
   const StartScreenDotController({super.key});
@@ -11,8 +11,11 @@ class StartScreenDotController extends StatefulWidget {
   State<StartScreenDotController> createState() => _StartScreenDotControllerState();
 } 
 
+/// State for the StartScreenDotController widget
 class _StartScreenDotControllerState extends State<StartScreenDotController> {
+  // Game time (default 60 seconds)
   String selectedTime = '60 sekund';
+  // Number of controlled dots (default 2)
   String selectedNumberOfControlledDots = '2';
 
   @override
@@ -132,10 +135,16 @@ class _StartScreenDotControllerState extends State<StartScreenDotController> {
 }
 
 /// Button to start the Whack-a-Mole game
+/// Navigates to the DotControllerScreen with selected settings
 class DotControllerScreenButton extends StatelessWidget {
+  /// Selected game time
   final String selectedTime;
+  /// Selected number of controlled dots
   final String selectedNumberOfControlledDots;
 
+  /// Constructor for DotControllerScreenButton
+  /// [selectedTime] - game time selected by user
+  /// [selectedNumberOfControlledDots] - number of controlled dots selected by user
   const DotControllerScreenButton({
     super.key,
     required this.selectedTime,
@@ -177,10 +186,17 @@ class DotControllerScreenButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
+/// Allows to choose game duration
+/// User can select 15, 30, or 60 seconds
 class GameTimeSelection extends StatelessWidget {
+  // Initial value for the dropdown menu
   final String initialValue;
+  // Callback when value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for GameTimeSelection
+  /// [initialValue] - initial selected value
+  /// [onChanged] - callback when value changes
   const GameTimeSelection({
     super.key,
     required this.initialValue,
@@ -205,10 +221,17 @@ class GameTimeSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
+/// Allows to choose number of controlled dots
+/// User can select 1 to 5 dots
 class NumberOfControlledDots extends StatelessWidget {
+  /// Initial value for the dropdown menu
   final String initialValue;
+  /// Callback when value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for NumberOfControlledDots
+  /// [initialValue] - initial selected value
+  /// [onChanged] - callback when value changes
   const NumberOfControlledDots({
     super.key,
     required this.initialValue,

@@ -1,12 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Main game screen for Dot Controller game.
 class DotConrollerScreen extends StatefulWidget {
+  /// Game time previously selected by user
   final String selectedTime;
+  /// Number of controlled dots previously selected by user
   final String selectedNumberOfControlledDots;
 
+  /// Constructor for DotConrollerScreen
+  /// [selectedTime] - game time selected by user
+  /// [selectedNumberOfControlledDots] - number of controlled dots selected by user
   const DotConrollerScreen({
     super.key,
     required this.selectedTime,
@@ -17,25 +25,39 @@ class DotConrollerScreen extends StatefulWidget {
   State<DotConrollerScreen> createState() => _DotConrollerScreenState();
 }
 
+/// State class for DotConrollerScreen
 class _DotConrollerScreenState extends State<DotConrollerScreen> {
+  // User's uid
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  // Random number generator
   final Random random = Random();
+  // Total number of dots in the game
   final int numberOfDots = 10;
+  // Size of each dot as a fraction of screen width
   final double dotSize = 0.05;
 
+  // Positions of the dots
   late List<Offset> positions;
+  // Speeds of the dots
   late List<Offset> speeds;
+  // Indexes of controlled dots
   late List<int> controlledDots; 
+  // Indexes of dots chosen by player at the end of the game
   List<int> choosenDots = [];
 
+  // Game duration in seconds
   int gameDuration = 30;
   late Timer gameTimer;
   
-
+  // timer and initialization flag
   Timer? _timer;
   bool initialized = false;
   bool isFlying = false;
   bool endGame = false;
+  String level = 'easy';
 
+  /// Initialize game state
   @override
   void initState() {
     super.initState();
@@ -43,23 +65,30 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     speeds = [];
     controlledDots = [];
 
+    // convert selected time to integer in seconds
     if (widget.selectedTime == '15 sekund') {
       gameDuration = 15;
+      level = 'easy';
     } else if (widget.selectedTime == '30 sekund') {
       gameDuration = 30;
+      level = 'medium';
     } else if (widget.selectedTime == '60 sekund') {
       gameDuration = 60;
+      level = 'hard';
     }
   }
 
+  /// Initialize dots positions and speeds
   void _initDots(Size size, double topBoundary, double bottomBoundary) {
     final double finalDotSize = size.width * dotSize;
 
+    // screen boundaries for dot movement
     final double xMin = 0;
     final double xMax = size.width - finalDotSize; 
     final double yMin = topBoundary;
     final double yMax = size.height - bottomBoundary - finalDotSize;
 
+    // generate random positions and speeds for dots
     positions = List.generate(
       numberOfDots,
       (_) => Offset(
@@ -77,20 +106,21 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       },
     );
 
+    // choose controlled dots based on user selection
     int count = int.tryParse(widget.selectedNumberOfControlledDots) ?? 0;
     controlledDots = _pickRandomIndices(numberOfDots, count);
 
     initialized = true;
   }
   
- 
+  /// Pick random unique indices for controlled dots
   List<int> _pickRandomIndices(int max, int count) {
     List<int> indices = List.generate(max, (i) => i);
     indices.shuffle(random);
     return indices.take(count).toList();
   }
 
-  // Start moving the dots
+  /// Start moving the dots
   void _startFlying(Size size, double topBoundary, double bottomBoundary) {
     if (isFlying) return;
     isFlying = true;
@@ -103,6 +133,8 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     final double yMin = topBoundary;
     final double yMax = size.height - bottomBoundary - finalDotSize;
 
+    // Timer that updates dot positions
+    // it runs every 35 milliseconds
     _timer = Timer.periodic(const Duration(milliseconds: 35), (timer) {
       setState(() {
         for (int i = 0; i < numberOfDots; i++) {
@@ -124,6 +156,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       });
     });
 
+    // Timer for game duration countdown
     gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!isFlying || !mounted) return;
       setState(() {
@@ -142,11 +175,16 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     });
   }
 
+  /// Stop moving the dots
+  /// Called when time is up or user presses stop
+  /// stops the timers and sets isFlying to false
   void _stopFlying() {
     _timer?.cancel();
     isFlying = false;
   }
 
+  /// Handle dot tap by user at the end of the game
+  /// [index] - index of tapped dot
   void onDotTapped(int index) {
     if (!endGame) return;
 
@@ -163,9 +201,11 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
     }
   }
 
+  /// Show game result
   void gameResult(){
     endGame = false;
 
+    int score = 0;
     // sets with dots indexes for comparison
     // dots choosen by player
     final choosenSet = Set.from(choosenDots);
@@ -178,7 +218,9 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
 
     // check if player selected all controlled dots correctly
     final isSuccess = correctDots == finalControlledDots && choosenSet.length == finalControlledDots;
-      
+    int missedDots = finalControlledDots - correctDots;
+    score = correctDots*2-missedDots;  
+
       Future.delayed(const Duration(milliseconds: 500), () {
         showDialog(
           context: context,
@@ -186,20 +228,52 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
           builder: (context) => AlertDialog(
             title: Text(isSuccess ? 'Gratulacje!' : 'Twój wynik!'),
             content: Text(
-                 'Poprawnie wskazałeś $correctDots z $finalControlledDots kontrolowanych kropek.\n'),
+                 'Poprawnie wskazałeś $correctDots z $finalControlledDots kontrolowanych kropek.\n Zdobyte punkty: $score'),
             actions: [
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid:uid).addDotControllerData(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    level,
+                    widget.selectedNumberOfControlledDots,
+                    missedDots.toString(),
+                  );
+                  if (result == null) {
+                    if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
+                    );
+                    }
+                  }
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                   setState(() {
                   });
                 },
-                child: const Text('OK'),
+                child: const Text('Wróć do menu'),
               ),
               TextButton(
-                onPressed: () {
-                  // TO DO
-                  // restart game
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid:uid).addDotControllerData(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    level,
+                    widget.selectedNumberOfControlledDots,
+                    missedDots.toString(),
+                  );
+                  if (result == null) {
+                    if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
+                    );
+                    }
+                  }
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DotConrollerScreen(
+                    selectedTime: widget.selectedTime,
+                    selectedNumberOfControlledDots: widget.selectedNumberOfControlledDots,
+                  )));
                 },
                 child: const Text('Zagraj ponownie'),
               ),
@@ -209,6 +283,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       });
   }
 
+  /// Dispose timers when widget is removed
   @override
   void dispose() {
     _timer?.cancel();

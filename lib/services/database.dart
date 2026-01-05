@@ -122,4 +122,16 @@ class DatabaseService {
       'score': score,
     });
   }
+
+  // DOT CONTROLLER GAME DATA
+  // Add dot controller data to Firestore
+  Future addDotControllerData(String uid, DateTime date, int score, String level, String controlledDots, String missedDots) async {
+    return await _firestore.collection('users').doc(uid).collection('dot_controller_scores').add({
+      'date': date,
+      'score': score,
+      'level': level,
+      'controlledDots': controlledDots,
+      'missedDots': missedDots,
+    });
+  }
 }

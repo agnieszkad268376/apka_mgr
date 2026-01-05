@@ -279,7 +279,7 @@ void initState() {
             child: Center(
               // Show item based on its visibility
               child: bombVisible[i]
-                ? Image.asset('images/bomb.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
+                ? Image.asset('images/bomb1.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
                 : moleVisible[i]
                   ? Image.asset('images/mole.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33)
                   : Image.asset('images/hole.png', width: screenSize.width * 0.2, height: screenSize.height * 0.33),

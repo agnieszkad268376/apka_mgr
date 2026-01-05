@@ -71,6 +71,7 @@ flutter:
     - images/mole.png
     - images/whack_a_mole.png
     - images/bomb.png
+    - images/bomb1.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
