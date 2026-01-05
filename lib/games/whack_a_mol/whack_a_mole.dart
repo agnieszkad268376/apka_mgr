@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
@@ -38,6 +40,11 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   int timeLeft = 30;
   bool gameRunning = false;
   bool _hasStarted = false;
+  String level = '1';
+
+  // Get current user uid
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DateTime today = DateTime.now();
 
   // Initialzize game
  @override
@@ -62,10 +69,13 @@ void initState() {
   // speed is based on users selection
   if (widget.moleSpeed == 'Powolny') {
     moleSpeed = 1500;
+    level = '1';
   } else if (widget.moleSpeed == 'Średni') {
     moleSpeed = 1000;
+    level = '2';
   } else if (widget.moleSpeed == 'Szybki') {
     moleSpeed = 600;
+    level = '3';
   } else {
     moleSpeed = 1000;
   }
@@ -174,7 +184,14 @@ void initState() {
                   backgroundColor:  Color(0xFFE0DAD3),
                   actions: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        dynamic result = await DatabaseService(uid: uid).addWhackAMoleScore(
+                          uid,
+                          score,
+                          today,
+                          level,
+                          missedHits.toString(),
+                        );
                         Navigator.of(context).pop();
                         // Restart the game
                         startGame(); 
@@ -183,7 +200,14 @@ void initState() {
                     ),
                     // Button to go back to the patient menu
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        dynamic result = await DatabaseService(uid: uid).addWhackAMoleScore(
+                          uid,
+                          score,
+                          today,
+                          level,
+                          missedHits.toString(),
+                        );
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                       },
                       child: Text('Wróć do menu', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),

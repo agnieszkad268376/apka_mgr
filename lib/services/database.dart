@@ -51,12 +51,8 @@ class DatabaseService {
     return await _firestore.collection('users').doc(uid).get();
   }
 
-  // Example method to set user data
-  //Future<void> setUserData(String uid, Map<String, dynamic> data) async {
-    //await _firestore.collection('users').doc(uid).set(data);
-  //}
 
-
+  // EXCERSICE DATA
 
   // Add excersice data to Firestore 
   // Adds a new exercise entry for a user
@@ -81,4 +77,16 @@ class DatabaseService {
     return _firestore.collection('users').doc(uid).collection('exercises').snapshots()
       .map(_excerciseListFromSnapshot);
   }
+
+  // WHACK A MOLE GAME DATA
+  // Add whack a mole score to Firestore
+  Future addWhackAMoleScore(String uid, int score, DateTime date, String level, String missedHits) async {
+    return await _firestore.collection('users').doc(uid).collection('whack_a_mole_scores').add({
+      'score': score,
+      'date': date,
+      'level': level,
+      'missedHits': missedHits,
+    });
+  }
+
 }
