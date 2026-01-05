@@ -1,7 +1,8 @@
 import 'package:apka_mgr/games/build_a_word/build_a_word.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:flutter/material.dart';
-/// Start screen for the Whack-a-Mole game
+
+/// Start screen for the Build A Word game.
 /// It shows the instructions for the game and a button to start.
 class StartScreenBuildAWord extends StatefulWidget {
   const StartScreenBuildAWord({super.key});
@@ -10,17 +11,16 @@ class StartScreenBuildAWord extends StatefulWidget {
   State<StartScreenBuildAWord> createState() => _StartScreenBuildAWord();
 }
 
+/// State for the StartScreenBuildAWord widget
 class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
+  // Default selections for word length and number of words
   String selectedWordLenght = '5-7';
   String selectedNumberOfWords = '5';
-
-
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     double fontSize1 = screenSize.width * 0.09;
-    double fontSize2 = screenSize.width * 0.08;
     double fontSize3 = screenSize.width * 0.05;
 
     return Scaffold(
@@ -131,9 +131,14 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
 
 /// Button to start the build a word game
 class BuildAWordStartButton extends StatelessWidget {
+  /// Selected word length 
   final String selectedWordLenght;
+  /// Selected number of words 
   final String selectedNumberOfWords;
 
+  /// Constructor for BuildAWordStartButton
+  /// [selectedWordLenght] - word length that user selected for game
+  /// [selectedNumberOfWords] - number of words that user selected for game
   const BuildAWordStartButton({
     super.key,
     required this.selectedWordLenght,
@@ -175,10 +180,17 @@ class BuildAWordStartButton extends StatelessWidget {
 }
 
 /// DropdownMenu to select game time
+/// Allows user to select number of word that will be displayd in the game
+/// User can choose between 3, 5, or 7 words
 class NumbersOfWordsSelection extends StatelessWidget {
+  /// Initial selected value
   final String initialValue;
+  /// Callback when value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for NumbersOfWordsSelection
+  /// [initialValue] - initial selected value
+  /// [onChanged] - callback when value changes
   const NumbersOfWordsSelection({
     super.key,
     required this.initialValue,
@@ -203,10 +215,17 @@ class NumbersOfWordsSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
+/// Allows user to select word length for the game
+/// User can choose between 3-4, 5-7, or 8-9 letters
 class WordsLenghtSelection extends StatelessWidget {
+  /// Initial selected value
   final String initialValue;
+  /// Callback when value changes
   final ValueChanged<String> onChanged;
 
+  /// Constructor for WordsLenghtSelection
+  /// [initialValue] - initial selected value
+  /// [onChanged] - callback when value changes
   const WordsLenghtSelection({
     super.key,
     required this.initialValue,

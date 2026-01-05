@@ -99,4 +99,15 @@ class DatabaseService {
       'impreciseHits': impreciseHits,
     });
   }
+
+  // BUILD A WORD GAME DATA
+  // Add build a word score to Firestore
+  Future addBuildAWordScore(String uid, DateTime date, int score, int missedLetters, String level) async {
+    return await _firestore.collection('users').doc(uid).collection('build_a_word_scores').add({
+      'date': date,
+      'score': score,
+      'missedLetters': missedLetters,
+      'level': level,
+    });
+  }
 }

@@ -1,24 +1,43 @@
 import 'dart:math';
-
 import 'package:apka_mgr/patient/choose_game_screen.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Main screen for the Build A Word game.
+/// It contains the grid of letters and game logic.
 class BuildAWordScreen extends StatefulWidget {
+  /// User's selctions for game
   final String wordLength;
   final String numberOfWords;
-  const BuildAWordScreen({super.key, required this.wordLength, required this.numberOfWords});
+
+  /// Constructor for BuildAWordScreen
+  /// [wordLength] - word length seleted by user
+  /// [numberOfWords] - number of words selected by user
+  const BuildAWordScreen({
+    super.key, 
+    required this.wordLength, 
+    required this.numberOfWords});
 
   @override
   State<BuildAWordScreen> createState() => _BuildAWordScreenState();
 }
 
+/// State class for BuildAWordScreen
 class _BuildAWordScreenState extends State<BuildAWordScreen> {
-  // Grid size
+  // User ID
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  // Grid size for letters display
   final int rows = 8;
   final int columns = 4;
 
+  // Random generator
   final random = Random();
+  // Strart score
   int score = 0;
+  int missedLetters = 0;
+  String level = '';
+  // Current word and letter indexes
   int currentWordIndex = 1;
   int currentLetterIndex = 0;
   late String currentWord = '';
@@ -61,34 +80,48 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'ZALEŻNOŚĆ', 'RADOŚNIE', 'NIEBIESKI', 'CZERWONY', 'OPIEKUNKA',
   ];
 
-  // Function to get random word from list based on user's selection
+  /// Function to get random word from list based on user's selection
+  /// Returns a random word as a String
   String randomWord (){
     List<String> wordList;
     if (widget.wordLength == '3-4') {
       wordList = easyWords;
+      level = 'easy';
     } else if (widget.wordLength == '5-7') {
       wordList = midleWords;
+      level = 'medium';
     } else {
       wordList = hardWords;
+      level = 'hard';
     }
     wordList.shuffle(random);
     return wordList.first;
   }
 
+  void resetGame(){
+    score = 0;
+    missedLetters = 0;
+    currentWordIndex = 1;
+    currentLetterIndex = 0;
+  }
+
+  /// Method to initialize game state
   @override
   void initState() {
     super.initState();
+    resetGame();
     currentWord = randomWord();
     generateActualGrid();
     generateLetterColors();
   }
 
-  // Function to generate grid with letters
+  /// Function to generate grid with letters
   void generateActualGrid(){
     actualGrid = List.from(letters)..shuffle(random);
   }
 
-  // Function to generate colors for each letter
+  /// Function to generate colors for each letter
+  /// Letters can be green or red
   void generateLetterColors(){
     Color green = const Color(0xB30DFF00);
     Color red = const Color(0xB3FF0000);
@@ -114,6 +147,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
         letterColor.clear();
         generateLetterColors();
       } else {
+        // When all words are done
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -122,7 +156,20 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
             content: Text('Twój wynik to: $score punktów'),
             actions: [
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid: uid).addBuildAWordScore(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    missedLetters,
+                    level
+                  );
+                  if (result == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                    );
+                  }
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                   setState(() {
                   });
@@ -130,8 +177,25 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                 child: const Text('Wróć do menu')
               ),
               TextButton(
-                onPressed: () {
-                  
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid: uid).addBuildAWordScore(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    missedLetters,
+                    level
+                  );
+                  if (result == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                    );
+                  }
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BuildAWordScreen(
+                    wordLength: widget.wordLength,
+                    numberOfWords: widget.numberOfWords,
+                  )
+                  ));
                 }, 
                 child: const Text('Zagraj ponownie')
               )
@@ -142,22 +206,28 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     });
   }
 
+  /// Method to handle letter tap
+  /// Updates score and current letter index
+  /// [letter] - letter tapped by user
   void onLetterTap(String letter){
     if (currentLetterIndex < currentWord.length && letter == currentWord[currentLetterIndex]) {
       setState(() {
         currentLetterIndex++;
-        score += 10; 
+        score += 2; 
       });
       if (currentLetterIndex == currentWord.length) {
         nextWord(); 
       }
     } else {
       setState(() {
-        score -= 5;
+        score -= 1;
+        missedLetters += 1;
       });
     }
   }
 
+  /// Widget to display current word with colored letters
+  /// [screenSize] - size of the screen (used for responsive design)
   Widget currenWordDisplay(screenSize) {
     List<Widget> letterWidgets = [];
     for (int i = 0; i < currentWord.length; i++) {
@@ -178,7 +248,9 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     );
   }
 
+  /// Function to build grid with letter
   List<Widget> buildGridItems(){
+    /// Get screen size for responsive design
     final screenSize = MediaQuery.of(context).size;
     List <Widget> items = [];
 
