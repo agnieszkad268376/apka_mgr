@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// Patient view menu screen
-/// 
+/// Allows navigation to different patient-related features
 class PatientMenuScreen extends StatefulWidget {
   const PatientMenuScreen({super.key});
 
@@ -18,6 +18,7 @@ class PatientMenuScreen extends StatefulWidget {
   State<PatientMenuScreen> createState() => _PatientMenuScreenState();
 }
 
+/// State class for PatientMenuScreen
 class _PatientMenuScreenState extends State<PatientMenuScreen>
 with SingleTickerProviderStateMixin {
 
@@ -126,10 +127,12 @@ with SingleTickerProviderStateMixin {
             SizedBox(height: screenSize.height * 0.3),
             ElevatedButton(onPressed: () async{
               await _authService.signOut();
-              Navigator.push(
+              if (context.mounted) {
+                Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
               );
+              }
             },
              child: const Icon(Icons.logout)),
           ],

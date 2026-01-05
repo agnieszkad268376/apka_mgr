@@ -118,15 +118,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(width: screenSize.width * 0.05),
                 SizedBox(
                   width: screenSize.width * 0.45,
-                  child: IconButton(
-                  icon: Image.asset('images/whack_a_mole.png'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const StartScreenWhackAMole()),
-                    );
-                  },
-                ),
+                  child: RandomGameButton()
                 )
               ],
             ),
@@ -137,3 +129,57 @@ class ChooseGameScreen extends StatelessWidget {
   }
 }
 
+/// A button that selects a random game and navigates to its start screen.
+class RandomGameButton extends StatelessWidget {
+  RandomGameButton({super.key});
+
+  // List of available games
+  final List<String> games = [
+      'Whack a Mole',
+      'Catch a Ball',
+      'Build a Word',
+      'Reflex Check',
+      'Dot Controller',
+    ];
+  
+  // Function to get a random game from the list
+  String getRandomGames() {
+    games.shuffle();
+    return games.first;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        if (getRandomGames() == 'Whack a Mole') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const StartScreenWhackAMole()),
+          );
+        } else if (getRandomGames() == 'Catch a Ball') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const StartScreenCatchABall()),
+          );
+        } else if (getRandomGames() == 'Build a Word') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const StartScreenBuildAWord()),
+          );
+        } else if (getRandomGames() == 'Reflex Check') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const StartScreenReflexCheck()),
+          );
+        } else if (getRandomGames() == 'Dot Controller') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const StartScreenDotController()),
+          );
+        }
+      },
+      child: const Text('Losowa Gra'),
+    );
+  }
+}
