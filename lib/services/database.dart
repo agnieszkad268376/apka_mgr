@@ -54,4 +54,15 @@ class DatabaseService {
   //Future<void> setUserData(String uid, Map<String, dynamic> data) async {
     //await _firestore.collection('users').doc(uid).set(data);
   //}
+
+
+
+  // Add excersice data to Firestore 
+  // Adds a new exercise entry for a user
+  Future addExcersiceData(String uid, String excersiceDetails, DateTime date) async {
+    return await _firestore.collection('users').doc(uid).collection('exercises').add({
+      'details': excersiceDetails,
+      'date': date,
+    });
+  }
 }

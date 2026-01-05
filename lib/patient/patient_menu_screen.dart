@@ -2,7 +2,7 @@ import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/authorization/setting_screen.dart';
 import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
-import 'package:apka_mgr/patient/excersice_screen.dart';
+import 'package:apka_mgr/patient/excersice/excersice_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:apka_mgr/patient/statistics_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
