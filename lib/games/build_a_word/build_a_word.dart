@@ -44,6 +44,9 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
   List<String> actualGrid = [];
   List<Color> letterColor = [];
 
+  // Get user points
+  late Map<String, dynamic> userPointsMap = {};
+
   //List with letters from polish alphabet
   List<String> letters = [
     'A', 'Ą', 'B', 'C', 'Ć', 'D', 'E', 'Ę', 'F', 'G', 'H',
@@ -113,6 +116,14 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     currentWord = randomWord();
     generateActualGrid();
     generateLetterColors();
+
+    DatabaseService(uid: uid).getUserData(uid).then((snapshot) {
+    if (snapshot.exists) {
+      setState(() {
+        userPointsMap = snapshot.data() as Map<String, dynamic>;
+      });
+    }
+    });
   }
 
   /// Function to generate grid with letters
@@ -170,6 +181,21 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   }
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    0,
+                    score,
+                    0,
+                    0,
+                    score,
+                  );
+                  if (result2 == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                    );
+                  }
                   if (!mounted) return;
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                   setState(() {
@@ -190,6 +216,21 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                    );
+                  }
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    0,
+                    score,
+                    0,
+                    0,
+                    score,
+                  );
+                  if (result2 == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                     );
                   }
                   if (!mounted) return;

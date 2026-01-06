@@ -78,7 +78,7 @@ class SettingScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.info, size: screenSize.height * 0.1),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text('Dodatkowe informacje: ${userData['additional_info']}', style: TextStyle(fontSize: fontSize2),),
+                      Text('${userData['additional_info']}', style: TextStyle(fontSize: fontSize2),),
                     ],
                   ),
                   SizedBox(height: screenSize.height * 0.05),

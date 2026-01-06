@@ -6,6 +6,8 @@ import 'package:apka_mgr/patient/excersice/excersice_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:apka_mgr/patient/statistics_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,13 +25,27 @@ class _PatientMenuScreenState extends State<PatientMenuScreen>
 with SingleTickerProviderStateMixin {
 
   final AuthService _authService = AuthService();
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  late int userPoints = 0;
+
+  /// Function to load user's points from firestore
+  Future<void> loadPoints() async {
+    final points = await DatabaseService(uid: uid).getAllPoints(uid);
+
+    if (!mounted) return;
+    setState(() {
+      userPoints = points;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    loadPoints();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -146,7 +162,7 @@ with SingleTickerProviderStateMixin {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildShimmerCircle(screenSize, 'Punkty\nogólne'),
+                _buildShimmerCircle(screenSize, '$userPoints'),
                 SizedBox(width: screenSize.width * 0.1),
                 _buildShimmerCircle(screenSize, 'Punkty\ndziś'),
               ],

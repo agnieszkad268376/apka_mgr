@@ -44,17 +44,30 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
 
   // Get current user uid
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  // Get today's date
   DateTime today = DateTime.now();
+
+  // Get user points from database
+  late Map<String, dynamic> userPointsMap = {};
 
   // Initialzize game
  @override
-void initState() {
+ void initState() {
   super.initState();
+
+  // Initialize userPointsMap from the database
+  DatabaseService(uid: uid).getUserData(uid).then((snapshot) {
+    if (snapshot.exists) {
+      setState(() {
+        userPointsMap = snapshot.data() as Map<String, dynamic>;
+      });
+    }
+  });
 
   // change game time (string -> seconds)
   // duration is based on users selection
   if (widget.gameTime == '30 sekund') {
-    gameDuration = 30;
+    gameDuration = 10;
   } else if (widget.gameTime == '60 sekund') {
     gameDuration = 60;
   } else if (widget.gameTime == '90 sekund') {
@@ -105,6 +118,7 @@ void initState() {
     double fontSizeEndGame = screenSize.width * 0.09;
     double fontSizeScore = screenSize.width * 0.06;
     double fontSizeButton = screenSize.width * 0.04;
+
 
     // Timer for showing moles
     // New mole is shown every second
@@ -198,6 +212,21 @@ void initState() {
                             SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                           );
                         }
+                        dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                          uid, 
+                          score,
+                          0,
+                          0,
+                          0,
+                          0,
+                          score,
+                        );
+                        if (result2 == null) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                          );
+                        }
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         // Restart the game
@@ -220,6 +249,21 @@ void initState() {
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                          );
+                        }
+                        dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                          uid, 
+                          score,
+                          0,
+                          0,
+                          0,
+                          0,
+                          score,
+                        );
+                        if (result2 == null) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                           );
                         }
                         if (!mounted) return;

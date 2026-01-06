@@ -30,6 +30,9 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
   // User's uid
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
+  // Get user points from database
+  late Map<String, dynamic> userPointsMap = {};
+
   // Random number generator
   final Random random = Random();
   // Total number of dots in the game
@@ -76,6 +79,15 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
       gameDuration = 60;
       level = 'hard';
     }
+
+    // Initialize userPointsMap from the database
+    DatabaseService(uid: uid).getUserData(uid).then((snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          userPointsMap = snapshot.data() as Map<String, dynamic>;
+        });
+     }
+    });
   }
 
   /// Initialize dots positions and speeds
@@ -246,6 +258,20 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
                     );
                   }
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    0,
+                    0,
+                    0,
+                    score,
+                    score,
+                  );
+                  if (result2 == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                    );
+                  }
                   if (context.mounted){
                     Navigator.push(
                       context, 
@@ -267,6 +293,20 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                   if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
+                    );
+                  }
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    0,
+                    0,
+                    0,
+                    score,
+                    score,
+                  );
+                  if (result2 == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                     );
                   }
                   if (context.mounted){

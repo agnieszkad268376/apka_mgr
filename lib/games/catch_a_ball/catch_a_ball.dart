@@ -51,6 +51,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
 
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
+  late Map<String, dynamic> userPointsMap = {};
+
   /// Resets game settings based on user choices
   /// Sets ball size and total number of balls
   void resetGameSettings() {
@@ -73,6 +75,14 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     } else {
       totalBalls = 10; 
     }
+
+    DatabaseService(uid: uid).getUserData(uid).then((snapshot) {
+    if (snapshot.exists) {
+      setState(() {
+        userPointsMap = snapshot.data() as Map<String, dynamic>;
+      });
+    }
+  });
   }
 
   /// Initializes the game and schedules the first flash
@@ -202,6 +212,21 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   } 
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    score,
+                    0,
+                    0,
+                    0,
+                    score,
+                  );
+                  if (result2 == null && context.mounted) {
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                    );
+                  }
                   if (context.mounted) {
                   Navigator.of(context).pop();
                   startGame();
@@ -223,6 +248,20 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   } 
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    score,
+                    0,
+                    0,
+                    0,
+                    score,
+                  );
+                  if (result2 == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                    );
+                  }
                   if (context.mounted){
                     Navigator.push(
                     context, 

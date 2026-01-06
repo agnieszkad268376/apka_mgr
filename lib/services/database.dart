@@ -46,7 +46,7 @@ class DatabaseService {
     .map(_userListFromSnapshot);
   }
 
-  // get user data
+  // Get user data
   Future<DocumentSnapshot> getUserData(String uid) async {
     return await _firestore.collection('users').doc(uid).get();
   }
@@ -133,5 +133,38 @@ class DatabaseService {
       'controlledDots': controlledDots,
       'missedDots': missedDots,
     });
+  }
+
+
+  // POINTS DATA
+  // Add or update points for a user
+  Future updateUserPoints(String uid, int whackAMolePoints, int catchABallPoints, int buildAWordPoints, int reflexCheckPoints, int dotControllerPoints, int points,) async {
+    return await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').update({
+      'whackAMolePoints': FieldValue.increment(whackAMolePoints),
+      'catchABallPoints': FieldValue.increment(catchABallPoints),
+      'buildAWordPoints': FieldValue.increment(buildAWordPoints),
+      'reflexCheckPoints': FieldValue.increment(reflexCheckPoints),
+      'dotControllerPoints': FieldValue.increment(dotControllerPoints),
+      'points': FieldValue.increment(points),
+    });
+  }
+
+  // Get points data for a user
+  Future<DocumentSnapshot> getUserPoints(String uid) async {
+    return await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').get();
+  }
+
+  // Get all points for user
+  Future<int>getAllPoints(String uid) async {
+    final doc = await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').get();
+
+    if (!doc.exists){
+      print('nie działa');
+      return 0;
+    }
+
+    final data = doc.data() as Map<String, dynamic>;
+    print('dalej nie działa');
+    return data['points'] ?? 0;
   }
 }
