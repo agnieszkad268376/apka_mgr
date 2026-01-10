@@ -27,6 +27,7 @@ with SingleTickerProviderStateMixin {
   final AuthService _authService = AuthService();
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
+  // Controllers for handling animation
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -42,6 +43,7 @@ with SingleTickerProviderStateMixin {
     });
   }
 
+  /// Initialize screen (animation and gets user's point from firestore)
   @override
   void initState() {
     super.initState();
@@ -56,12 +58,16 @@ with SingleTickerProviderStateMixin {
     );
   }
 
+  /// Dispose controller
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  /// Build animated circle to display user's points
+  /// [screenSize] - device screen size for inteligent display
+  /// [text] - text that will be displayd inside circle
   Widget _buildShimmerCircle(Size screenSize, String text) {
   return Stack(
     alignment: Alignment.center,
@@ -141,6 +147,7 @@ with SingleTickerProviderStateMixin {
               },
             ),
             SizedBox(height: screenSize.height * 0.3),
+            // sing out from app
             ElevatedButton(onPressed: () async{
               await _authService.signOut();
               if (context.mounted) {
@@ -163,8 +170,6 @@ with SingleTickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildShimmerCircle(screenSize, '$userPoints'),
-                SizedBox(width: screenSize.width * 0.1),
-                _buildShimmerCircle(screenSize, 'Punkty\ndziś'),
               ],
             ),
             SizedBox(height: screenSize.height * 0.08),

@@ -67,7 +67,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
   // change game time (string -> seconds)
   // duration is based on users selection
   if (widget.gameTime == '30 sekund') {
-    gameDuration = 10;
+    gameDuration = 30;
   } else if (widget.gameTime == '60 sekund') {
     gameDuration = 60;
   } else if (widget.gameTime == '90 sekund') {
@@ -80,13 +80,13 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
 
   // change mole speed (string -> milliseconds)
   // speed is based on users selection
-  if (widget.moleSpeed == 'Powolny') {
+  if (widget.moleSpeed == 'Łatwy') {
     moleSpeed = 1500;
     level = '1';
   } else if (widget.moleSpeed == 'Średni') {
     moleSpeed = 1000;
     level = '2';
-  } else if (widget.moleSpeed == 'Szybki') {
+  } else if (widget.moleSpeed == 'Trudny') {
     moleSpeed = 600;
     level = '3';
   } else {
@@ -130,7 +130,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
           final random = Random();
           final index = random.nextInt(rows * columns);
           moleVisible[index] = true;
-            // After 1 second the mole is hidden
+            // After choosen time the mole is hidden
             Timer(Duration(milliseconds:moleSpeed), () {
               if (mounted) {
                 setState(() {

@@ -104,7 +104,7 @@ class _StartScreenWhackAMoleState extends State<StartScreenWhackAMole> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Szybkość krecika: ',
+                  Text('Poziom: ',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D))),
                   SizedBox(width: screenSize.width * 0.02),
                   MoleSpeedSelection(
@@ -210,7 +210,7 @@ class GameTimeSelection extends StatelessWidget {
 }
 
 /// DropdownMenu to select mole speed
-/// there are three selections: Slow, Medium, Fast
+/// there are three selections: easy, medium, hard
 class MoleSpeedSelection extends StatelessWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
@@ -225,7 +225,7 @@ class MoleSpeedSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: initialValue,
-      items: <String>['Powolny', 'Średni', 'Szybki'].map((String value) {
+      items: <String>['Łatwy', 'Średni', 'Trudny'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
