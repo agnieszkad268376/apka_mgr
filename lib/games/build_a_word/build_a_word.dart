@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:apka_mgr/games/build_a_word/start_screen_build_a_word.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -234,11 +235,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                     );
                   }
                   if (!mounted) return;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BuildAWordScreen(
-                    wordLength: widget.wordLength,
-                    numberOfWords: widget.numberOfWords,
-                  )
-                  ));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenBuildAWord()));
                 }, 
                 child: const Text('Zagraj ponownie')
               )

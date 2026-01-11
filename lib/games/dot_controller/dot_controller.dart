@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/games/dot_controller/start_screen_dot_controller.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -243,6 +244,43 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
             content: Text(
                  'Poprawnie wskazałeś $correctDots z $finalControlledDots kontrolowanych kropek.\n Zdobyte punkty: $score'),
             actions: [
+               TextButton(
+                onPressed: () async {
+                  dynamic result = await DatabaseService(uid:uid).addDotControllerData(
+                    uid,
+                    DateTime.now(),
+                    score,
+                    level,
+                    widget.selectedNumberOfControlledDots,
+                    missedDots.toString(),
+                  );
+                  if (result == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
+                    );
+                  }
+                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                    uid, 
+                    0,
+                    0,
+                    0,
+                    0,
+                    score,
+                    score,
+                  );
+                  if (result2 == null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                    );
+                  }
+                  if (context.mounted){
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => StartScreenDotController()));
+                  }
+                },
+                child: const Text('Zagraj ponownie'),
+              ),
               TextButton(
                 onPressed: () async {
                   dynamic result = await DatabaseService(uid:uid).addDotControllerData(
@@ -279,44 +317,6 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                   }
                 },
                 child: const Text('Wróć do menu'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  dynamic result = await DatabaseService(uid:uid).addDotControllerData(
-                    uid,
-                    DateTime.now(),
-                    score,
-                    level,
-                    widget.selectedNumberOfControlledDots,
-                    missedDots.toString(),
-                  );
-                  if (result == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
-                    );
-                  }
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    0,
-                    0,
-                    0,
-                    score,
-                    score,
-                  );
-                  if (result2 == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
-                    );
-                  }
-                  if (context.mounted){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DotConrollerScreen(
-                    selectedTime: widget.selectedTime,
-                    selectedNumberOfControlledDots: widget.selectedNumberOfControlledDots,
-                  )));
-                  }
-                },
-                child: const Text('Zagraj ponownie'),
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/games/reflex_check/stert_screen_reflex_check.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,6 +107,40 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
           TextButton(
             onPressed: () async {
               dynamic result = await DatabaseService(uid: uid).addReflexCheckData(
+                uid,
+                DateTime.now(),
+                roundedAvgReactionTime,
+                int.parse(widget.numberOfRounds),
+                score,
+              );
+              if (result == null && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                );
+              }
+              dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
+                uid, 
+                0,
+                0,
+                0,
+                score,
+                0,
+                score,
+              );
+              if (result2 == null && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                );
+              }
+              if (context.mounted){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenReflexCheck()));
+              }
+            },
+            child: const Text('Zagraj ponownie'),
+          ),
+          TextButton(
+            onPressed: () async {
+              dynamic result = await DatabaseService(uid: uid).addReflexCheckData(
                 uid, 
                 DateTime.now(), 
                 roundedAvgReactionTime, 
@@ -137,42 +172,6 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                
             },
             child: const Text('Wróć do menu'),
-          ),
-          TextButton(
-            onPressed: () async {
-              dynamic result = await DatabaseService(uid: uid).addReflexCheckData(
-                uid,
-                DateTime.now(),
-                roundedAvgReactionTime,
-                int.parse(widget.numberOfRounds),
-                score,
-              );
-              if (result == null && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
-                );
-              }
-              dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                uid, 
-                0,
-                0,
-                0,
-                score,
-                0,
-                score,
-              );
-              if (result2 == null && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
-                );
-              }
-              if (context.mounted){
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ReflexCheckScreen(
-                    numberOfRounds: widget.numberOfRounds,)));
-              }
-            },
-            child: const Text('Zagraj ponownie'),
           ),
         ],
       ),

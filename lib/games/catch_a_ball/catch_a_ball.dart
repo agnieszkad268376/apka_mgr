@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:apka_mgr/games/catch_a_ball/start_screen_catch_a_ball.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -244,14 +245,14 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     score,
                   );
                   if (result2 == null && context.mounted) {
-                    
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                     );
                   }
                   if (context.mounted) {
-                  Navigator.of(context).pop();
-                  startGame();
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => StartScreenCatchABall()));
                   }
                 },
                 child: Text('Zagraj ponownie', style: TextStyle( color: Color(0xFF98B6EC)),),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:apka_mgr/games/whack_a_mol/start_screen_whack_a_mole.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -228,9 +229,7 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
                           );
                         }
                         if (!mounted) return;
-                        Navigator.of(context).pop();
-                        // Restart the game
-                        startGame(); 
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenWhackAMole()));
                       },
                       child: Text('Zagraj ponownie', style: TextStyle(fontSize: fontSizeButton, color: Color(0xFF98B6EC)),),
                     ),
