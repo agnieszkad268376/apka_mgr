@@ -49,9 +49,16 @@ class CatchABallScreenState extends State<CatchABallScreen> {
   // List of flushes displayed on the screen
   List<Widget> flashes = [];
 
+  // current user uid
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
   late Map<String, dynamic> userPointsMap = {};
+
+  // Game timer 
+  final Stopwatch _stopwatch = Stopwatch();
+  Timer? _timer;
+  int elapsedSeconds = 0;
+
 
   /// Resets game settings based on user choices
   /// Sets ball size and total number of balls
@@ -110,7 +117,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
 
   /// Schedules the flashes to appear on random intervals throughout the game
   void _scheduleFlash() {
-  final delay = Duration(milliseconds: 300 + _random.nextInt(1200)); // co 0.3–1.5 sekundy
+  final delay = Duration(milliseconds: 300 + _random.nextInt(1200)); 
   Timer(delay, () {
     if (!mounted) return;
 
@@ -151,6 +158,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
 
   /// Starts or restarts the game 
   /// Reset settings and initialize genereting ball
+  /// Seting the game timer
   void startGame() {
     resetGameSettings();
     score = 0;
@@ -158,6 +166,15 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     impreciseHits = 0;
     ballNumber = 1;
     _generateBall();
+    _stopwatch.start();
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        setState(() {
+          elapsedSeconds = _stopwatch.elapsed.inSeconds;
+        });
+      },
+    );
   }
 
   /// Generates a new ball at random position
@@ -166,7 +183,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     finalBallSize = size.width * ballMultiplier;
     setState(() {
       _ballX = _random.nextDouble() * (size.width - finalBallSize);
-      _ballY = _random.nextDouble() * (size.height - finalBallSize - 100); // -100 żeby nie wchodziło pod AppBar
+      _ballY = _random.nextDouble() * (size.height - finalBallSize - 100); 
     });
   }
 
@@ -183,6 +200,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
       }
       if (ballNumber > totalBalls) {
         // End the game after chosen number of balls
+        _stopwatch.stop();
+        _timer?.cancel();
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -195,6 +214,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                 Text('Twój wynik to $score punktów.'),
                 Text('Celne trafienia: $preciseHits'),
                 Text('Niedokładne tradienia: $impreciseHits'),
+                Text('Twój czas to: $elapsedSeconds s')
                 ],),         
             actions: [
               TextButton(
@@ -206,6 +226,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     score,
                     preciseHits,
                     impreciseHits,
+                    totalBalls,
+                    elapsedSeconds
                   );
                   if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -242,6 +264,8 @@ class CatchABallScreenState extends State<CatchABallScreen> {
                     score,
                     preciseHits,
                     impreciseHits,
+                    totalBalls,
+                    elapsedSeconds
                   );
                   if (result == null && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -286,6 +310,7 @@ class CatchABallScreenState extends State<CatchABallScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFCF4EC),
       appBar: AppBar(
+        backgroundColor: Color(0xFFFCF4EC),
         title: Text("Wynik: $score"),
       ),
       body: Stack(

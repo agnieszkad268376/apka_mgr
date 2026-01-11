@@ -4,6 +4,8 @@ class CatchABallModel {
   final int score;
   final int preciseHits;
   final int impreciseHits;
+  final int numberOfBalls;
+  final int time;
 
   CatchABallModel({
     required this.uid,
@@ -11,5 +13,7 @@ class CatchABallModel {
     required this.score,
     required this.preciseHits,
     required this.impreciseHits,
+    required this.numberOfBalls,
+    required this.time,
   });
 }
