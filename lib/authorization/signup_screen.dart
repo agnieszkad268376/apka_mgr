@@ -1,5 +1,7 @@
 import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
+import 'package:apka_mgr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 /// Registration screen 
@@ -118,11 +120,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     SnackBar(content: Text('Błąd podczas rejestracji użytkownika')),
                   );
                 } else {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Rejestracja zakończona sukcesem')),
-                    );
-                    }
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Rejestracja zakończona sukcesem')),
+                  );
+                  }
+                  String uid = FirebaseAuth.instance.currentUser!.uid;
+                  dynamic result2 = await DatabaseService(uid:uid).createUserPoints(uid);
                   if (context.mounted) {
                   Navigator.push(
                     context,

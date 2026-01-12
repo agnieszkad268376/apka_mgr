@@ -4,7 +4,7 @@ import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/patient/excersice/excersice_screen.dart';
 import 'package:apka_mgr/patient/progress_journal.dart';
-import 'package:apka_mgr/patient/statistics_screen.dart';
+import 'package:apka_mgr/patient/statistic/statistics_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -251,7 +251,7 @@ with SingleTickerProviderStateMixin {
               onPressed: () {
                 Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StatisticsScreen()),
+                      MaterialPageRoute(builder: (context) => StatisticsScreen()),
                     );
               },
               child: const Text('Statystyki', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),

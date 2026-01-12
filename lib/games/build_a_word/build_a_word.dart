@@ -198,11 +198,9 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                     );
                   }
                   if (!mounted) return;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
-                  setState(() {
-                  });
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenBuildAWord()));
                 }, 
-                child: const Text('Wróć do menu')
+                child: const Text('Zagraj ponownie')
               ),
               TextButton(
                 onPressed: () async {
@@ -235,10 +233,12 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                     );
                   }
                   if (!mounted) return;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenBuildAWord()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
+                  setState(() {
+                  });
                 }, 
-                child: const Text('Zagraj ponownie')
-              )
+                child: const Text('Wróć do menu')
+              ),
             ],
           )
         );

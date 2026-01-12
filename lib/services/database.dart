@@ -1,5 +1,10 @@
+import 'package:apka_mgr/models/build_a_word_model.dart';
+import 'package:apka_mgr/models/catch_a_ball_model.dart';
+import 'package:apka_mgr/models/dot_controller_model.dart';
 import 'package:apka_mgr/models/excercise_model.dart';
+import 'package:apka_mgr/models/reflex_check_model.dart';
 import 'package:apka_mgr/models/user_model.dart';
+import 'package:apka_mgr/models/whack_a_mole_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -89,6 +94,23 @@ class DatabaseService {
     });
   }
 
+  List<WhackAMoleModel> _statWhackAMoleListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return WhackAMoleModel(
+        uid: doc.id,
+        date: (doc.get('date') as Timestamp).toDate(),
+        score: doc.get('score'),
+        missedHits: doc.get('missedHits'),
+        level: doc.get('level'),
+      );
+    }).toList();
+  }
+
+  Stream<List<WhackAMoleModel>> getWhackAMoleStats() {
+    return _firestore.collection('users').doc(uid).collection('whack_a_mole_scores').snapshots()
+      .map(_statWhackAMoleListFromSnapshot);
+  }
+
   // CATCH A BALL GAME DATA
   // Add catch a ball score to Firestore
   Future addCatchABallScore(String uid, DateTime date, int score, int preciseHits, int impreciseHits, int numberOfBalls, int time) async {
@@ -102,6 +124,25 @@ class DatabaseService {
     });
   }
 
+  List<CatchABallModel> _statCatchABallListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return CatchABallModel(
+        uid: doc.id,
+        date: (doc.get('date') as Timestamp).toDate(),
+        score: doc.get('score'),
+        preciseHits: doc.get('preciseHits'),
+        impreciseHits: doc.get('impreciseHits'),
+        numberOfBalls: doc.get('numberOfBalls'),
+        time: doc.get('time')
+      );
+    }).toList();
+  }
+
+  Stream<List<CatchABallModel>> getCatchABallStats() {
+    return _firestore.collection('users').doc(uid).collection('catch_a_ball_scores').snapshots()
+      .map(_statCatchABallListFromSnapshot);
+  }
+
   // BUILD A WORD GAME DATA
   // Add build a word score to Firestore
   Future addBuildAWordScore(String uid, DateTime date, int score, int missedLetters, String level) async {
@@ -111,6 +152,23 @@ class DatabaseService {
       'missedLetters': missedLetters,
       'level': level,
     });
+  }
+
+  List<BuildAWordModel> _statBuildAWordSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return BuildAWordModel(
+        uid: doc.id,
+        date: (doc.get('date') as Timestamp).toDate(),
+        score: doc.get('score'),
+        missedLetters: doc.get('missedLetters'),
+        level: doc.get('level')
+      );
+    }).toList();
+  }
+
+  Stream<List<BuildAWordModel>> getBuildAWordStats() {
+    return _firestore.collection('users').doc(uid).collection('build_a_word_scores').snapshots()
+      .map(_statBuildAWordSnapshot);
   }
 
 
@@ -125,6 +183,23 @@ class DatabaseService {
     });
   }
 
+  List<ReflexCheckModel> _statReflexCheckSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return ReflexCheckModel(
+        uid: doc.id,
+        date: (doc.get('date') as Timestamp).toDate(),
+        averageReactionTime: doc.get('averageReactionTime'),
+        roundsPlayed: doc.get('roundsPlayed'),
+        score: doc.get('score'),
+      );
+    }).toList();
+  }
+
+  Stream<List<ReflexCheckModel>> getReflexCheckStats() {
+    return _firestore.collection('users').doc(uid).collection('reflex_check_scores').snapshots()
+      .map(_statReflexCheckSnapshot);
+  }
+
   // DOT CONTROLLER GAME DATA
   // Add dot controller data to Firestore
   Future addDotControllerData(String uid, DateTime date, int score, String level, String controlledDots, String missedDots) async {
@@ -137,8 +212,38 @@ class DatabaseService {
     });
   }
 
+  List<DotControllerModel> _statDotControllerSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return DotControllerModel(
+        uid: doc.id,
+        date: (doc.get('date') as Timestamp).toDate(),
+        score: doc.get('score'),
+        level: doc.get('level'),
+        controlledDots: doc.get('controlledDots'),
+        missedDots: doc.get('missedDots')
+      );
+    }).toList();
+  }
+
+  Stream<List<DotControllerModel>> getDotControllerStats() {
+    return _firestore.collection('users').doc(uid).collection('dot_controller_scores').snapshots()
+      .map(_statDotControllerSnapshot);
+  }
+
 
   // POINTS DATA
+
+  Future createUserPoints(String uid) async {
+    return await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').set({
+      'whackAMolePoints': 0,
+      'catchABallPoints': 0,
+      'buildAWordPoints': 0,
+      'reflexCheckPoints': 0,
+      'dotControllerPoints': 0,
+      'points': 0,
+    });
+  }
+
   /// Add or update points for a user
   /// [uid] - user's unique indentificator
   /// [whackAMolePoints] 

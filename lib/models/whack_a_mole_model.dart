@@ -1,9 +1,9 @@
 class WhackAMoleModel {
-  int uid;
-  int date;
+  String uid;
+  DateTime date;
   int score;
-  int missedHits;
-  int level;
+  String missedHits;
+  String level;
 
   WhackAMoleModel({
     required this.uid,
