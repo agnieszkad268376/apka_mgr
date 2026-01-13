@@ -83,42 +83,27 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                 width: 300,
                 child: ElevatedButton(
                 onPressed: () async {
-          
-                  if (_nameController.text.contains(' ')) {
-                    
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Login nie może zawierać spacji')),
+                  try {
+                    await DatabaseService(uid: '').updateUserData(
+                      FirebaseAuth.instance.currentUser!.uid,
+                      currentEamail,
+                      _nameController.text,
+                      currentRole,
+                      _birthDateController.text,
+                      _additionalInfoController.text,
                     );
-                    return;
-                  }
-                  if (!_nameController.text.contains('@') || !_nameController.text.contains('.') ) {
-                    
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Wpisz poprawny adres email')),
-                    );
-                    return;
-                  }
-
-                  dynamic result = await DatabaseService(uid: '').updateUserData(
-                    FirebaseAuth.instance.currentUser!.uid,
-                    currentEamail,
-                    _nameController.text,
-                    currentRole,
-                    _birthDateController.text,
-                    _additionalInfoController.text,
-                  );
-
-                  if (result == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji danych użytkownika')),
-                    );
-                  } else {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Dane użytkownika zaktualizowane pomyślnie')),
                       );
                     }
-                  }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Błąd podczas aktualizacji danych użytkownika')),
+                      );
+                    }
+                  }           
                   
                 },
                 style: ElevatedButton.styleFrom(

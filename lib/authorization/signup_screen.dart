@@ -127,6 +127,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   }
                   String uid = FirebaseAuth.instance.currentUser!.uid;
                   dynamic result2 = await DatabaseService(uid:uid).createUserPoints(uid);
+                  if (result2==null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Nie założono bazy punktów')),
+                  );
+                  }
                   if (context.mounted) {
                   Navigator.push(
                     context,
