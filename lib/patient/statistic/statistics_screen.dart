@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// Ekran logowania do aplikacji
 /// Użytkownik może wprowadzić login i hasło, a następnie zalogować się lub zarejestrować. 
 class StatisticsScreen extends StatelessWidget {
-  StatisticsScreen({super.key});
+  const StatisticsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

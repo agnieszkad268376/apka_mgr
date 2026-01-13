@@ -1,8 +1,6 @@
 import 'package:apka_mgr/models/catch_a_ball_model.dart';
-import 'package:apka_mgr/models/whack_a_mole_model.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:apka_mgr/services/statistic/catch_a_ball/catch_a_ball_list.dart';
-import 'package:apka_mgr/services/statistic/whack_a_mole/whack_a_mole_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

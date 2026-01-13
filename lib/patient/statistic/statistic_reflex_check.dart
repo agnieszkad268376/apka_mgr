@@ -1,7 +1,6 @@
 import 'package:apka_mgr/models/reflex_check_model.dart';
 import 'package:apka_mgr/services/database.dart';
 import 'package:apka_mgr/services/statistic/reflex_check/reflex_check_list_dart.dart';
-import 'package:apka_mgr/services/statistic/whack_a_mole/whack_a_mole_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
