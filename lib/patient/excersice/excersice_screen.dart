@@ -7,14 +7,19 @@ import 'package:flutter/material.dart';
 class ExcersiceScreen extends StatelessWidget {
   const ExcersiceScreen({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    double fontSize = screenSize.height * 0.03;
     return 
     Scaffold(
-      backgroundColor: Color(0xFF98B6EC),
+      backgroundColor: Color(0xFFFFF1E3),
       appBar: AppBar(
+         toolbarHeight: screenSize.height * 0.1,
+        automaticallyImplyLeading: true,
         backgroundColor: Color(0xFF98B6EC),
-        title: Text('Ćwiczenia'),
+        centerTitle: true,
+        title: Text('Ćwiczenia', style: TextStyle(fontSize: fontSize),),
       ),
     
       body: SingleChildScrollView(
@@ -23,7 +28,25 @@ class ExcersiceScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: screenSize.height *  0.02),
+              Image.asset(
+                'images/logo.jpg',
+                width: screenSize.width * 0.6,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(height: screenSize.height *  0.05),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFCF4EC),
+                fixedSize: Size(screenSize.width * 0.85, screenSize.height * 0.09),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA),  
+                    width: 2,             
+                  ),
+                ),
+              ),
                 onPressed: () {
                   Navigator.push(context, 
                     MaterialPageRoute(builder: (context) => const AddExcerciseScreen()),
@@ -31,10 +54,22 @@ class ExcersiceScreen extends StatelessWidget {
                 },
                child: 
                Text(
-                'Dzisiaj wykonane ćwiczenia',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'Dodaj dzisiaj wykonane ćwiczenia',
+                style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color:Color(0xFFA49C94)),
               ),),
+              SizedBox(height: screenSize.height *  0.05),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFCF4EC),
+                fixedSize: Size(screenSize.width * 0.85, screenSize.height * 0.09),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide( 
+                    color: Color(0xFFCEC3BA),  
+                    width: 2,             
+                  ),
+                ),
+              ),
                 onPressed: () {
                   Navigator.push(context, 
                     MaterialPageRoute(builder: (context) => const ExcerssiceStoryScreen()),
@@ -43,7 +78,7 @@ class ExcersiceScreen extends StatelessWidget {
                child: 
                Text(
                 'Historia ćwiczeń',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color:Color(0xFFA49C94)),
               ),),
             ],
           ),
