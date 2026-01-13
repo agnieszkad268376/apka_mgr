@@ -259,20 +259,24 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
                     );
                   }
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    0,
-                    0,
-                    0,
-                    score,
-                    score,
-                  );
-                  if (result2 == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  try{
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      0,
+                      0,
+                      0,
+                      score,
+                      score,
                     );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                       SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                      );
+                    }
                   }
+
                   if (context.mounted){
                     Navigator.push(
                       context, 
@@ -296,19 +300,22 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku gry')),
                     );
                   }
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    0,
-                    0,
-                    0,
-                    score,
-                    score,
-                  );
-                  if (result2 == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  try{
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      0,
+                      0,
+                      0,
+                      score,
+                      score,
                     );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                       SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                      );
+                    }
                   }
                   if (context.mounted){
                     Navigator.push(

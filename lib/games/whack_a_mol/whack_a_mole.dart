@@ -213,21 +213,22 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
                             SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                           );
                         }
-                        dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                          uid, 
-                          score,
-                          0,
-                          0,
-                          0,
-                          0,
-                          score,
-                        );
-                        if (result2 == null) {
+                        try {
+                          await DatabaseService(uid: uid).updateUserPoints(
+                            uid, 
+                            score,
+                            0,
+                            0,
+                            0,
+                            0,
+                            score,
+                          );
+                        } catch (e) {
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                           );
-                        }
+                        }                        
                         if (!mounted) return;
                         Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenWhackAMole()));
                       },
@@ -250,21 +251,22 @@ class WhackAMoleScreenState extends State<WhackAMoleScreen> {
                             SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                           );
                         }
-                        dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                          uid, 
-                          score,
-                          0,
-                          0,
-                          0,
-                          0,
-                          score,
-                        );
-                        if (result2 == null) {
+                        try {
+                          await DatabaseService(uid: uid).updateUserPoints(
+                            uid, 
+                            score,
+                            0,
+                            0,
+                            0,
+                            0,
+                            score,
+                          );
+                        } catch (e) {
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
                           );
-                        }
+                        }   
                         if (!mounted) return;
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));
                       },

@@ -118,19 +118,22 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                   const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                 );
               }
-              dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                uid, 
-                0,
-                0,
-                0,
-                score,
-                0,
-                score,
-              );
-              if (result2 == null && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+              try{
+                await DatabaseService(uid: uid).updateUserPoints(
+                  uid, 
+                  0,
+                  0,
+                  0,
+                  score,
+                  0,
+                  score,
                 );
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  );
+                }
               }
               if (context.mounted){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => StartScreenReflexCheck()));
@@ -152,19 +155,22 @@ class _ReflexCheckScreenState extends State<ReflexCheckScreen> {
                   const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                 );
               }
-              dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                uid, 
-                0,
-                0,
-                0,
-                score,
-                0,
-                score,
-              );
-              if (result2 == null && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+              try{
+                await DatabaseService(uid: uid).updateUserPoints(
+                  uid, 
+                  0,
+                  0,
+                  0,
+                  score,
+                  0,
+                  score,
                 );
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  );
+                }
               }
               if (context.mounted){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseGameScreen()));

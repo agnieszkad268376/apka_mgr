@@ -113,8 +113,8 @@ class DatabaseService {
 
   // CATCH A BALL GAME DATA
   // Add catch a ball score to Firestore
-  Future addCatchABallScore(String uid, DateTime date, int score, int preciseHits, int impreciseHits, int numberOfBalls, int time) async {
-    return await _firestore.collection('users').doc(uid).collection('catch_a_ball_scores').add({
+  Future <void> addCatchABallScore(String uid, DateTime date, int score, int preciseHits, int impreciseHits, int numberOfBalls, int time) async {
+    await _firestore.collection('users').doc(uid).collection('catch_a_ball_scores').add({
       'date': date,
       'score': score,
       'preciseHits': preciseHits,
@@ -247,15 +247,15 @@ class DatabaseService {
   /// Add or update points for a user
   /// [uid] - user's unique indentificator
   /// [whackAMolePoints] 
-  Future updateUserPoints(String uid, int whackAMolePoints, int catchABallPoints, int buildAWordPoints, int reflexCheckPoints, int dotControllerPoints, int points,) async {
-    return await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').update({
+  Future<void> updateUserPoints(String uid, int whackAMolePoints, int catchABallPoints, int buildAWordPoints, int reflexCheckPoints, int dotControllerPoints, int points,) async {
+    await _firestore.collection('users').doc(uid).collection('points').doc('pointsDoc').set({
       'whackAMolePoints': FieldValue.increment(whackAMolePoints),
       'catchABallPoints': FieldValue.increment(catchABallPoints),
       'buildAWordPoints': FieldValue.increment(buildAWordPoints),
       'reflexCheckPoints': FieldValue.increment(reflexCheckPoints),
       'dotControllerPoints': FieldValue.increment(dotControllerPoints),
       'points': FieldValue.increment(points),
-    });
+    }, SetOptions(merge: true));
   }
 
   /// Get points data for a user

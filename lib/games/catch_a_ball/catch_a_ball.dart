@@ -221,33 +221,39 @@ class CatchABallScreenState extends State<CatchABallScreen> {
               TextButton(
                 // Save score to database and restart game
                 onPressed: () async{
-                  dynamic result = await DatabaseService(uid: uid).addCatchABallScore(
-                    uid,
-                    DateTime.now(),
-                    score,
-                    preciseHits,
-                    impreciseHits,
-                    totalBalls,
-                    elapsedSeconds
-                  );
-                  if (result == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                  try {
+                    await DatabaseService(uid: uid).addCatchABallScore(
+                      uid,
+                      DateTime.now(),
+                      score,
+                      preciseHits,
+                      impreciseHits,
+                      totalBalls,
+                      elapsedSeconds
                     );
-                  } 
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    score,
-                    0,
-                    0,
-                    0,
-                    score,
-                  );
-                  if (result2 == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                      );
+                    } 
+                  }
+                  try {
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      score,
+                      0,
+                      0,
+                      0,
+                      score,
                     );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                      );
+                    }
                   }
                   if (context.mounted) {
                   Navigator.push(
@@ -259,33 +265,39 @@ class CatchABallScreenState extends State<CatchABallScreen> {
               ),
               TextButton(
                 onPressed: () async {
-                  dynamic result = await DatabaseService(uid: uid).addCatchABallScore(
-                    uid,
-                    DateTime.now(),
-                    score,
-                    preciseHits,
-                    impreciseHits,
-                    totalBalls,
-                    elapsedSeconds
-                  );
-                  if (result == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                  try {
+                    await DatabaseService(uid: uid).addCatchABallScore(
+                      uid,
+                      DateTime.now(),
+                      score,
+                      preciseHits,
+                      impreciseHits,
+                      totalBalls,
+                      elapsedSeconds
                     );
-                  } 
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    score,
-                    0,
-                    0,
-                    0,
-                    score,
-                  );
-                  if (result2 == null && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
+                      );
+                    } 
+                  }
+                  try {
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      score,
+                      0,
+                      0,
+                      0,
+                      score,
                     );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
+                      );
+                    }
                   }
                   if (context.mounted){
                     Navigator.push(

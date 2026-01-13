@@ -182,16 +182,17 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   }
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    0,
-                    score,
-                    0,
-                    0,
-                    score,
-                  );
-                  if (result2 == null) {
+                  try{
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      0,
+                      score,
+                      0,
+                      0,
+                      score,
+                    );
+                  } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
@@ -217,16 +218,17 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
                       const SnackBar(content: Text('Błąd podczas zapisywania wyniku')),
                     );
                   }
-                  dynamic result2 = await DatabaseService(uid: uid).updateUserPoints(
-                    uid, 
-                    0,
-                    0,
-                    score,
-                    0,
-                    0,
-                    score,
-                  );
-                  if (result2 == null) {
+                  try{
+                    await DatabaseService(uid: uid).updateUserPoints(
+                      uid, 
+                      0,
+                      0,
+                      score,
+                      0,
+                      0,
+                      score,
+                    );
+                  } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Błąd podczas aktualizacji punktów')),
