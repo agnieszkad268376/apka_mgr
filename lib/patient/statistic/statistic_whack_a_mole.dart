@@ -16,15 +16,26 @@ class _StatisticWhackAMoleState extends State<StatisticWhackAMole> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final screenSize = MediaQuery.of(context).size;
     return 
-    StreamProvider<List<WhackAMoleModel>?>.value(
-      initialData: null,
-      value: DatabaseService(uid: uid).getWhackAMoleStats(),
-      child: Scaffold(
+    Scaffold(
+      backgroundColor: Color(0xFFFFF1E3),
+      appBar: AppBar(
+        toolbarHeight: screenSize.height * 0.1,
+        automaticallyImplyLeading: true,
         backgroundColor: Color(0xFF98B6EC),
-        body: Center(
-          child: WhackAMoleList(),
-        )
+        centerTitle: true,
+        title: Text('Uderz w krecika', style: TextStyle(fontSize: screenSize.height * 0.04)),
+      ),
+      body: StreamProvider<List<WhackAMoleModel>?>.value(
+        initialData: null,
+        value: DatabaseService(uid: uid).getWhackAMoleStats(),
+        child: Scaffold(
+          backgroundColor: Color(0xFF98B6EC),
+          body: Center(
+            child: WhackAMoleList(),
+          )
+        ),
       ),
     );
   }

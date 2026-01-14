@@ -107,8 +107,11 @@ class DatabaseService {
   }
 
   Stream<List<WhackAMoleModel>> getWhackAMoleStats() {
-    return _firestore.collection('users').doc(uid).collection('whack_a_mole_scores').snapshots()
-      .map(_statWhackAMoleListFromSnapshot);
+    return _firestore.collection('users').doc(uid)
+    .collection('whack_a_mole_scores')
+    .orderBy('date', descending: true)
+    .snapshots()
+    .map(_statWhackAMoleListFromSnapshot);
   }
 
   // CATCH A BALL GAME DATA
@@ -139,8 +142,11 @@ class DatabaseService {
   }
 
   Stream<List<CatchABallModel>> getCatchABallStats() {
-    return _firestore.collection('users').doc(uid).collection('catch_a_ball_scores').snapshots()
-      .map(_statCatchABallListFromSnapshot);
+    return _firestore.collection('users').doc(uid)
+    .collection('catch_a_ball_scores')
+    .orderBy('date', descending: true)
+    .snapshots()
+    .map(_statCatchABallListFromSnapshot);
   }
 
   // BUILD A WORD GAME DATA
@@ -167,8 +173,11 @@ class DatabaseService {
   }
 
   Stream<List<BuildAWordModel>> getBuildAWordStats() {
-    return _firestore.collection('users').doc(uid).collection('build_a_word_scores').snapshots()
-      .map(_statBuildAWordSnapshot);
+    return _firestore.collection('users').doc(uid)
+    .collection('build_a_word_scores')
+    .orderBy('date', descending: true)
+    .snapshots()
+    .map(_statBuildAWordSnapshot);
   }
 
 
@@ -196,8 +205,11 @@ class DatabaseService {
   }
 
   Stream<List<ReflexCheckModel>> getReflexCheckStats() {
-    return _firestore.collection('users').doc(uid).collection('reflex_check_scores').snapshots()
-      .map(_statReflexCheckSnapshot);
+    return _firestore.collection('users').doc(uid)
+    .collection('reflex_check_scores')
+    .orderBy('date', descending: true)
+    .snapshots()
+    .map(_statReflexCheckSnapshot);
   }
 
   // DOT CONTROLLER GAME DATA
@@ -226,8 +238,11 @@ class DatabaseService {
   }
 
   Stream<List<DotControllerModel>> getDotControllerStats() {
-    return _firestore.collection('users').doc(uid).collection('dot_controller_scores').snapshots()
-      .map(_statDotControllerSnapshot);
+    return _firestore.collection('users').doc(uid)
+    .collection('dot_controller_scores')
+    .orderBy('date', descending: true)
+    .snapshots()
+    .map(_statDotControllerSnapshot);
   }
 
 
