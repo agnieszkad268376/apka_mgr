@@ -19,8 +19,8 @@ class DatabaseService {
 
   // create a new document with uid as the document ID
   // this method is used when creating a new user document
-  Future updateUserData(String uid, String email, String name, String role, String age, String info) async {
-    return await userCollection.doc(uid).set({
+  Future<void> updateUserData(String uid, String email, String name, String role, String age, String info) async {
+    await userCollection.doc(uid).set({
       'email': email,
       'name': name,
       'role': role,

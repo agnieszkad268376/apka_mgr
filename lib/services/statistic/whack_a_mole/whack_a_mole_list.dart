@@ -1,4 +1,5 @@
 import 'package:apka_mgr/models/whack_a_mole_model.dart';
+import 'package:apka_mgr/services/statistic/whack_a_mole/whack_a_mole_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,7 @@ class _WhackAMoleListState extends State<WhackAMoleList> {
     return ListView.builder(
       itemCount: whackAMoleSnapshot?.length ?? 0,
       itemBuilder: (context, index) {
-        final whackAMoleStat = whackAMoleSnapshot?[index];
-        return ListTile(
-          title: Text('Data: ${whackAMoleStat!.date}'),
-          subtitle: Text('Wynik ${whackAMoleStat.score}'),
-        );
+        return WhackAMoleListTile(whackAMoleModel: whackAMoleSnapshot![index]);
       }
     );
   }
