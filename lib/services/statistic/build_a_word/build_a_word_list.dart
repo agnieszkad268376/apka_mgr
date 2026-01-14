@@ -1,4 +1,5 @@
 import 'package:apka_mgr/models/build_a_word_model.dart';
+import 'package:apka_mgr/services/statistic/build_a_word/build_a_word_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,7 @@ class _BuildAWordListState extends State<BuildAWordList> {
     return ListView.builder(
       itemCount: buildAWordSnapshot?.length ?? 0,
       itemBuilder: (context, index) {
-        final buildAWordStat = buildAWordSnapshot?[index];
-        return ListTile(
-          title: Text('Data: ${buildAWordStat!.date}'),
-          subtitle: Text('Wynik ${buildAWordStat.score}'),
-        );
+        return BuildAWordListTile(buildAWordModel: buildAWordSnapshot![index]);
       }
     );
   }

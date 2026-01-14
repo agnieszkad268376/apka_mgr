@@ -1,4 +1,5 @@
 import 'package:apka_mgr/models/dot_controller_model.dart';
+import 'package:apka_mgr/services/statistic/dot_controller/dot_controller_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +18,8 @@ class _DotControllerListState extends State<DotControllerList> {
     return ListView.builder(
       itemCount: dotControllerSnapshot?.length ?? 0,
       itemBuilder: (context, index) {
-        final dotControllerStat = dotControllerSnapshot?[index];
-        return ListTile(
-          title: Text('Data: ${dotControllerStat!.date}'),
-          subtitle: Text('Wynik ${dotControllerStat.score}'),
-        );
+        return DotControllerListTile(dotControllerModel: dotControllerSnapshot![index]);
       }
     );
-  }
+  } 
 }

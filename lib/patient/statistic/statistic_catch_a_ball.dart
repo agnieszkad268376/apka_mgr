@@ -17,7 +17,7 @@ class _StatisticCatchABallState extends State<StatisticCatchABall> {
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
     return 
-      StreamProvider<List<CatchABallModel>?>.value(
+      StreamProvider<List<CatchABallModel>?>.value( 
         initialData: null,
         value: DatabaseService(uid: uid).getCatchABallStats(),
         child: Scaffold(

@@ -20,7 +20,7 @@ class WhackAMoleListTile extends StatelessWidget {
           title: Text('${whackAMoleModel.date}'),
           subtitle: Text('${whackAMoleModel.score}'),
         ),
-      ),
+      ), 
       );
   }
 }

@@ -1,14 +1,14 @@
-import 'package:apka_mgr/models/build_a_word_model.dart';
+import 'package:apka_mgr/models/reflex_check_model.dart';
 import 'package:flutter/material.dart';
 
-class BuildAWordListTile extends StatelessWidget {
-  const BuildAWordListTile({super.key, required this.buildAWordModel});
+class ReflexCheckListTile extends StatelessWidget {
+  const ReflexCheckListTile({super.key, required this.reflexCheckModel});
 
-  final BuildAWordModel buildAWordModel;
+  final ReflexCheckModel reflexCheckModel;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return  Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
@@ -17,8 +17,8 @@ class BuildAWordListTile extends StatelessWidget {
             radius: 25.0,
             backgroundColor: Color(0xFFFFFFFF),
           ),
-          title: Text('${buildAWordModel.date}'),
-          subtitle: Text('${buildAWordModel.score}'),
+          title: Text('${reflexCheckModel.date}'),
+          subtitle: Text('${reflexCheckModel.score}'),
         ),
       ), 
       );

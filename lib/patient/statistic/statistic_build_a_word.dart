@@ -28,4 +28,4 @@ class _StatisticBuildAWordState extends State<StatisticBuildAWord> {
       ),
     );
   }
-}
+} 

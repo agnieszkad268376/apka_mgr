@@ -1,4 +1,5 @@
 import 'package:apka_mgr/models/catch_a_ball_model.dart';
+import 'package:apka_mgr/services/statistic/catch_a_ball/catch_a_ball_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,7 @@ class _CatchABallListState extends State<CatchABallList> {
     return ListView.builder(
       itemCount: catchABallSnapshot?.length ?? 0,
       itemBuilder: (context, index){
-        final catchABallStat = catchABallSnapshot?[index];
-        return ListTile(
-          title: Text('Data ${catchABallStat!.date}'),
-          subtitle: Text('Wynik ${catchABallStat.score}'),
-        );
+        return CatchABallListTile(catchABallModel: catchABallSnapshot![index]);
       });
-  }
+  } 
 }

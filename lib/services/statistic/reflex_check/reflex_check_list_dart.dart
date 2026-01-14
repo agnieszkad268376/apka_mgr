@@ -1,4 +1,5 @@
 import 'package:apka_mgr/models/reflex_check_model.dart';
+import 'package:apka_mgr/services/statistic/reflex_check/reflex_check_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +18,8 @@ class _ReflexCheckListDartState extends State<ReflexCheckListDart> {
     return ListView.builder(
       itemCount: reflexCheckSnapshot?.length ?? 0,
       itemBuilder: (context, index) {
-        final reflexCheckStat = reflexCheckSnapshot?[index];
-        return ListTile(
-          title: Text('Data: ${reflexCheckStat!.date}'),
-          subtitle: Text('Wynik ${reflexCheckStat.score}'),
-        );
+        return ReflexCheckListTile(reflexCheckModel: reflexCheckSnapshot![index]);
       }
     );
-  }
+  } 
 }
