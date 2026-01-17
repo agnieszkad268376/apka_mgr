@@ -11,6 +11,10 @@ class ReflexCheckListTile extends StatelessWidget {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = reflexCheckModel.date;
     String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+    final screenSize = MediaQuery.of(context).size;
+    final fontSizeTitle = screenSize.height * 0.025;
+    final fontSizeSubtitle = screenSize.height *0.015;
+
 
     if (reflexCheckModel.roundsPlayed == 3) {
       bgcolor =  Color(0xFF4DBE9C);
@@ -25,12 +29,19 @@ class ReflexCheckListTile extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
-          leading: CircleAvatar(
-            radius: 25.0,
-            backgroundColor: bgcolor,
+          leading: SizedBox(
+            height: screenSize.height * 0.085,
+            width: screenSize.height * 0.085,
+            child: CircleAvatar(
+              radius: 25.0,
+              backgroundColor: bgcolor,
+            ),
           ),
-          title: Text(date),
-          subtitle: Text('${reflexCheckModel.score}'),
+          title: Text(date, style: TextStyle(fontSize: fontSizeTitle),),
+          subtitle: Text('Wynik: ${reflexCheckModel.score} punkty \n'
+                         'Średni czas reakcji: ${reflexCheckModel.averageReactionTime} ms \n'
+                         'Ilość rund: ${reflexCheckModel.roundsPlayed} \n',
+                         style: TextStyle(fontSize: fontSizeSubtitle),),
         ),
       ), 
       );

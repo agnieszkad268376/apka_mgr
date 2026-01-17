@@ -12,6 +12,9 @@ class CatchABallListTile extends StatelessWidget {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = catchABallModel.date;
     String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+    final screenSize = MediaQuery.of(context).size;
+    final fontSizeTitle = screenSize.height * 0.025;
+    final fontSizeSubtitle = screenSize.height *0.015;
 
     if (catchABallModel.numberOfBalls == 10) {
       bgcolor =  Color(0xFF4DBE9C);
@@ -30,8 +33,12 @@ class CatchABallListTile extends StatelessWidget {
             radius: 25.0,
             backgroundColor: bgcolor,
           ),
-          title: Text(date),
-          subtitle: Text('${catchABallModel.score}'),
+          title: Text(date, style: TextStyle(fontSize: fontSizeTitle),),
+          subtitle: Text('Wynik: ${catchABallModel.score} punkty \n'
+                         'Dokładne wskazania piłki: ${catchABallModel.preciseHits} \n'
+                         'Niedokładne wskazanie piłki: ${catchABallModel.impreciseHits} punkty \n'
+                         'Czas: ${catchABallModel.time} s \n',
+                         style: TextStyle(fontSize: fontSizeSubtitle),),
         ),
       ), 
       );

@@ -1,5 +1,4 @@
 import 'package:apka_mgr/models/whack_a_mole_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class WhackAMoleListTile extends StatelessWidget {
@@ -11,7 +10,10 @@ class WhackAMoleListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = whackAMoleModel.date;
-    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}';
+    final screenSize = MediaQuery.of(context).size;
+    final fontSizeTitle = screenSize.height * 0.025;
+    final fontSizeSubtitle = screenSize.height *0.015;
 
     if (whackAMoleModel.level == '1') {
       bgcolor =  Color(0xFF4DBE9C);
@@ -25,12 +27,18 @@ class WhackAMoleListTile extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
-          leading: CircleAvatar(
-            radius: 25.0,
-            backgroundColor: bgcolor,
+          leading: SizedBox(
+            height: screenSize.height * 0.085,
+            width: screenSize.height * 0.085,
+            child: CircleAvatar(
+              radius: 25.0,
+              backgroundColor: bgcolor,
+            ),
           ),
-          title: Text(date),
-          subtitle: Text('${whackAMoleModel.score}'),
+          title: Text(date, style: TextStyle(fontSize: fontSizeTitle ),),
+          subtitle: Text('Wynik gry: ${whackAMoleModel.score}\n'
+                         'Pudła: ${whackAMoleModel.missedHits}',
+                         style: TextStyle(fontSize: fontSizeSubtitle ),),
         ),
       ),
     );

@@ -12,13 +12,20 @@ class BuildAWordListTile extends StatelessWidget {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = buildAWordModel.date;
     String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+    final screenSize = MediaQuery.of(context).size;
+    final fontSizeTitle = screenSize.height * 0.025;
+    final fontSizeSubtitle = screenSize.height *0.015;
+    String level = "łatwy";
 
     if (buildAWordModel.level == 'easy') {
       bgcolor =  Color(0xFF4DBE9C);
+      level = "łatwy";
     } else if (buildAWordModel.level == 'medium') {
       bgcolor =  Color(0xFF4996BD);
+      level = "średni";
     } else {
       bgcolor =  Color(0xFF9E579E);
+      level = "trudny";
     }
 
     return Padding(
@@ -30,10 +37,14 @@ class BuildAWordListTile extends StatelessWidget {
             radius: 25.0,
             backgroundColor: bgcolor,
           ),
-          title: Text(date),
-          subtitle: Text('${buildAWordModel.score}'),
+          title: Text(date, style: TextStyle(fontSize: fontSizeTitle),),
+          subtitle: Text('Wynik: ${buildAWordModel.score} punkty \n'
+                         'Poziom słów: $level \n'
+                         'Ilość błędów: ${buildAWordModel.missedLetters} \n',
+                         style: TextStyle(fontSize: fontSizeSubtitle),
         ),
       ), 
-      );
+      ),
+    );
   }
 }
