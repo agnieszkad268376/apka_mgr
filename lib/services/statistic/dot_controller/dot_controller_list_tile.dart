@@ -8,6 +8,23 @@ class DotControllerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color bgcolor = Color(0xFFFFFFFF);
+    DateTime dateTimeDate = dotControllerModel.date;
+    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+
+    if (dotControllerModel.controlledDots == '1') {
+      bgcolor =  Color.fromARGB(255, 177, 190, 77);
+    } else if (dotControllerModel.controlledDots == '2') {
+      bgcolor =  Color.fromARGB(255, 73, 189, 135);
+    } else if (dotControllerModel.controlledDots == '3') {
+      bgcolor =  Color.fromARGB(255, 83, 124, 220);
+    }else if (dotControllerModel.controlledDots == '4') {
+      bgcolor =  Color.fromARGB(255, 128, 119, 231);
+    } else {
+      bgcolor =  Color(0xFF9E579E);
+    }
+
+
     return  Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -15,9 +32,9 @@ class DotControllerListTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Color(0xFFFFFFFF),
+            backgroundColor: bgcolor,
           ),
-          title: Text('${dotControllerModel.date}'),
+          title: Text(date),
           subtitle: Text('${dotControllerModel.score}'),
         ),
       ), 

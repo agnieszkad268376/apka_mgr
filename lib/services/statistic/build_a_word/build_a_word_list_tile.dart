@@ -8,6 +8,19 @@ class BuildAWordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Color bgcolor = Color(0xFFFFFFFF);
+    DateTime dateTimeDate = buildAWordModel.date;
+    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+
+    if (buildAWordModel.level == 'easy') {
+      bgcolor =  Color(0xFF4DBE9C);
+    } else if (buildAWordModel.level == 'medium') {
+      bgcolor =  Color(0xFF4996BD);
+    } else {
+      bgcolor =  Color(0xFF9E579E);
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -15,9 +28,9 @@ class BuildAWordListTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Color(0xFFFFFFFF),
+            backgroundColor: bgcolor,
           ),
-          title: Text('${buildAWordModel.date}'),
+          title: Text(date),
           subtitle: Text('${buildAWordModel.score}'),
         ),
       ), 

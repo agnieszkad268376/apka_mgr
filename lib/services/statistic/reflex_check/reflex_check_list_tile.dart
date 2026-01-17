@@ -8,6 +8,18 @@ class ReflexCheckListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color bgcolor = Color(0xFFFFFFFF);
+    DateTime dateTimeDate = reflexCheckModel.date;
+    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+
+    if (reflexCheckModel.roundsPlayed == 3) {
+      bgcolor =  Color(0xFF4DBE9C);
+    } else if (reflexCheckModel.roundsPlayed == 5) {
+      bgcolor =  Color(0xFF4996BD);
+    } else {
+      bgcolor =  Color(0xFF9E579E);
+    }
+
     return  Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -15,9 +27,9 @@ class ReflexCheckListTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Color(0xFFFFFFFF),
+            backgroundColor: bgcolor,
           ),
-          title: Text('${reflexCheckModel.date}'),
+          title: Text(date),
           subtitle: Text('${reflexCheckModel.score}'),
         ),
       ), 

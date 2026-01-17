@@ -9,6 +9,18 @@ class CatchABallListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    Color bgcolor = Color(0xFFFFFFFF);
+    DateTime dateTimeDate = catchABallModel.date;
+    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+
+    if (catchABallModel.numberOfBalls == 10) {
+      bgcolor =  Color(0xFF4DBE9C);
+    } else if (catchABallModel.numberOfBalls == 15) {
+      bgcolor =  Color(0xFF4996BD);
+    } else {
+      bgcolor =  Color(0xFF9E579E);
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -16,9 +28,9 @@ class CatchABallListTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Color(0xFFFFFFFF),
+            backgroundColor: bgcolor,
           ),
-          title: Text('${catchABallModel.date}'),
+          title: Text(date),
           subtitle: Text('${catchABallModel.score}'),
         ),
       ), 
