@@ -36,7 +36,7 @@ class WhackAMoleListTile extends StatelessWidget {
             ),
           ),
           title: Text(date, style: TextStyle(fontSize: fontSizeTitle ),),
-          subtitle: Text('Wynik gry: ${whackAMoleModel.score}\n'
+          subtitle: Text('Wynik gry: ${whackAMoleModel.score} punkty\n'
                          'Pudła: ${whackAMoleModel.missedHits}',
                          style: TextStyle(fontSize: fontSizeSubtitle ),),
         ),
