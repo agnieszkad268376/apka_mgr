@@ -15,6 +15,7 @@ class ChooseGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final fontSize1 = screenSize.height * 0.04;
     return 
     Scaffold(
       backgroundColor: Color(0xFFFCF4EC),
@@ -23,7 +24,7 @@ class ChooseGameScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF98B6EC),
         centerTitle: true,
-        title: const Text('Menu Pacjenta'),
+        title: Text('Wybierz grę', style: TextStyle(fontSize:fontSize1)),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -46,7 +47,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Image.asset('images/whack_a_mole.png'),
+                  icon: Image.asset('images/whack_a_mole_ikon.jpg'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -59,7 +60,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Icon(Icons.circle, size: screenSize.width*0.3,),
+                  icon: Image.asset('images/catch_a_ball_ikon.jpg'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -76,7 +77,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Icon(Icons.abc, size: screenSize.width*0.3,),
+                  icon: Image.asset('images/build_a_word_ikon.jpg'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -89,7 +90,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Icon(Icons.lock_clock, size: screenSize.width*0.3,),
+                  icon: Image.asset('images/reflex_check_ikon.jpg'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -106,7 +107,7 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(
                   width: screenSize.width * 0.45,
                   child: IconButton(
-                  icon: Icon(Icons.airlines_outlined, size: screenSize.width*0.3,),
+                  icon: Image.asset('images/dot_controller_ikon.jpg'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -118,13 +119,13 @@ class ChooseGameScreen extends StatelessWidget {
                 SizedBox(width: screenSize.width * 0.05),
                 SizedBox(
                   width: screenSize.width * 0.45,
-                  child: RandomGameButton()
+                  child: RandomGameButton(),
                 )
               ],
             ),
           ],
         ),
-      )
+      ),
     );
   }
 }
@@ -150,7 +151,8 @@ class RandomGameButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return IconButton(
+      icon: Image.asset('images/random_game.jpg'),
       onPressed: () {
         if (getRandomGames() == 'Whack a Mole') {
           Navigator.push(
@@ -178,8 +180,7 @@ class RandomGameButton extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const StartScreenDotController()),
           );
         }
-      },
-      child: const Text('Losowa Gra'),
+    },
     );
   }
 }

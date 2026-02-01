@@ -2,6 +2,7 @@ import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:apka_mgr/models/app_user.dart';
 
@@ -9,7 +10,11 @@ import 'package:apka_mgr/models/app_user.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp();await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+
 
   runApp(MyApp());
 }

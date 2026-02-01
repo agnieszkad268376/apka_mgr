@@ -16,15 +16,26 @@ class _StatisticCatchABallState extends State<StatisticCatchABall> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final screenSize = MediaQuery.of(context).size;
     return 
-      StreamProvider<List<CatchABallModel>?>.value( 
-        initialData: null,
-        value: DatabaseService(uid: uid).getCatchABallStats(),
-        child: Scaffold(
-          backgroundColor: Color(0xFF98B6EC),
-          body: Center(
-            child: CatchABallList(),
-          )
+      Scaffold(
+        backgroundColor: Color(0xFFFFF1E3) ,
+        appBar: AppBar(
+        toolbarHeight: screenSize.height * 0.1,
+        automaticallyImplyLeading: true,
+        backgroundColor: Color(0xFF98B6EC),
+        centerTitle: true,
+        title: Text('Złap piłkę', style: TextStyle(fontSize: screenSize.height * 0.04)),
+      ),
+        body: StreamProvider<List<CatchABallModel>?>.value( 
+          initialData: null,
+          value: DatabaseService(uid: uid).getCatchABallStats(),
+          child: Scaffold(
+            backgroundColor: Color(0xFF98B6EC),
+            body: Center(
+              child: CatchABallList(),
+            )
+          ),
         ),
       );
   }
