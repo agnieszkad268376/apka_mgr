@@ -10,7 +10,16 @@ class ReflexCheckListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = reflexCheckModel.date;
-    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}.';
+    String dateDay = '${dateTimeDate.day}';
+    if (dateDay.runes.length == 1){
+      dateDay = '0$dateDay';
+    }
+    String dateMonth = '${dateTimeDate.month}';
+    if (dateMonth.runes.length == 1){
+      dateMonth = '0$dateMonth';
+    }
+    
+    String date = '$dateDay.$dateMonth.${dateTimeDate.year}';
     final screenSize = MediaQuery.of(context).size;
     final fontSizeTitle = screenSize.height * 0.025;
     final fontSizeSubtitle = screenSize.height *0.015;
@@ -36,7 +45,7 @@ class ReflexCheckListTile extends StatelessWidget {
               radius: 25.0,
               backgroundColor: bgcolor,
             ),
-          ),
+          ), 
           title: Text(date, style: TextStyle(fontSize: fontSizeTitle),),
           subtitle: Text('Wynik: ${reflexCheckModel.score} punkty \n'
                          'Średni czas reakcji: ${reflexCheckModel.averageReactionTime} ms \n'

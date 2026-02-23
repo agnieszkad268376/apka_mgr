@@ -16,15 +16,28 @@ class _StatisticReflexCheckState extends State<StatisticReflexCheck> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final screenSize = MediaQuery.of(context).size;
+
     return 
-    StreamProvider<List<ReflexCheckModel>?>.value(
-      initialData: null,
-      value: DatabaseService(uid: uid).getReflexCheckStats(),
-      child: Scaffold(
+    Scaffold(
+        backgroundColor: Color(0xFFFFF1E3) ,
+        appBar: AppBar(
+        toolbarHeight: screenSize.height * 0.1,
+        automaticallyImplyLeading: true,
         backgroundColor: Color(0xFF98B6EC),
-        body: Center(
-          child: ReflexCheckListDart(),
-        )
-      ),);
+        centerTitle: true,
+        title: Text('Sprawdź refleks', style: TextStyle(fontSize: screenSize.height * 0.04)),
+      ),
+        body: StreamProvider<List<ReflexCheckModel>?>.value( 
+          initialData: null,
+          value: DatabaseService(uid: uid).getReflexCheckStats(),
+          child: Scaffold(
+            backgroundColor: Color(0xFF98B6EC),
+            body: Center(
+              child: ReflexCheckListDart(),
+            )
+          ),
+        ),
+      );
   }
 }
