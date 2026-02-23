@@ -3,7 +3,7 @@ import 'package:apka_mgr/services/statistic/catch_a_ball/catch_a_ball_list_tile.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-enum LevelFilter {easy, medium, hard, all}
+enum BallFilter {easy, medium, hard, all}
 
 class CatchABallList extends StatefulWidget {
   const CatchABallList({super.key});
@@ -13,17 +13,17 @@ class CatchABallList extends StatefulWidget {
 }
 
 class _CatchABallListState extends State<CatchABallList> {
-  LevelFilter _selectedLevel = LevelFilter.all;
+  BallFilter _selectedBallNumber = BallFilter.all;
 
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<List<CatchABallModel>?>(context);
+    final catchABallSnapshot = Provider.of<List<CatchABallModel>?>(context);
 
-    if (data == null) {
+    if (catchABallSnapshot == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final filteredData = _filterData(data);
+    final filteredData = _filterData(catchABallSnapshot);
 
     return Column(
       children: [
@@ -42,17 +42,16 @@ class _CatchABallListState extends State<CatchABallList> {
     );
   }
 
-  // ⬇⬇⬇ DOKŁADNIE TUTAJ ⬇⬇⬇
+  
   List<CatchABallModel> _filterData(List<CatchABallModel> data) {
-    switch (_selectedLevel) {
-      case LevelFilter.easy:
+    switch (_selectedBallNumber) {
+      case BallFilter.easy:
         return data.where((e) => e.numberOfBalls == 10).toList();
-      case LevelFilter.medium:
+      case BallFilter.medium:
         return data.where((e) => e.numberOfBalls == 15).toList();
-      case LevelFilter.hard:
+      case BallFilter.hard:
         return data.where((e) => e.numberOfBalls > 15).toList();
-      case LevelFilter.all:
-      default:
+      case BallFilter.all:
         return data;
     }
   }
@@ -63,21 +62,46 @@ class _CatchABallListState extends State<CatchABallList> {
       child: Wrap(
         spacing: 8,
         children: [
-          _chip("Wszystkie", LevelFilter.all),
-          _chip("Łatwy", LevelFilter.easy),
-          _chip("Średni", LevelFilter.medium),
-          _chip("Trudny", LevelFilter.hard),
+          _chip("Wszystkie", BallFilter.all),
+          _chip("10 piłek", BallFilter.easy),
+          _chip("15 piłek", BallFilter.medium),
+          _chip("20 piłek", BallFilter.hard),
         ],
       ),
     );
   }
 
-  Widget _chip(String label, LevelFilter level) {
+  Widget _chip(String label, BallFilter level) {
+    final screenSize = MediaQuery.of(context).size;
+    Color bgColor;
+
+    if (level == BallFilter.easy) {
+      bgColor =  Color(0xFF4DBE9C);
+    } else if (level == BallFilter.medium) {
+      bgColor = Color(0xFF4996BD);
+    } else if (level == BallFilter.hard) {
+      bgColor = Color(0xFF9E579E);
+    } else {
+      bgColor = Color.fromARGB(255, 55, 55, 55);
+    }
+    
     return ChoiceChip(
-      label: Text(label),
-      selected: _selectedLevel == level,
+      label: SizedBox(
+        width: screenSize.width * 0.15,
+        height: screenSize.height * 0.02,
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 25.0,
+              backgroundColor: bgColor,
+            ),
+            Text(label, style: TextStyle(fontSize: screenSize.height * 0.012)),
+          ],
+        ),
+      ),
+      selected: _selectedBallNumber == level,
       onSelected: (_) {
-        setState(() => _selectedLevel = level);
+        setState(() => _selectedBallNumber = level);
       },
     );
   }

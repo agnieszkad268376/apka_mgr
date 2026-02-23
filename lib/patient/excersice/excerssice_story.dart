@@ -11,16 +11,25 @@ class ExcerssiceStoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final screenSize = MediaQuery.of(context).size;
     return 
     StreamProvider<List<ExcerciseModel>?>.value(
       initialData: null,
       value: DatabaseService(uid: uid).getExcercises(),
       child: Scaffold(
         backgroundColor: Color(0xFF98B6EC),
+        appBar: AppBar(
+        toolbarHeight: screenSize.height * 0.1,
+        automaticallyImplyLeading: true,
+        backgroundColor: Color(0xFF98B6EC),
+        centerTitle: true,
+        title: Text('Historia ćwiczeń', style: TextStyle(fontSize: screenSize.height * 0.04)),
+      ),
       
         body: Center(
           child: ExcerciseList(),
         ),
-      ),);
+      ),
+    );
   }
 }

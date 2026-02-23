@@ -10,7 +10,15 @@ class WhackAMoleListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bgcolor = Color(0xFFFFFFFF);
     DateTime dateTimeDate = whackAMoleModel.date;
-    String date = '${dateTimeDate.day}.${dateTimeDate.month}.${dateTimeDate.year}';
+     String dateDay = '${dateTimeDate.day}';
+    if (dateDay.runes.length == 1){
+      dateDay = '0$dateDay';
+    }
+    String dateMonth = '${dateTimeDate.month}';
+    if (dateMonth.runes.length == 1){
+      dateMonth = '0$dateMonth';
+    }
+    String date = '$dateDay.$dateMonth.${dateTimeDate.year}';
     final screenSize = MediaQuery.of(context).size;
     final fontSizeTitle = screenSize.height * 0.025;
     final fontSizeSubtitle = screenSize.height *0.015;

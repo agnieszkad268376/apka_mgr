@@ -93,7 +93,7 @@ with SingleTickerProviderStateMixin {
         ),
       ),
       Text(
-        text,
+        'Twoje punkty: \n $text',
         textAlign: TextAlign.center,
         style: const TextStyle(
           color: Color.fromARGB(255, 47, 47, 47),
@@ -122,9 +122,13 @@ with SingleTickerProviderStateMixin {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF98B6EC)),
-              child: Text('Opcje????', style: TextStyle(color: Colors.white, fontSize: 24)),
+              child: Image.asset(
+                      'images/logo.jpg',
+                      width: screenSize.width * 0.2,
+                      fit: BoxFit.contain,
+                    ),
             ),
             ListTile(
               leading: const Icon(Icons.settings_outlined),
