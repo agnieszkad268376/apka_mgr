@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:apka_mgr/models/app_user.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Main function that runs the app.
 void main() async{
@@ -26,12 +27,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return StreamProvider<AppUser?>.value(
       // listen to authentication state changes
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        locale: const Locale('pl', 'PL'),
+
+  supportedLocales: const [
+    Locale('pl', 'PL'),
+  ],
+
+  localizationsDelegates: const [
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
         home: Wrapper(),
       )
     );

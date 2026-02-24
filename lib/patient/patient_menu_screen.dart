@@ -1,5 +1,7 @@
 import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/authorization/setting_screen.dart';
+import 'package:apka_mgr/models/points_model.dart';
+import 'package:apka_mgr/models/user_model.dart';
 import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/patient/excersice/excersice_screen.dart';
@@ -25,7 +27,7 @@ class _PatientMenuScreenState extends State<PatientMenuScreen>
 with SingleTickerProviderStateMixin {
 
   final AuthService _authService = AuthService();
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+  String uid = FirebaseAuth.instance.currentUser!.uid;  
 
   // Controllers for handling animation
   late AnimationController _controller;
@@ -85,8 +87,8 @@ with SingleTickerProviderStateMixin {
         ),
       ),
       Container(
-        width: screenSize.width * 0.3,
-        height: screenSize.width * 0.3,
+        width: screenSize.width * 0.35,
+        height: screenSize.width * 0.35,
         decoration: const BoxDecoration(
           color: Color(0xFFFFF1E3),
           shape: BoxShape.circle,
@@ -104,7 +106,7 @@ with SingleTickerProviderStateMixin {
     ],);
     }
 
-  
+  /// Main screen with navigation options and user points display
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -170,6 +172,9 @@ with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text('Cześć, ${FirebaseAuth.instance.currentUser!.displayName}!', 
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF98B6EC)),),
+            SizedBox(height: screenSize.height * 0.05),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
