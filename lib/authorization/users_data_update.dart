@@ -48,14 +48,14 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF98B6EC),
+      backgroundColor: const Color.fromARGB(255, 232, 219, 206),
       appBar: AppBar(
         toolbarHeight: screenSize.height * 0.1,
         backgroundColor: const Color(0xFF98B6EC),
         centerTitle: true,
         title: Text(
-          'Edycja danych użytkownika',
-          style: TextStyle(fontSize: screenSize.height * 0.04),
+          'Edycja danych',
+          style: TextStyle(fontSize: screenSize.height * 0.035),
         ),
       ),
       body: Center(
@@ -80,31 +80,122 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
 
             String currentEmail = userData['email'] ?? '';
             String currentRole = userData['role'] ?? '';
+            String currentAge = userData['age'] ?? '';
+            String currentName = userData['name'] ?? '';
+            String currentInfo = userData['info'] ?? '';
 
             return SingleChildScrollView(
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: [
-
                     SizedBox(height: screenSize.height * 0.02),
-
-                    Image.asset(
-                      'images/logo.jpg',
-                      width: screenSize.width * 0.3,
-                      height: screenSize.height * 0.3,
+                    Container(
+                      height: screenSize.height * 0.1,
+                      width: screenSize.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFAF3ED),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            spreadRadius: 5,
+                            blurRadius: 3,
+                            offset: const Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.person, size: screenSize.height * 0.03),
+                                SizedBox(width: screenSize.width * 0.02),
+                                Text('Twoje imię', style: TextStyle(fontSize: screenSize.height * 0.02),),
+                              ],
+                            ),
+                            SizedBox(height: screenSize.height * 0.01),
+                            NameInput(controller: _nameController, initName: currentName),
+                          ],
+                        ),
+                      ),
                     ),
-
                     SizedBox(height: screenSize.height * 0.02),
-
-                    NameInput(controller: _nameController),
+                    Container(
+                      height: screenSize.height * 0.1,
+                      width: screenSize.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFAF3ED),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            spreadRadius: 5,
+                            blurRadius: 3,
+                            offset: const Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.cake, size: screenSize.height * 0.03),
+                                SizedBox(width: screenSize.width * 0.02),
+                                Text('Twoja data urodzenia',  style: TextStyle(fontSize: screenSize.height * 0.02)),
+                              ],
+                            ),
+                            SizedBox(height: screenSize.height * 0.01),
+                            BirthDateInput(controller: _birthDateController),
+                          ],
+                        ),
+                      ),
+                    ),
                     SizedBox(height: screenSize.height * 0.02),
-
-                    BirthDateInput(controller: _birthDateController),
-                    SizedBox(height: screenSize.height * 0.02),
-
-                    AdditionalInfo(controller: _additionalInfoController),
-                    SizedBox(height: screenSize.height * 0.02),
+                    Container(
+                      height: screenSize.height * 0.3,
+                      width: screenSize.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFAF3ED),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            spreadRadius: 5,
+                            blurRadius: 3,
+                            offset: const Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.info, size: screenSize.height * 0.03),
+                                SizedBox(width: screenSize.width * 0.02),
+                                Text('Dodatkowe informacje',  style: TextStyle(fontSize: screenSize.height * 0.02)),
+                              ],
+                            ),
+                            SizedBox(height: screenSize.height * 0.01),
+                            AdditionalInfo(controller: _additionalInfoController),
+                          ],
+                        ),
+                      ),
+                    ),
+                    
+                    SizedBox(height: screenSize.height * 0.05),
 
                     SizedBox(
                       width: screenSize.width * 0.5,
@@ -169,17 +260,19 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
 
 class NameInput extends StatelessWidget {
   final TextEditingController controller;
-  const NameInput({super.key, required this.controller});
+  final String initName;
+  const NameInput({super.key, required this.controller, this.initName = ''});
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return SizedBox(
-      width: 300,
-      child: TextFormField(
+      width: screenSize.width * 0.7,
+      child: TextFormField( 
         controller: controller,
         validator: (value) =>
             value == null || value.isEmpty ? 'Wpisz swoje imię' : null,
-        decoration: _inputDecoration('Imię'),
+        decoration: _inputDecoration(initName),
       ),
     );
   }
@@ -195,7 +288,7 @@ class BirthDateInput extends StatelessWidget {
 
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(now.year - 18),
+      initialDate: DateTime(now.year),
       firstDate: DateTime(1900),
       lastDate: now,
       helpText: 'Wybierz datę urodzenia',
@@ -212,11 +305,12 @@ class BirthDateInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size; 
     return SizedBox(
-      width: 300,
+      width: screenSize.width * 0.7,
       child: TextFormField(
         controller: controller,
-        readOnly: true, // ❗ blokuje wpisywanie ręczne
+        readOnly: true, 
         onTap: () => _selectDate(context),
         validator: (value) =>
             value == null || value.isEmpty ? 'Wybierz datę urodzenia' : null,
@@ -245,11 +339,13 @@ class AdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    
     return SizedBox(
-      width: 300,
+      width: screenSize.width * 0.7,
       child: TextField(
         controller: controller,
-        maxLines: 6,
+        maxLines: 9,
         decoration: _inputDecoration('Dodatkowe informacje'),
       ),
     );
@@ -258,9 +354,11 @@ class AdditionalInfo extends StatelessWidget {
 
 InputDecoration _inputDecoration(String label) {
   return InputDecoration(
+    hintText: label,
     labelText: label,
     filled: true,
     fillColor: const Color(0xFFFAF3ED),
+    floatingLabelBehavior: FloatingLabelBehavior.never,
     enabledBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: Color(0xFFCEC3BA), width: 5),
       borderRadius: BorderRadius.circular(23),

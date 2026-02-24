@@ -36,15 +36,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         locale: const Locale('pl', 'PL'),
 
-  supportedLocales: const [
-    Locale('pl', 'PL'),
-  ],
+      supportedLocales: const [
+        Locale('pl', 'PL'),
+      ],
 
-  localizationsDelegates: const [
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
         home: Wrapper(),
       )
     );
