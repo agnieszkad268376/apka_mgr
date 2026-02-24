@@ -80,7 +80,7 @@ class _DotControllerListState extends State<DotControllerList> {
     Color bgColor;
 
     if (level == DotFilter.one) {
-      bgColor = Color(0xFFB1BE4D);;
+      bgColor = Color(0xFFB1BE4D);
     } else if (level == DotFilter.two) {
       bgColor = Color(0xFF49BD87);
     } else if (level == DotFilter.three) {

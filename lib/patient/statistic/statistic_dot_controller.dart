@@ -25,7 +25,7 @@ class _StatisticDotControllerState extends State<StatisticDotController> {
         automaticallyImplyLeading: true,
         backgroundColor: Color(0xFF98B6EC),
         centerTitle: true,
-        title: Text('Złap piłkę', style: TextStyle(fontSize: screenSize.height * 0.04)),
+        title: Text('Śledź kropkę', style: TextStyle(fontSize: screenSize.height * 0.04)),
       ),
         body: StreamProvider<List<DotControllerModel>?>.value( 
           initialData: null,

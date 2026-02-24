@@ -28,13 +28,13 @@ class DotControllerListTile extends StatelessWidget {
     int time = 0;
 
     if (dotControllerModel.controlledDots == '1') {
-      bgcolor =  Color.fromARGB(255, 177, 190, 77);
+      bgcolor =  Color(0xFFB1BE4D);
     } else if (dotControllerModel.controlledDots == '2') {
-      bgcolor =  Color.fromARGB(255, 73, 189, 135);
+      bgcolor =  Color(0xFF49BD87);
     } else if (dotControllerModel.controlledDots == '3') {
-      bgcolor =  Color.fromARGB(255, 83, 124, 220);
+      bgcolor =  Color(0xFF537CDC);
     }else if (dotControllerModel.controlledDots == '4') {
-      bgcolor =  Color.fromARGB(255, 128, 119, 231);
+      bgcolor =  Color(0xFF8077E7);
     } else {
       bgcolor =  Color(0xFF9E579E);
     }
