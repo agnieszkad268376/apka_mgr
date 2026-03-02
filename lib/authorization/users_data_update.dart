@@ -154,7 +154,7 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                               ],
                             ),
                             SizedBox(height: screenSize.height * 0.01),
-                            BirthDateInput(controller: _birthDateController),
+                            BirthDateInput(controller: _birthDateController, initBirthDate: currentAge),
                           ],
                         ),
                       ),
@@ -280,8 +280,8 @@ class NameInput extends StatelessWidget {
 
 class BirthDateInput extends StatelessWidget {
   final TextEditingController controller;
-
-  const BirthDateInput({super.key, required this.controller});
+  final String initBirthDate;
+  const BirthDateInput({super.key, required this.controller, this.initBirthDate = ''});
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime now = DateTime.now();
@@ -315,7 +315,7 @@ class BirthDateInput extends StatelessWidget {
         validator: (value) =>
             value == null || value.isEmpty ? 'Wybierz datę urodzenia' : null,
         decoration: InputDecoration(
-          labelText: 'Data urodzenia',
+          labelText: initBirthDate,
           suffixIcon: const Icon(Icons.calendar_today),
           filled: true,
           fillColor: const Color(0xFFFAF3ED),
