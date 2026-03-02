@@ -33,12 +33,18 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return 
     Scaffold(
-      backgroundColor: Color(0xFF98B6EC),
+      backgroundColor: Color(0xFFE8DBCE),
       appBar: AppBar(
-        backgroundColor: Color(0xFF98B6EC),
-        title: Text('Zmiana hasła'),
+        toolbarHeight: screenSize.height * 0.1,
+        backgroundColor: const Color(0xFF98B6EC),
+        centerTitle: true,
+        title: Text(
+          'Ustawienia',
+          style: TextStyle(fontSize: screenSize.height * 0.035),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -49,16 +55,15 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
             SizedBox(height: 10),
             Image.asset(
               'images/logo.jpg',
-              width: 200,
-              height: 200,
+              width: screenSize.width * 0.5,
+              height: screenSize.height * 0.5,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: screenSize.height * 0.01),
             PasswordInput(controller: _passwordController,),
-            SizedBox(height: 20),
             ReentryPasswordInput(controller: _reentryPasswordController,),
-            SizedBox(height: 20),
             SizedBox(
-              width: 300,
+              width: screenSize.height * 0.5,
+              height: screenSize.height * 0.08,
               child: ElevatedButton(
               onPressed: () async {
                 
@@ -97,7 +102,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
                 side: const BorderSide(color: Color(0xFFDFB4B0), width: 2.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23.0)),
               ),
-              child: const Text('Zmień hasło'),
+              child: Text('Zmień hasło', style: TextStyle(fontSize: screenSize.height * 0.035, color: Colors.black),),
               ),
             ),
           ],
@@ -119,8 +124,10 @@ class PasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return SizedBox(
-      width: 300,
+      width: screenSize.width * 0.8,
+      height: screenSize.height * 0.08,
       child: TextField(
         controller: controller,
         obscureText: true,
@@ -151,8 +158,10 @@ class ReentryPasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return SizedBox(
-      width: 300,
+      width: screenSize.width * 0.8,
+      height: screenSize.height * 0.08,
       child: TextField(
         controller: controller,
         obscureText: true,
