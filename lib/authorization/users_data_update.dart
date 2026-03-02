@@ -189,7 +189,7 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                               ],
                             ),
                             SizedBox(height: screenSize.height * 0.01),
-                            AdditionalInfo(controller: _additionalInfoController),
+                            AdditionalInfo(controller: _additionalInfoController, initInfo: currentInfo,),
                           ],
                         ),
                       ),
@@ -335,7 +335,8 @@ class BirthDateInput extends StatelessWidget {
 
 class AdditionalInfo extends StatelessWidget {
   final TextEditingController controller;
-  const AdditionalInfo({super.key, required this.controller});
+  final String initInfo;
+  const AdditionalInfo({super.key, required this.controller, this.initInfo = ''});
 
   @override
   Widget build(BuildContext context) {
