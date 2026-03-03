@@ -1,7 +1,5 @@
 import 'package:apka_mgr/authorization/login_screen.dart';
 import 'package:apka_mgr/authorization/setting_screen.dart';
-import 'package:apka_mgr/models/points_model.dart';
-import 'package:apka_mgr/models/user_model.dart';
 import 'package:apka_mgr/patient/achivments_screen.dart';
 import 'package:apka_mgr/patient/choose_game_screen.dart';
 import 'package:apka_mgr/patient/excersice/excersice_screen.dart';
@@ -9,6 +7,7 @@ import 'package:apka_mgr/patient/progress_journal.dart';
 import 'package:apka_mgr/patient/statistic/statistics_screen.dart';
 import 'package:apka_mgr/services/auth.dart';
 import 'package:apka_mgr/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -148,7 +147,7 @@ with SingleTickerProviderStateMixin {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProgressJournal()),
+                  MaterialPageRoute(builder: (context) => ProgressJournal()),
                 );
               },
             ),
@@ -168,105 +167,128 @@ with SingleTickerProviderStateMixin {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Cześć, ${FirebaseAuth.instance.currentUser!.displayName}!', 
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF98B6EC)),),
-            SizedBox(height: screenSize.height * 0.05),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildShimmerCircle(screenSize, '$userPoints'),
-              ],
-            ),
-            SizedBox(height: screenSize.height * 0.08),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFCF4EC),
-                fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( 
-                    color: Color(0xFFCEC3BA),  
-                    width: 2,             
-                  ),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
-                    );
-              },
-              child: const Text('Gry', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
-            ),
-            SizedBox(height: screenSize.height * 0.02),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFCF4EC),
-                fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( 
-                    color: Color(0xFFCEC3BA),  
-                    width: 2,             
-                  ),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ExcersiceScreen()),
-                    );
-              },
-              child: const Text('Ćwiczenia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
-            ),
-            SizedBox(height: screenSize.height * 0.02),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFCF4EC),
-                fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( 
-                    color: Color(0xFFCEC3BA), 
-                    width: 2,             
-                  ),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AchivmentsScreen()),
-                    );
-              },
-              child: const Text('Osiągnięcia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
-            ),
-            SizedBox(height: screenSize.height * 0.02),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFCF4EC),
-                fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide( 
-                    color: Color(0xFFCEC3BA),  
-                    width: 2,           
-                  ),  
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => StatisticsScreen()),
-                    );
-              },
-              child: const Text('Statystyki', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
-            ),
+        child: FutureBuilder<DocumentSnapshot>(
+          future: DatabaseService(uid: uid).getUserData(uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Text('No user data found');
+            }
 
-          ],
+            var userData = snapshot.data!.data() as Map<String, dynamic>;
+            String userName;
+            if (userData['name'] != null && userData['name'].isNotEmpty) {
+              userName = userData['name'];
+            } else {
+              userName = 'Uzupełnij swoje dane w ustawieniach';
+            }
+          return Column(
+            
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Cześć, $userName!', 
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF98B6EC)),),
+              SizedBox(height: screenSize.height * 0.05),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildShimmerCircle(screenSize, '$userPoints'),
+                ],
+              ),
+              SizedBox(height: screenSize.height * 0.08),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFCF4EC),
+                  fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide( 
+                      color: Color(0xFFCEC3BA),  
+                      width: 2,             
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ChooseGameScreen()),
+                      );
+                },
+                child: const Text('Gry', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
+              ),
+              SizedBox(height: screenSize.height * 0.02),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFCF4EC),
+                  fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide( 
+                      color: Color(0xFFCEC3BA),  
+                      width: 2,             
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ExcersiceScreen()),
+                      );
+                },
+                child: const Text('Ćwiczenia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
+              ),
+              SizedBox(height: screenSize.height * 0.02),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFCF4EC),
+                  fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide( 
+                      color: Color(0xFFCEC3BA), 
+                      width: 2,             
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AchivmentsScreen()),
+                      );
+                },
+                child: const Text('Osiągnięcia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
+              ),
+              SizedBox(height: screenSize.height * 0.02),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFCF4EC),
+                  fixedSize: Size(screenSize.width * 0.9, screenSize.height * 0.09),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide( 
+                      color: Color(0xFFCEC3BA),  
+                      width: 2,           
+                    ),  
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StatisticsScreen()),
+                      );
+                },
+                child: const Text('Statystyki', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFA49C94)),),
+              ),
+          
+              ],
+            );
+          },
         ),
       )
     );

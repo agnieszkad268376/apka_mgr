@@ -46,9 +46,9 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
+    
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 232, 219, 206),
+      backgroundColor: const Color(0xFFE8DBCE),
       appBar: AppBar(
         toolbarHeight: screenSize.height * 0.1,
         backgroundColor: const Color(0xFF98B6EC),
@@ -91,7 +91,7 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                   children: [
                     SizedBox(height: screenSize.height * 0.02),
                     Container(
-                      height: screenSize.height * 0.1,
+                      height: screenSize.height * 0.12,
                       width: screenSize.width * 0.8,
                       decoration: BoxDecoration(
                         color: const Color(0xFFFAF3ED),
@@ -126,7 +126,7 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
                     ),
                     SizedBox(height: screenSize.height * 0.02),
                     Container(
-                      height: screenSize.height * 0.1,
+                      height: screenSize.height * 0.12,
                       width: screenSize.width * 0.8,
                       decoration: BoxDecoration(
                         color: const Color(0xFFFAF3ED),
