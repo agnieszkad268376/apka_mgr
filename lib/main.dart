@@ -33,7 +33,9 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
+        // Disable the debug banner
         debugShowCheckedModeBanner: false,
+        // set localization to Polish
         locale: const Locale('pl', 'PL'),
 
       supportedLocales: const [

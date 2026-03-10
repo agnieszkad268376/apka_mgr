@@ -3,30 +3,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Screen allowing users to update their personal data (name, birth date, additional info).
 class UsersDataUpdateScreen extends StatefulWidget {
   const UsersDataUpdateScreen({super.key});
 
   @override
   State<UsersDataUpdateScreen> createState() => _UsersDataUpdateScreenState();
 }
-
+ /// State class for UsersDataUpdateScreen, handling user data retrieval and update logic
 class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
 
+  // Controllers for handling user input changes in form fields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _additionalInfoController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
 
+  // Gets current user uid from database
   final String uid = FirebaseAuth.instance.currentUser!.uid;
+  // Form for validation
   final _formKey = GlobalKey<FormState>();
 
+  // Users data future to fetch data
   late Future<DocumentSnapshot> _userFuture;
 
+  /// Initializes state and fatches user data
   @override
   void initState() {
     super.initState();
     _userFuture = DatabaseService(uid: uid).getUserData(uid);
   }
 
+  /// Closes controllres after close of the screen to free resources
   @override
   void dispose() {
     _nameController.dispose();
@@ -35,7 +42,10 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
     super.dispose();
   }
 
+  /// Fills controllers with user data
   void _fillControllers(Map<String, dynamic> userData) {
+    // Only if controllers are empty
+    // This prevents overwriting
     if (_nameController.text.isEmpty) {
       _nameController.text = userData['name'] ?? '';
       _birthDateController.text = userData['birthDate'] ?? '';
@@ -43,8 +53,10 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
     }
   }
 
+  /// Builds the UI of the screen
   @override
   Widget build(BuildContext context) {
+    // Gets screen size
     final screenSize = MediaQuery.of(context).size;
     
     return Scaffold(
@@ -59,14 +71,17 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
         ),
       ),
       body: Center(
+        // FutureBuilder to fetch user data and build form
         child: FutureBuilder<DocumentSnapshot>(
           future: _userFuture,
           builder: (context, snapshot) {
 
+            // Show loading indicator while fetching data
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-
+            
+            // Exception handling for data fetching
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }
@@ -78,6 +93,7 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
             var userData = snapshot.data!.data() as Map<String, dynamic>;
             _fillControllers(userData);
 
+            // Save current data for user
             String currentEmail = userData['email'] ?? '';
             String currentRole = userData['role'] ?? '';
             String currentAge = userData['age'] ?? '';
@@ -258,6 +274,9 @@ class _UsersDataUpdateScreenState extends State<UsersDataUpdateScreen> {
   }
 }
 
+
+/// Widget for name input field
+/// Takes a TextEditingController and initial name as parameters
 class NameInput extends StatelessWidget {
   final TextEditingController controller;
   final String initName;

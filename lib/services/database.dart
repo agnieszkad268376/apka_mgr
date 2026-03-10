@@ -83,6 +83,18 @@ class DatabaseService {
       .map(_excerciseListFromSnapshot);
   }
 
+  Stream<List<ExcerciseModel>> getDayExcercises(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('exercises')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_excerciseListFromSnapshot);
+  }
+
   // WHACK A MOLE GAME DATA
   // Add whack a mole score to Firestore
   Future addWhackAMoleScore(String uid, int score, DateTime date, String level, String missedHits) async {
@@ -112,6 +124,18 @@ class DatabaseService {
     .orderBy('date', descending: true)
     .snapshots()
     .map(_statWhackAMoleListFromSnapshot);
+  }
+
+  Stream<List<WhackAMoleModel>> getDayWhackAMoleStats(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('whack_a_mole_scores')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_statWhackAMoleListFromSnapshot);
   }
 
   // CATCH A BALL GAME DATA
@@ -149,6 +173,18 @@ class DatabaseService {
     .map(_statCatchABallListFromSnapshot);
   }
 
+  Stream<List<CatchABallModel>> getDayCatchABallStats(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('catch_a_ball_scores')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_statCatchABallListFromSnapshot);
+  }
+
   // BUILD A WORD GAME DATA
   // Add build a word score to Firestore
   Future addBuildAWordScore(String uid, DateTime date, int score, int missedLetters, String level) async {
@@ -180,6 +216,17 @@ class DatabaseService {
     .map(_statBuildAWordSnapshot);
   }
 
+  Stream<List<BuildAWordModel>> getDayBuildAWordStats(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('build_a_word_scores')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_statBuildAWordSnapshot);
+  }
 
   // REFLEX CHECK GAME DATA
   // Add reflex check data to Firestore
@@ -211,6 +258,20 @@ class DatabaseService {
     .snapshots()
     .map(_statReflexCheckSnapshot);
   }
+
+
+  Stream<List<ReflexCheckModel>> getDayReflexCheckStats(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('reflex_check_scores')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_statReflexCheckSnapshot);
+  }
+
 
   // DOT CONTROLLER GAME DATA
   // Add dot controller data to Firestore
@@ -245,6 +306,18 @@ class DatabaseService {
     .map(_statDotControllerSnapshot);
   }
 
+  Stream<List<DotControllerModel>> getDayDotControllerStats(DateTime day) {
+    DateTime startOfDay = DateTime(day.year, day.month, day.day);
+    final nextDay = startOfDay.add(Duration(days: 1));
+
+    return _firestore.collection('users').doc(uid)
+      .collection('dot_controller_scores')
+      .where('date', isGreaterThanOrEqualTo: startOfDay)
+      .where('date', isLessThan: nextDay)
+      .snapshots()
+      .map(_statDotControllerSnapshot);
+  }
+  
 
   // POINTS DATA
 
