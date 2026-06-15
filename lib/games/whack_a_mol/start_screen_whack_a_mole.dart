@@ -78,7 +78,7 @@ class _StartScreenWhackAMoleState extends State<StartScreenWhackAMole> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Naciśnij na krecika, kiedy wyskoczy z dziury aby zdobyć punkty. '
+                  'Naciśnij na krecika, za każdym razem, kiedy wyskoczy z dziury, aby zdobyć punkty. '
                   'Uważaj na pojawiające się bomby.\n',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,

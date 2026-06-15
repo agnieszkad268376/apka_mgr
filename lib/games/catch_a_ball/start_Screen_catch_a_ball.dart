@@ -81,12 +81,13 @@ class _StartScreenCatchABallState extends State<StartScreenCatchABall> {
                       padding: EdgeInsets.fromLTRB(screenSize.width*0.02, 0, screenSize.width*0.02, 0),
                       child: 
                       Text(
-                      'Na ekranie będą pojawiać się czerwone okręgi. Staraj się kliknąć w środek okręgu '
+                      'Na ekranie będą pojawiać się kolejno czerwone koła. Staraj się kliknąć w środek pojawiającego się koła.'
                       'W tej grze liczy się czas.',
                       style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                       textAlign: TextAlign.center,
                     )
                     ),
+                    SizedBox(height: screenSize.height * 0.04),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

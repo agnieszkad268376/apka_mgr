@@ -60,7 +60,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'LAS', 'DOM', 'KOT', 'PIES', 'RÓŻA', 'LIPA', 'KURA', 
     'RYBA', 'STÓŁ', 'SEN', 'MYSZ', 'OKNO', 'KĄT', 'GRA',
     'SÓL', 'ŁZA', 'WODA', 'ŻAL', 'TOR', 'RÓG', 'ŁOŚ',
-    'KŁOS', 'MÓZG', 'PŁOT', 'ĆMA', 'ĆWIK', 'DĄB', 'BÓG',
+    'KŁOS', 'MÓZG', 'PŁOT', 'ĆMA', 'ĆWIK', 'DĄB', 'PAKA',
     'MUR', 'KREW', 'ŁÓDŹ', 'PĄK', 'SOK', 'MGŁA', 'PAS',
   ];
 
@@ -71,7 +71,6 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'JABŁKO', 'PIESZY', 'KOTLET', 'RÓŻOWY', 'SŁOŃCE', 'WIATR', 'WZROK',
     'CHMURA', 'ZAMEK', 'OGRÓD', 'PODRÓŻ', 'WIOSNA', 'LOTKA', 'TARKA',
     'LATO', 'JESIEŃ', 'ZIMA', 'MOSTEK', 'TELEFON', 'OKRĘT', 'STATEK',
-    'LIŚCIE', 'MIESIĄC', 'TYDZIEŃ', 'DZIEŃ', 'BRZEG', 'PLAŻA', 'FALKA',
   ];
 
   // Lists with words with 8 to 9 letters
@@ -81,7 +80,7 @@ class _BuildAWordScreenState extends State<BuildAWordScreen> {
     'ZWIERZĘTA', 'ŚWIECZNIK', 'SERDECZNY', 'WĘDROWIEC', 'SPOKOJNY',
     'KIEROWCA', 'CODZIENNY', 'PRZYRODA', 'SERDECZNY', 'OPOWIEŚĆ',
     'MUZYKALNY', 'SPOTKANIE', 'OPOWIEŚĆ', 'WIECZORNY', 'SIATKARZ',
-    'ZALEŻNOŚĆ', 'RADOŚNIE', 'NIEBIESKI', 'CZERWONY', 'OPIEKUNKA',
+    'ZALEŻNOŚĆ', 'RADOŚNIE', 'NIEBIESKI', 'CZERWONY' ,
   ];
 
   /// Function to get random word from list based on user's selection

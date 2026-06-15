@@ -59,7 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
             children: [
             SizedBox(height: 10),
             Image.asset(
-              'images/logo.jpg',
+              'images/Vizzy_logo.png',
               width: 200,
               height: 200,
             ),

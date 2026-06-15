@@ -118,6 +118,7 @@ class _DotConrollerScreenState extends State<DotConrollerScreen> {
         return Offset(cos(angle) * speed, sin(angle) * speed);
       },
     );
+    
 
     // choose controlled dots based on user selection
     int count = int.tryParse(widget.selectedNumberOfControlledDots) ?? 0;

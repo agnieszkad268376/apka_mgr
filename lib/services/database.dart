@@ -2,6 +2,7 @@ import 'package:apka_mgr/models/build_a_word_model.dart';
 import 'package:apka_mgr/models/catch_a_ball_model.dart';
 import 'package:apka_mgr/models/dot_controller_model.dart';
 import 'package:apka_mgr/models/excercise_model.dart';
+import 'package:apka_mgr/models/points_model.dart';
 import 'package:apka_mgr/models/reflex_check_model.dart';
 import 'package:apka_mgr/models/user_model.dart';
 import 'package:apka_mgr/models/whack_a_mole_model.dart';
@@ -361,7 +362,34 @@ class DatabaseService {
       return 0;
     }
 
-    final data = doc.data() as Map<String, dynamic>;
-    return data['points'] ?? 0;
+    final data = doc.data();
+    return data?['points'] ?? 0;
   }
+
+  List<PointsModel> _pointsListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) {
+      return PointsModel(
+        uid: doc.id,
+        whackAMolePoints: doc.get('whackAMolePoints'),
+        catchABallPoints: doc.get('catchABallPoints'),
+        buildAWordPoints: doc.get('buildAWordPoints'),
+        reflexCheckPoints: doc.get('reflexCheckPoints'),
+        dotControllerPoints: doc.get('dotControllerPoints'),
+        points: doc.get('points'),
+      );
+    }).toList();
+  }
+
+  Stream<List<PointsModel>> getPoints() {
+    return _firestore.collection('users').doc(uid)
+    .collection('points').snapshots()
+    .map(_pointsListFromSnapshot);
+  }
+  
+   Future<DocumentSnapshot> getPointsTwo(String uid) async {
+    return await _firestore.collection('users').doc(uid)
+    .collection('points').doc('pointsDoc').get();
+  }
+
+
 }

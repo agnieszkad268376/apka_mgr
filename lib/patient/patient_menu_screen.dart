@@ -126,7 +126,7 @@ with SingleTickerProviderStateMixin {
             DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF98B6EC)),
               child: Image.asset(
-                      'images/logo.jpg',
+                      'images/Vizzy_logo.png',
                       width: screenSize.width * 0.2,
                       fit: BoxFit.contain,
                     ),

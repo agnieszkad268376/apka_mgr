@@ -77,10 +77,10 @@ class _StartScreenDotControllerState extends State<StartScreenDotController> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
-                  'Na ekranie zobaczysz 10 kropek, kilka z nich będzie czerwonych, zapamiętaj je.  '
+                  'Na ekranie zobaczysz 10 kropek, kilka z nich będzie zielonych, zapamiętaj je.  '
                   'Po naciśnięciu start wszytskie kropi będą zielone i zaczną się poruszać.'
-                  'Do końca gry musisz śledzić kropki które były czerwone na początku. Kiedy minie czas gry kropki się zatrzymają'
-                  'i będziesz musiał wskazać które kropki które śledziłeś.',
+                  'Do końca gry musisz śledzić kropki, które były zielone na początku. Kiedy minie czas gry, kropki się zatrzymają'
+                  ' i będziesz musiał wskazać kropki, które śledziłeś.',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),

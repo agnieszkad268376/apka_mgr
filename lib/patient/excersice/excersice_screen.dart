@@ -30,7 +30,7 @@ class ExcersiceScreen extends StatelessWidget {
             children: [
               SizedBox(height: screenSize.height *  0.02),
               Image.asset(
-                'images/logo.jpg',
+                'images/Vizzy_logo.png',
                 width: screenSize.width * 0.6,
                 fit: BoxFit.contain,
               ),

@@ -1,7 +1,8 @@
 import 'package:apka_mgr/services/auth.dart';
 import 'package:flutter/material.dart';
 
-
+/// Password change screen for the application
+/// User can change their password
 class PasswordChangeScreen extends StatefulWidget {
   const PasswordChangeScreen({super.key});
 
@@ -9,6 +10,7 @@ class PasswordChangeScreen extends StatefulWidget {
   State<PasswordChangeScreen> createState() => _PasswordChangeScreenState();
 }
 
+/// The state of the PasswordChangeScreen widget
 class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reentryPasswordController = TextEditingController(); 
@@ -18,6 +20,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
   // Instantiate a GlobalKey for the form
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the controllers when the widget is removed
   @override
   void dispose() {
     _passwordController.dispose();
@@ -25,12 +28,14 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
     super.dispose();
   }
 
+  /// Updates the selected role when the user selects a different role
   void roleChange(String? value) {
     setState(() {
       selectedRole = value ?? 'user';
     });
   }
 
+  /// Builds the UI for the PasswordChangeScreen
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -54,11 +59,11 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
             children: [
             SizedBox(height: 10),
             Image.asset(
-              'images/logo.jpg',
+              'images/Vizzy_logo.png',
               width: screenSize.width * 0.5,
               height: screenSize.height * 0.5,
             ),
-            SizedBox(height: screenSize.height * 0.01),
+            SizedBox(height: screenSize.height * 0.005),
             PasswordInput(controller: _passwordController,),
             ReentryPasswordInput(controller: _reentryPasswordController,),
             SizedBox(

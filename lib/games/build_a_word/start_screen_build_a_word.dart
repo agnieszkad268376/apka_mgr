@@ -77,8 +77,8 @@ class _StartScreenBuildAWord extends State<StartScreenBuildAWord> {
                 padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 child: Text(
                   'Na górze ekranu pojawi się słowo. '
-                  'Pod nim będzie klawiatura z losowo ułożonymi literami alfabetu. Klikaj pokolei na kolejne litery słowa.' 
-                  'Jeżeli kliniesz na prawidłową literę dana litera w slowie zmieni się na zieloną\n',
+                  'Pod nim będzie klawiatura z losowo ułożonymi literami alfabetu. Klikaj po kolei na kolejne litery słowa.' 
+                  'Jeżeli kliniesz na prawidłową literę, zmieni się ona na zieloną\n',
                   style: TextStyle(fontSize: fontSize3, color: const Color(0xFF3D3D3D)),
                   textAlign: TextAlign.center,
                 ),

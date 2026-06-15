@@ -8,7 +8,6 @@ import 'package:apka_mgr/services/database.dart';
 import 'package:apka_mgr/services/statistic/build_a_word/build_a_word_calendar_tile.dart';
 import 'package:apka_mgr/services/statistic/catch_a_ball/catch_a_ball_calendar_tile.dart';
 import 'package:apka_mgr/services/statistic/dot_controller/dot_controller_calendar_tile.dart';
-import 'package:apka_mgr/services/statistic/dot_controller/dot_controller_list_tile.dart';
 import 'package:apka_mgr/services/statistic/reflex_check/reflex_check_calendar_tile.dart';
 import 'package:apka_mgr/services/statistic/whack_a_mole/whack_a_mole_calendar_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -193,7 +192,7 @@ class _ProgressJournalState extends State<ProgressJournal> {
                     children: data.map((e) => Card(
                       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       child: ListTile(
-                        title: Text("Score: ${e.description}"),
+                        title: Text(e.description, style: TextStyle(fontSize: screenSize.height * 0.02),),
                      ),
                     )
                     ).toList(),
